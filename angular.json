@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "uniwings_ng": {
+    "uniwings-core-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/uniwings_ng",
+            "outputPath": "dist/uniwings-core-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -57,10 +57,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "uniwings_ng:build:production"
+              "buildTarget": "uniwings-core-frontend:build:production"
             },
             "development": {
-              "buildTarget": "uniwings_ng:build:development"
+              "buildTarget": "uniwings-core-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -68,7 +68,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "uniwings_ng:build"
+            "buildTarget": "uniwings-core-frontend:build"
           }
         },
         "test": {

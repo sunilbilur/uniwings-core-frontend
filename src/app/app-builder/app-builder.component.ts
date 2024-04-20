@@ -1,19 +1,20 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from './navbar/navbar.component';
-import { AuthService } from '../_services/auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { NavbarComponent } from './navbar/navbar.component';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-app-builder',
   standalone: true,
   imports: [NavbarComponent],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  templateUrl: './app-builder.component.html',
+  styleUrl: './app-builder.component.css'
 })
-export class DashboardComponent {
-
+export class AppBuilderComponent {
   constructor(private authService: AuthService, private http: HttpClient) {
+    
+
   }
 
   logoutUser() {
@@ -21,9 +22,8 @@ export class DashboardComponent {
   }
 
   sendGet() {
-    this.http.get("http://localhost:8000/dashboard").subscribe((res)=>{
+    this.http.get("http://localhost:8000/dashboard").subscribe((res) => {
       console.log(res);
     })
   }
-
 }

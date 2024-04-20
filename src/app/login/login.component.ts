@@ -16,7 +16,7 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {
     // Redirect to home if already logged in
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(["dashboard"]);
+      this.router.navigate(["app"]);
     }
 
     this.loginForm = this.formBuilder.group({
@@ -29,7 +29,8 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
       (data: any) => {
         localStorage.setItem('user', data.jwt);
-        this.router.navigate(['dashboard']);
+        localStorage.setItem('access_config', data.access_config);
+        this.router.navigate(['app']);
       }
     );
   }

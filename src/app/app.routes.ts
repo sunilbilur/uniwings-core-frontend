@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './_helpers/auth.guard';
 import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { AppBuilderComponent } from './app-builder/app-builder.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
-    { path: 'dashboard', component: DashboardComponent },
+    { path: 'app', component: AppBuilderComponent, canActivate: [authGuard]},
     { path: '**', component: PageNotFoundComponent }
 ];

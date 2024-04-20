@@ -7,7 +7,7 @@ import { CanActivateFn } from '@angular/router';
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const authService = inject(AuthService);
-  const user = authService.userValue;
+  const user = authService.getJWT();
 
   // check if user exists
   if (user) {

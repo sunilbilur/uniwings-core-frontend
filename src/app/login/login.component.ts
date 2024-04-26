@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
-import { Router } from '@angular/router';
+import { Route, Router, Routes } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { AuthService } from '../_services/auth.service';
+import { AppBuilderComponent } from '../app-builder/app-builder.component';
+import { CompsgridComponent } from '../app-builder/compsgrid/compsgrid.component';
+import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 @Component({
   selector: 'app-login',
@@ -25,12 +29,90 @@ export class LoginComponent {
     });
   }
 
+  printpath(parent: string, config: any) {
+    for (let i = 0; i < config.length; i++) {
+      const route = config[i];
+      console.log(parent + '/' + route.path);
+      if (route.children) {
+        const currentPath = route.path ? `${parent}/${route.path}` : parent;
+        this.printpath(currentPath, route.children);
+      }
+    }
+  }
+
+  getEntriesFromNavData() {
+    return ["dashboard", "library", "feedback", "settings"];
+  }
+
+  getLeavesNodes(tree: any, node: string, level: number) {
+    let currentKeys: any = tree[node];
+    let newKeys: any = [];
+
+    // outer loop specified number of level, 
+    // inner loop retrieves all children of nodes from currentKeys[]
+    for (let k = 0; k < level - 2; k++) {
+      for (let j = 0; j < currentKeys.length; j++) {
+        newKeys.push(tree[currentKeys[j]]);
+      }
+      currentKeys = newKeys;
+      currentKeys = currentKeys.flat();
+      newKeys = [];
+    }
+
+    return currentKeys;
+  }
+
   onSubmit() {
     this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
       (data: any) => {
         localStorage.setItem('user', data.jwt);
-        localStorage.setItem('access_config', data.access_config);
-        this.router.navigate(['app']);
+        localStorage.setItem('access_config', JSON.stringify(data.access_config));
+
+        let navData: any = data.access_config.nav;
+
+        // appRoutes configuration
+        let appRoute: any = {
+          path: 'app',
+          component: AppBuilderComponent,
+          data: { navData: navData },
+          children: []
+        };
+
+        // wildcard route configuration
+        let wildcardRoute: Route = {
+          path: '**',
+          component: PageNotFoundComponent
+        };
+
+        //iterate in each node of top array i.e. level2 elments from tree
+        for (let i = 0; i < navData.top.length; i++) {
+          appRoute.children.push({
+            path: navData.top[i],
+            children: []
+          });
+
+          //get children of element at level2 in navData tree
+          let leaves = this.getLeavesNodes(navData, navData.top[i], navData.level);
+
+          // for each leaves node, add path in appRoute
+          leaves.forEach((leafNodePath: any) => {
+            appRoute.children[i].children.push({
+              path: leafNodePath,
+              component: CompsgridComponent,
+              data: { compsData : i}
+            })
+          });
+
+        }
+
+        this.router.config.push(appRoute);
+        this.router.config.push(wildcardRoute);
+
+        this.printpath('', this.router.config);
+        console.log("appRoute: ", appRoute);
+        console.log("[log] END of onsubmit of login component")
+
+        this.router.navigate(['app/a/k']);
       }
     );
   }

@@ -1,30 +1,31 @@
-import { NgComponentOutlet } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+import { CompsContainer } from './comps-container/comps-container.component';
 
 @Component({
   selector: 'app-compsgrid',
   standalone: true,
-  imports: [NgComponentOutlet],
+  imports: [CompsContainer],
   templateUrl: './compsgrid.component.html',
   styleUrl: './compsgrid.component.css'
 })
 export class CompsgridComponent implements OnInit, OnDestroy {
-  state: number = 0;
+  //compsData is recieved directly from login
+  //and not from AppBuilder component unlike NavBar component
+  compsData: any = null;
 
   constructor(private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    console.log("[log] created compsgrid in router-outlet of AppBuilderComponent");
-    console.log("compsData: ",this.route.snapshot.data['compsData']);
+    this.compsData = this.route.snapshot.data['compsData'];
+    console.log("[log] compsgrid created in router-outlet of AppBuilderComponent");
+    console.log("[log] compsData from compsGrid", this.compsData);
   }
 
   ngOnDestroy(): void {
-    console.log("[log] destroyed compsgrid");
+    console.log("[log] compsgrid destroyed");
   }
 
-  incState() {
-    this.state += 1;
-  }
 }

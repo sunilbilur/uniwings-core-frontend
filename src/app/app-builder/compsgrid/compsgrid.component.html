@@ -1,7 +1,5 @@
-<p>compsgrid works!</p>
-<p>{{state}}</p>
-<button (click)="incState()">inc state</button>
+<p>---- compsgrid start! ----</p>
 
-<!-- <ng-container *ngComponentOutlet="apple; inputs: pnum;"> </ng-container>
-<ng-container *ngComponentOutlet="mango"></ng-container>
-<hr> -->
+<app-comps-container [css]="compsData[1]" [children]="compsData[2]"></app-comps-container>
+
+<p>---- compsgrid end! ----</p>

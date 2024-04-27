@@ -67,6 +67,7 @@ export class LoginComponent {
       (data: any) => {
         localStorage.setItem('user', data.jwt);
         localStorage.setItem('access_config', JSON.stringify(data.access_config));
+        console.log("[log] START of onsubmit of login component");
 
         let navData: any = data.access_config.nav;
 
@@ -99,7 +100,7 @@ export class LoginComponent {
             appRoute.children[i].children.push({
               path: leafNodePath,
               component: CompsgridComponent,
-              data: { compsData : i}
+              data: { compsData: data.access_config.comps[navData.top[i] + "/" + leafNodePath] }
             })
           });
 
@@ -109,7 +110,6 @@ export class LoginComponent {
         this.router.config.push(wildcardRoute);
 
         this.printpath('', this.router.config);
-        console.log("appRoute: ", appRoute);
         console.log("[log] END of onsubmit of login component")
 
         this.router.navigate(['app/a/k']);

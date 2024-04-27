@@ -21,11 +21,11 @@ export class NavbarComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     console.log("[log] Navbar created");
-    console.log("NAVDATA in navbar: ",this.navData);
+    console.log("[log] navData in navbar: ",this.navData);
   }
 
   ngOnDestroy(): void {
-    console.log("[log] Nabar destroyed");
+    console.log("[log] Navbar destroyed");
   }
 
 }

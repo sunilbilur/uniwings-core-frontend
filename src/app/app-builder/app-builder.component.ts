@@ -14,26 +14,21 @@ import { NavbarComponent } from './navbar/navbar.component';
 })
 export class AppBuilderComponent implements OnInit, OnDestroy {
 
-  navData: any = "entries data";
-  compsData: any = "comps data";
-  goodval : any;
+  // accessConfig has -> navData, compsData, AppBuilder gets navData from login
+  // navData is passed from AppBuilder to NavBar
+  // compsData is directly to compsGrid
+  navData: any = null;
 
   constructor(private authService: AuthService,
     private router: Router,
-    private compsHtmlFetcher: CompsHtmlFetcherService,
     private route: ActivatedRoute) {
 
     // fetch access config from localStorage and pass to children components.
-    let access_config: any;
-    access_config = JSON.parse(localStorage.getItem('access_config') as string);
-
-    this.navData = access_config.nav;
-    this.compsData = access_config.comps;
+    this.navData = JSON.parse(localStorage.getItem('access_config') as string).nav;
   }
 
   ngOnInit(): void {
     this.navData = this.route.snapshot.data['navData'];
-    this.compsData = this.route.snapshot.data['compsData'];
   }
 
 

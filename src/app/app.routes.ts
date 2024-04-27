@@ -33,8 +33,6 @@ function getLeavesNodes(tree: any, node: string, level: number) {
 
 
 let accessConfig: any = JSON.parse(localStorage.getItem("access_config") as string);
-console.log("PRINTING ACCESSCONFIG FROM ROUTE: " + JSON.stringify(accessConfig));
-console.log("TYPEOF accessConfig: " + typeof (accessConfig));
 
 // if access_config is there, setup routes accordingly
 if (accessConfig) {
@@ -42,12 +40,11 @@ if (accessConfig) {
     let appRoute: any = {
         path: 'app',
         component: AppBuilderComponent,
-        data: { navData : accessConfig.nav },
+        data: { navData: accessConfig.nav },
         children: []
     };
 
     let navData: any = accessConfig.nav;
-    console.log("[Routes.ts] navData: ", navData);
 
     //iterate in each node of top array i.e. level2 elments from tree
     for (let i = 0; i < navData.top.length; i++) {
@@ -64,7 +61,7 @@ if (accessConfig) {
             appRoute.children[i].children.push({
                 path: leafNodePath,
                 component: CompsgridComponent,
-                data: {compsData : i}
+                data: { compsData: accessConfig.comps[navData.top[i] + "/" + leafNodePath] }
             })
         });
 

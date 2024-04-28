@@ -23,8 +23,6 @@ export class AppBuilderComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute) {
 
-    // fetch access config from localStorage and pass to children components.
-    this.navData = JSON.parse(localStorage.getItem('access_config') as string).nav;
   }
 
   ngOnInit(): void {

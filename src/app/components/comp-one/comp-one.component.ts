@@ -9,6 +9,6 @@ import { RouterModule } from '@angular/router';
   styleUrl: './comp-one.component.css'
 })
 export class CompOneComponent {
-  @Input() num = null;
+  @Input() compConfig = null;
 
 }

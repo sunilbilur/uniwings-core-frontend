@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { CompsHtmlFetcherService } from '../../../_services/comps-html-fetcher.service';
+import { CompsHtmlFetcherService } from '../../../_kitcoek-services/comp-html-fetcher.service';
 import { NgComponentOutlet } from '@angular/common';
 
 @Component({
@@ -17,7 +17,7 @@ export class CompsContainer implements OnInit {
   compConfig: any = null;
   comp_id: number = 0;
 
-  constructor(private compsHtmlFetcher: CompsHtmlFetcherService) {
+  constructor(private compsHtmlFetcher: CompsHtmlFetcherService ) {
     console.log("[log] inside col component");
   }
 

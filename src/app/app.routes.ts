@@ -5,7 +5,6 @@ import { AppBuilderComponent } from './app-builder/app-builder.component';
 import { CompsgridComponent } from './app-builder/compsgrid/compsgrid.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-
 console.log("START of APP ROUTES.ts");
 
 export let routes: Routes = [
@@ -14,7 +13,7 @@ export let routes: Routes = [
 ];
 
 function getLeavesNodes(tree: any, node: string, level: number) {
-    let currentKeys: any = tree[node];
+    let currentKeys: any = tree[node] || null;
     let newKeys: any = [];
 
     // outer loop specified number of level, 
@@ -45,32 +44,59 @@ if (accessConfig) {
     };
 
     let navData: any = accessConfig.nav;
+    let navigateRoute: any = null;
+    let leaves: any = null;
 
     //iterate in each node of top array i.e. level2 elments from tree
     for (let i = 0; i < navData.top.length; i++) {
-        appRoute.children.push({
-            path: navData.top[i],
-            children: []
-        });
+        if (navData.level > 1) {
+            appRoute.children.push({
+                path: navData.top[i],
+                children: []
+            });
 
-        //get children of element at level2 in navData tree
-        let leaves = getLeavesNodes(navData, navData.top[i], navData.level);
+            //get children of element at level2 in navData tree
+            let leaves = getLeavesNodes(navData, navData.top[i], navData.level);
 
-        // for each leaves node, add path in appRoute
-        leaves.forEach((leafNodePath: any) => {
-            appRoute.children[i].children.push({
-                path: leafNodePath,
+            // for each leaves node, add path in appRoute
+            leaves.forEach((leafNodePath: any) => {
+                appRoute.children[i].children.push({
+                    path: leafNodePath,
+                    component: CompsgridComponent,
+                    data: { compsData: accessConfig.comps[navData.top[i] + "/" + leafNodePath] }
+                })
+            });
+        }
+        else {
+            appRoute.children.push({
+                path: navData.top[i].toLowerCase(),
                 component: CompsgridComponent,
-                data: { compsData: accessConfig.comps[navData.top[i] + "/" + leafNodePath] }
-            })
-        });
+                //don't convert navData.top[i] to lowercase here
+                data: { compsData: accessConfig.comps[navData.top[i]] }
+            });
+        }
 
+        if (i == 0) {
+            navigateRoute = "/" + navData.top[0].toLowerCase() + "/" + (leaves ? leaves[0] : "");
+        }
     }
+
+    // add a redirect for /app path
+    // appRoute.children.push({
+    //     path: '',
+    //     redirectTo: "/app" + navigateRoute,
+    //     pathMatch: "full"
+    // })
+
+    console.log("appRoute from ROUTES: ", appRoute);
+
     routes.push(appRoute);
+
     let wildcardRoute: Route = {
         path: '**',
         component: PageNotFoundComponent
     };
     routes.push(wildcardRoute);
 }
+
 

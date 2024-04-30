@@ -70,8 +70,11 @@ export class LoginComponent {
         console.log("[log] START of onsubmit of login component");
 
         let navData: any = data.access_config.nav;
+        let navigateRoute: any = null;
 
         // appRoutes configuration
+        // navData to NavBar is sent through AppBuilder
+        // compsData is sent directly to CompsGrid
         let appRoute: any = {
           path: 'app',
           component: AppBuilderComponent,
@@ -87,24 +90,49 @@ export class LoginComponent {
 
         //iterate in each node of top array i.e. level2 elments from tree
         for (let i = 0; i < navData.top.length; i++) {
-          appRoute.children.push({
-            path: navData.top[i],
-            children: []
-          });
+          let leaves: any = null;
 
-          //get children of element at level2 in navData tree
-          let leaves = this.getLeavesNodes(navData, navData.top[i], navData.level);
+          if (navData.level > 1) {
+            appRoute.children.push({
+              path: navData.top[i].toLowerCase(),
+              children: []
+            });
 
-          // for each leaves node, add path in appRoute
-          leaves.forEach((leafNodePath: any) => {
-            appRoute.children[i].children.push({
-              path: leafNodePath,
+            //get children of element at level2 in navData tree
+            leaves = this.getLeavesNodes(navData, navData.top[i], navData.level);
+
+            // for each leaves node, add path in appRoute
+            leaves.forEach((leafNodePath: any) => {
+              appRoute.children[i].children.push({
+                path: leafNodePath,
+                component: CompsgridComponent,
+                data: { compsData: data.access_config.comps[(navData.top[i] + "/" + leafNodePath)] }
+              })
+            });
+
+          } else {
+            appRoute.children.push({
+              path: navData.top[i].toLowerCase(),
               component: CompsgridComponent,
-              data: { compsData: data.access_config.comps[navData.top[i] + "/" + leafNodePath] }
-            })
-          });
+              //don't convert to lowercase here
+              data: { compsData: data.access_config.comps[navData.top[i]] }
+            });
+          }
+
+          // create route appending navData.top[0] with it's first leaf child node 
+          // in first iteration of loop to navigate it to later after finishing this loop
+          if (i == 0) {
+            navigateRoute = "/" + navData.top[0].toLowerCase() + "/" + (leaves ? leaves[0] : "");
+          }
 
         }
+
+        // add a redirect for /app path
+        // appRoute.children.unshift({
+        //   path: '',
+        //   redirectTo: "/app" + navigateRoute,
+        //   pathMatch: "full"
+        // })
 
         this.router.config.push(appRoute);
         this.router.config.push(wildcardRoute);
@@ -112,7 +140,7 @@ export class LoginComponent {
         this.printpath('', this.router.config);
         console.log("[log] END of onsubmit of login component")
 
-        this.router.navigate(['app/a/k']);
+        this.router.navigate(['/app' + navigateRoute]);
       }
     );
   }

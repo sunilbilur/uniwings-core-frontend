@@ -13,7 +13,7 @@ import { LoginComponent } from '../../login/login.component';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent implements OnInit, OnDestroy{
+export class NavbarComponent implements OnInit, OnDestroy {
   @Input() navData: any = null;
 
   constructor(private router: Router, private activateRoute: ActivatedRoute) {
@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     console.log("[log] Navbar created");
-    console.log("[log] navData in navbar: ",this.navData);
+    console.log("[log] navData in navbar: ", this.navData);
   }
 
   ngOnDestroy(): void {

@@ -26,8 +26,8 @@ export class CompsContainer implements OnInit {
   }
 
   async ngOnInit() {
-    console.log("[log] compsData in col: ", this.children);
-    console.log("[log] col created");
+    console.log("[log] container created");
+    console.log("[log] compsData in container: ", this.children);
 
     for (let child of this.children) {
       let temp_comp: any; 

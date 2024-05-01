@@ -22,6 +22,10 @@ export class AuthService {
     // remove user from local storage and set current user to null
     localStorage.removeItem('user');
     localStorage.removeItem('access_config');
+
+    this.router.config.pop();
+    this.router.config.pop();
+
     this.router.navigate(['login']);
   }
 

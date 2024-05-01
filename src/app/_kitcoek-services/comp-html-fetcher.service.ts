@@ -10,16 +10,17 @@ export class CompsHtmlFetcherService {
   }
 
   async fetch(compName: any) {
-    console.log("[log] executing fetch from CompsHtmlFetcherService");
     switch (compName) {
       case "comp1":
-        console.log("[log] executing case 0");
         return (await import("../kitcoek-components/comp-one/comp-one.component")).CompOneComponent;
         break;
 
       case "comp2":
-        console.log("[log] executing case 1");
-        return (await (import('../kitcoek-components/comp-two/comp-two.component'))).CompTwoComponent;
+        return (await import('../kitcoek-components/comp-two/comp-two.component')).CompTwoComponent;
+        break;
+      
+      case "admin-students":
+        return (await import('../kitcoek-components/admin-students/admin-students.component')).AdminStudentsComponent;
         break;
 
       default:

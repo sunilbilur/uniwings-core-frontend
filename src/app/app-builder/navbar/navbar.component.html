@@ -1,4 +1,14 @@
-<p>navbar works!</p>
+<div class="navbar">
+    <div class="brand-container">
+        <h1>Uniwings Cloud</h1>
+    </div>
 
-
-
+    <div class="entry-container">
+        @for(nav of navData.top; track $index)
+        {
+        <div class="entry" routerLink={{nav.toLowerCase()}}>
+            {{nav}}
+        </div>
+        }
+    </div>
+</div>

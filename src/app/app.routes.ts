@@ -88,8 +88,6 @@ if (accessConfig) {
     //     pathMatch: "full"
     // })
 
-    console.log("appRoute from ROUTES: ", appRoute);
-
     routes.push(appRoute);
 
     let wildcardRoute: Route = {
@@ -97,6 +95,7 @@ if (accessConfig) {
         component: PageNotFoundComponent
     };
     routes.push(wildcardRoute);
+    
 }
 
 

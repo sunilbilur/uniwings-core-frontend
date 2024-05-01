@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Route, Router, Routes } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { AuthService } from '../_services/auth.service';
+import { AuthService } from '../_kitcoek-services/auth.service';
 import { AppBuilderComponent } from '../app-builder/app-builder.component';
 import { CompsgridComponent } from '../app-builder/compsgrid/compsgrid.component';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
@@ -40,10 +40,6 @@ export class LoginComponent {
     }
   }
 
-  getEntriesFromNavData() {
-    return ["dashboard", "library", "feedback", "settings"];
-  }
-
   getLeavesNodes(tree: any, node: string, level: number) {
     let currentKeys: any = tree[node];
     let newKeys: any = [];
@@ -65,6 +61,7 @@ export class LoginComponent {
   onSubmit() {
     this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
       (data: any) => {
+        console.log(data);
         localStorage.setItem('user', data.jwt);
         localStorage.setItem('access_config', JSON.stringify(data.access_config));
         console.log("[log] START of onsubmit of login component");

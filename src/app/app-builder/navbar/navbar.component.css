@@ -1,0 +1,32 @@
+.brand-container {
+    display: flex;
+    justify-content: center;
+    margin: 25px 5px;
+}
+
+.brand-container h1 {
+    font-size: 1.4em;
+    font-weight: 500;
+    color: #5b47fb;
+}
+
+.entry-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.entry {
+    display: flex;
+    align-items: center;
+    margin: 0px 10%;
+    height: 40px;
+    /* padding-bottom: 5px; */
+    border-bottom: 1px solid #cdd4e0;
+
+}
+
+.entry:hover {
+    cursor: pointer;
+    background-color: antiquewhite;
+}

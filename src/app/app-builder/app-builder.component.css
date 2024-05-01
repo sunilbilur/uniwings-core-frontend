@@ -1,0 +1,41 @@
+.main-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.navbar-container {
+    width: 16%;
+    height: 100%;
+    background-color: #f4f5f8;
+    overflow: auto;
+    border-right: 1px solid #cbd0dd;
+}
+
+.page-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    padding: 20px;
+    height: 45px;
+    background-color: white;
+    border-bottom: 1px solid #dcd1e9;
+}
+
+.topbar a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.compsgrid-container {
+    padding: 20px;
+    flex-grow: 1;
+    background-color: #eef1f9;
+}

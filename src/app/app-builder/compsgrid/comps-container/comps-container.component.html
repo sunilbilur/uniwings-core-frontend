@@ -2,10 +2,8 @@
     @for (child of children; track getid()){
         @if(child[0] == "c")
         {
-            <p>row is- {{child[0]}} ; passed as children - {{child[2]}}</p>
             <app-comps-container [css]="child[1]" [children]="child[2]"></app-comps-container>
         }@else {
-            <p>components area - col {{$index}} {{child[0]}}</p>
             <ng-container *ngComponentOutlet="comps[child[0]]; inputs: { compConfig: child[1]}"></ng-container>
         }
     }

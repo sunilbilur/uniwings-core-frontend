@@ -1,16 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Route, Router, Routes } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AuthService } from '../_kitcoek-services/auth.service';
 import { AppBuilderComponent } from '../app-builder/app-builder.component';
-import { CompsgridComponent } from '../app-builder/compsgrid/compsgrid.component';
+import { CompLoaderComponent } from '../app-builder/comp-loader/comp-loader.component';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
+
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { ButtonModule } from 'primeng/button';
+
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, InputTextModule, FloatLabelModule, PasswordModule, ButtonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -40,34 +47,15 @@ export class LoginComponent {
     }
   }
 
-  getLeavesNodes(tree: any, node: string, level: number) {
-    let currentKeys: any = tree[node];
-    let newKeys: any = [];
-
-    // outer loop specified number of level, 
-    // inner loop retrieves all children of nodes from currentKeys[]
-    for (let k = 0; k < level - 2; k++) {
-      for (let j = 0; j < currentKeys.length; j++) {
-        newKeys.push(tree[currentKeys[j]]);
-      }
-      currentKeys = newKeys;
-      currentKeys = currentKeys.flat();
-      newKeys = [];
-    }
-
-    return currentKeys;
-  }
-
   onSubmit() {
     this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
       (data: any) => {
-        console.log(data);
         localStorage.setItem('user', data.jwt);
         localStorage.setItem('access_config', JSON.stringify(data.access_config));
         console.log("[log] START of onsubmit of login component");
 
         let navData: any = data.access_config.nav;
-        let navigateRoute: any = null;
+        console.log("[log] navData: ",navData);
 
         // appRoutes configuration
         // navData to NavBar is sent through AppBuilder
@@ -86,58 +74,34 @@ export class LoginComponent {
         };
 
         //iterate in each node of top array i.e. level2 elments from tree
-        for (let i = 0; i < navData.top.length; i++) {
-          let leaves: any = null;
-
-          if (navData.level > 1) {
+        for (let i = 0; i < navData.length; i++) {
+          console.log(navData[i]);
+          if (navData[i].type === "entry") {
             appRoute.children.push({
-              path: navData.top[i].toLowerCase(),
-              children: []
+              path: navData[i].route,
+              component: CompLoaderComponent,
+              data: { compData: { compName: navData[i].comp, compOptions: navData[i].options } }
             });
 
-            //get children of element at level2 in navData tree
-            leaves = this.getLeavesNodes(navData, navData.top[i], navData.level);
-
-            // for each leaves node, add path in appRoute
-            leaves.forEach((leafNodePath: any) => {
-              appRoute.children[i].children.push({
-                path: leafNodePath,
-                component: CompsgridComponent,
-                data: { compsData: data.access_config.comps[(navData.top[i] + "/" + leafNodePath)] }
-              })
-            });
-
-          } else {
-            appRoute.children.push({
-              path: navData.top[i].toLowerCase(),
-              component: CompsgridComponent,
-              //don't convert to lowercase here
-              data: { compsData: data.access_config.comps[navData.top[i]] }
-            });
+          } else if (navData[i].type === "menu") {
+            for (let j = 0; j < navData[i].entries.length; j++) {
+              appRoute.children.push({
+                path: navData[i].entries[j].route,
+                component: CompLoaderComponent,
+                data: { compData: { compName: navData[i].entries[j].comp, compOptions: navData[i].entries[j].options } }
+              });
+            }
           }
-
-          // create route appending navData.top[0] with it's first leaf child node 
-          // in first iteration of loop to navigate it to later after finishing this loop
-          if (i == 0) {
-            navigateRoute = "/" + navData.top[0].toLowerCase() + "/" + (leaves ? leaves[0] : "");
-          }
-
         }
 
-        // add a redirect for /app path
-        // appRoute.children.unshift({
-        //   path: '',
-        //   redirectTo: "/app" + navigateRoute,
-        //   pathMatch: "full"
-        // })
-
+        // push dynamically created routes to main routes array
         this.router.config.push(appRoute);
         this.router.config.push(wildcardRoute);
 
         this.printpath('', this.router.config);
         console.log("[log] END of onsubmit of login component")
 
-        this.router.navigate(['/app' + navigateRoute]);
+        this.router.navigate(['/app/dashboard']);
       }
     );
   }

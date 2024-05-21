@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, Routes } from '@angular/router';
 
 import { AuthService } from '../_kitcoek-services/auth.service';
-import { CompsHtmlFetcherService } from '../_kitcoek-services/comp-html-fetcher.service';
 import { NavbarComponent } from './navbar/navbar.component';
 
 @Component({
@@ -35,7 +34,4 @@ export class AppBuilderComponent implements OnInit, OnDestroy {
     console.log("[log] appBuilder destroyed");
   }
 
-  logoutUser() {
-    this.authService.logout();
-  }
 }

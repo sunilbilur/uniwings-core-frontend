@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CompsContainer } from './comps-container.component';
+import { CompLoader } from './comp-loader.component';
 
-describe('CompsContainer', () => {
-  let component: CompsContainer;
-  let fixture: ComponentFixture<CompsContainer>;
+describe('CompLoader', () => {
+  let component: CompLoader;
+  let fixture: ComponentFixture<CompLoader>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CompsContainer]
+      imports: [CompLoader]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(CompsContainer);
+    fixture = TestBed.createComponent(CompLoader);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,9 +1,12 @@
-<app-navbar [navData]="navData"></app-navbar>
+<div class="main-container">
+    <div class="navbar-container">
+        <app-navbar [navData]="navData"></app-navbar>
+    </div>
 
-<hr />
-<p>components: </p>
-<router-outlet></router-outlet>
 
-<br />
-<hr />
-<button (click)="logoutUser()">logout</button>
+    <div class="page-container">
+        <div class="comploader-container">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

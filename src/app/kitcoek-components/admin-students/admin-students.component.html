@@ -1,0 +1,291 @@
+<div class="header">
+    <h1>Students</h1>
+    <!-- <div>
+        <p-button icon="pi pi-file-import" label="Import" size="small"></p-button>
+        <p-button icon="pi pi-file-export" label="Export" size="small"></p-button>
+    </div> -->
+</div>
+
+<div>
+    <p-card class="top-tab-view">
+        <p-tabView>
+            <p-tabPanel class="tab-panel" header="Stats">
+                <div class="stat-cards tab-panel">
+                    <p-card class="stat-card" header="Total"></p-card>
+                    <p-card class="stat-card" header="Total"></p-card>
+                    <p-card class="stat-card" header="Total"></p-card>
+                    <p-card class="stat-card" header="Total"></p-card>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel class="tab-panel" header="Roles">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, libero obcaecati? Illum ut
+                consequuntur
+                officiis dolorem esse aliquam itaque at, iure vitae ipsa harum, reiciendis, et qui dolor reprehenderit
+                quia.
+            </p-tabPanel>
+        </p-tabView>
+    </p-card>
+
+</div>
+
+<!-- import student dialog -->
+<p-dialog header="Import Students" [modal]="true" [(visible)]="importDialogVisible">
+    <p-stepper [activeStep]="importActiveStep">
+        <p-stepperPanel header="Upload File">
+            <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+
+                <span class="p-text-secondary">Choose excel or csv file to import students data</span>
+                <div style="height: 20px; width: 500px;"></div>
+                <p-fileUpload name="student_data" [auto]="true" name="students_data" (onUpload)="nextCallback.emit()"
+                    url="http://localhost:8000/admission/import-students" mode="advanced"
+                    accept="text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    maxFileSize="1000000">
+
+                </p-fileUpload>
+
+            </ng-template>
+        </p-stepperPanel>
+
+        <p-stepperPanel header="Configure Import">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
+                let-index="index">
+                <div style="height: 20px; width: 500px;"></div>
+
+                <div style="display: flex; justify-content: space-between;">
+                    <div></div>
+                    <p-button label="Import" icon="pi pi-arrow-right" iconPos="right" (onClick)="prevCallback.emit(); importDialogVisible=false;" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+    </p-stepper>
+
+</p-dialog>
+
+<!-- add new student sidebar -->
+<p-sidebar [(visible)]="addStudentSidebarVisible" position="right" styleClass="p-sidebar-lg">
+    <form method="post" action="">
+        <p-stepper>
+
+            <!-- Step one - personal details -->
+            <p-stepperPanel header="Personal Details">
+                <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback">
+                    <p style="margin-bottom: 0; color: black; font-weight: 500;">Name: </p>
+                    <div class="input-base">
+                        <p-floatLabel>
+                            <input pInputText name="first_name" id="firstName" [(ngModel)]="firstName" />
+                            <label for="firstName">First Name</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <input pInputText name="middle_name" id="middleName" [(ngModel)]="middleName" />
+                            <label for="middleName">Middle Name</label>
+                        </p-floatLabel>
+                        <p-floatLabel>
+                            <input pInputText name="last_name" id="lastName" [(ngModel)]="lastName" />
+                            <label for="lastName">Last Name</label>
+                        </p-floatLabel>
+                    </div>
+
+                    <p style="margin-bottom: 0; margin-top: 22px; color: black; font-weight: 500;">Contact</p>
+                    <div class="input-base">
+                        <p-floatLabel>
+                            <input pInputText name="first_name" id="firstName" [(ngModel)]="firstName" />
+                            <label for="firstName">Mobile Number</label>
+                        </p-floatLabel>
+                    </div>
+
+                    <p style="margin-bottom: 0; margin-top: 22px; color: black; font-weight: 600;">Address: </p>
+                    <div class="input-base">
+                        <p-floatLabel style="width: 100%">
+                            <input pInputText style="width: 100%" name="first_name" id="firstName"
+                                [(ngModel)]="firstName" />
+                            <label for="firstName">Home/Flat No.</label>
+                        </p-floatLabel>
+                    </div>
+                    <div class="input-base">
+                        <p-floatLabel style="width: 100%">
+                            <input pInputText style="width: 100%" name="last_name" id="lastName"
+                                [(ngModel)]="lastName" />
+                            <label for="lastName">Road/Area</label>
+                        </p-floatLabel>
+                    </div>
+                    <div class="input-base">
+                        <p-floatLabel style="width: 100%">
+                            <input pInputText style="width: 100%" name="last_name" id="lastName"
+                                [(ngModel)]="lastName" />
+                            <label for="lastName">Landmark</label>
+                        </p-floatLabel>
+                    </div>
+
+                    <div class="input-base">
+                        <p-floatLabel style="width: 100%">
+                            <input pInputText style="width: 90%" name="first_name" id="firstName"
+                                [(ngModel)]="firstName" />
+                            <label for="firstName">City & State</label>
+                        </p-floatLabel>
+                        <p-floatLabel style="width: 100%">
+                            <input pInputText style="width: 100%" name="last_name" id="lastName"
+                                [(ngModel)]="lastName" />
+                            <label for="lastName">Pincode</label>
+                        </p-floatLabel>
+                    </div>
+
+                    <div class="input-left">
+                        <div style="width: 100%">
+                            <label style="color: black; font-weight: 500;">Category: </label>
+                            <p-dropdown name="category" [(ngModel)]="lastName" [options]="catOpts" optionLabel="name"
+                                placeholder="Select a Category"></p-dropdown>
+                        </div>
+
+                        <div style="width: 100%">
+                            <label style="color: black; font-weight: 500;">Gender: </label>
+                            <p-radioButton name="gender" value="male" [(ngModel)]="gender" inputId="male" />
+                            <label for="male" class="ml-2">
+                                Male
+                            </label>
+                            <p-radioButton name="gender" value="female" [(ngModel)]="gender" inputId="male" />
+                            <label for="male" class="ml-2">
+                                Female
+                            </label>
+                            <p-radioButton name="gender" value="other" [(ngModel)]="gender" inputId="male" />
+                            <label for="other" class="ml-2">
+                                Other
+                            </label>
+                        </div>
+
+
+                    </div>
+
+                    <div class="stepper-nav">
+                        <div>
+                        </div>
+                        <div class="flex pt-4 justify-content-end">
+                            <p-button label="Next" size="small" icon="pi pi-arrow-right" iconPos="right"
+                                (onClick)="nextCallback.emit()" />
+                        </div>
+                    </div>
+
+                </ng-template>
+            </p-stepperPanel>
+
+            <!-- step two - academic details -->
+            <p-stepperPanel header="Academic Details">
+                <ng-template pTemplate="content" style="overflow-y: auto;" let-prevCallback="prevCallback" let-nextCallback="nextCallback">
+                    <div class="input-base">
+                        <p-floatLabel style="width: 100%;">
+                            <input pInputText name="reg_no" style="width: 90%" name="reg_no" id="regNo"
+                                [(ngModel)]="regNo" />
+                            <label for="regNo">Registration No.</label>
+                        </p-floatLabel>
+                        <p-floatLabel style="width: 100%">
+                            <input pInputText name="prn_no" style="width: 100%;" name="prn_no" id="prnNo"
+                                [(ngModel)]="prnNo" />
+                            <label for="prnNo">PRN No.</label>
+                        </p-floatLabel>
+                    </div>
+
+                    <div class="input-left">
+                        <label style="width: 125px">Branch: </label>
+                        <p-dropdown name="branch" [(ngModel)]="lastName" [options]="branchOpts" optionLabel="branch"
+                            placeholder="Select Branch"></p-dropdown>
+                    </div>
+
+                    <div class="input-left">
+                        <label style="width: 125px">Semester: </label>
+                        <p-inputNumber name="semester" inputId="integeronly" [(ngModel)]="semester" min="1" max="8" />
+                    </div>
+
+                    <div class="input-left">
+                        <label style="width: 125px">Admission Year: </label>
+                        <p-inputNumber name="admission_year" inputId="integeronly" [(ngModel)]="admissionYear"
+                            min="1950" max="3000" />
+                    </div>
+
+
+                    <div class="stepper-nav">
+                        <div>
+                            <p-button label="Next" icon="pi pi-arrow-right" size="small" iconPos="right"
+                                (onClick)="nextCallback.emit()" />
+                        </div>
+                    </div>
+
+                </ng-template>
+            </p-stepperPanel>
+
+            <!-- step 3 - login details -->
+            <p-stepperPanel header="Login Details">
+                <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback">
+                    <div class="input-base" style="justify-content: space-around;">
+                        <p-floatLabel style="width: 100%; margin-right: 35px">
+                            <input pInputText style="width: 100%" name="reg_no" id="regNo" [(ngModel)]="regNo" />
+                            <label for="regNo">Username: </label>
+                        </p-floatLabel>
+
+                        <p-floatLabel class="input-pass" style="width: auto;">
+                            <p-password [(ngModel)]="password" [toggleMask]="true" />
+                            <label for="password">Password</label>
+                        </p-floatLabel>
+                    </div>
+
+                    <div class="stepper-nav" style="margin-top: 100px;">
+                        <div>
+                            <p-button label="Back" icon="pi pi-arrow-left" size="small"
+                                (onClick)="prevCallback.emit()" />
+                        </div>
+                        <div>
+                            <p-button label="Add Student" size="small"></p-button>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-stepperPanel>
+
+        </p-stepper>
+    </form>
+</p-sidebar>
+
+<div class="main-content">
+
+    <p-card class="table-container">
+        <div class="table-topbar">
+
+            <div class="table-topbar-left">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText placeholder="search by name, email or PRN" />
+                </span>
+                <p-button icon="pi pi-filter"></p-button>
+            </div>
+
+            <div class="table-topbar-right">
+                <p-button (click)="importDialogVisible =true" icon="pi pi-file-import" label="Import" size="small"
+                    [link]="true"></p-button>
+                <p-button icon="pi pi-file-export" label="Export" size="small" [link]="true"></p-button>
+                <p-button (click)="addStudentSidebarVisible = true" icon="pi pi-user-plus" label="Add Student"
+                    size="small"></p-button>
+            </div>
+
+        </div>
+
+        <div class="table">
+            <p-table [value]="products" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10, 25, 50]" [tableStyle]="{ 'min-width': '40rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>PRN</th>
+                        <th>Name</th>
+                        <th>E-mail</th>
+                        <th>Actions</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>{{ product.code }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.quantity }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </p-card>
+</div>

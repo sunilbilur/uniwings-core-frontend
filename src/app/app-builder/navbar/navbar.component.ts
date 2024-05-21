@@ -1,31 +1,43 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule, withRouterConfig, } from '@angular/router';
+import { Router, RouterModule, withRouterConfig, } from '@angular/router';
+import { AuthService } from '../../_kitcoek-services/auth.service';
 
-import { CompsgridComponent } from '../compsgrid/compsgrid.component';
-import { AppBuilderComponent } from '../app-builder.component';
-import { PageNotFoundComponent } from '../../page-not-found/page-not-found.component';
-import { LoginComponent } from '../../login/login.component';
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, PanelMenuModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent implements OnInit, OnDestroy{
+export class NavbarComponent implements OnInit, OnDestroy {
   @Input() navData: any = null;
+  dropdownShow: any = {};
 
-  constructor(private router: Router, private activateRoute: ActivatedRoute) {
+  constructor(private router: Router, private authService: AuthService) {
+  }
+
+  toggleDropdown(name: string) {
+    if(this.dropdownShow[name] === undefined){
+      this.dropdownShow[name] = false;
+      return;
+    }
+
+    this.dropdownShow[name] = ! this.dropdownShow[name];
+    console.log(this.dropdownShow);
   }
 
   ngOnInit(): void {
     console.log("[log] Navbar created");
-    console.log("[log] navData in navbar: ",this.navData);
+    console.log("[log] navData in navbar: ", this.navData);
   }
 
   ngOnDestroy(): void {
     console.log("[log] Navbar destroyed");
   }
 
+  logoutUser() {
+    this.authService.logout();
+  }
 }

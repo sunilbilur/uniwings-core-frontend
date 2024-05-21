@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CompOneComponent } from './comp-one.component';
+import { CompLoader } from './comp-loader.component';
 
-describe('CompOneComponent', () => {
-  let component: CompOneComponent;
-  let fixture: ComponentFixture<CompOneComponent>;
+describe('CompLoader', () => {
+  let component: CompLoader;
+  let fixture: ComponentFixture<CompLoader>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CompOneComponent]
+      imports: [CompLoader]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(CompOneComponent);
+    fixture = TestBed.createComponent(CompLoader);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,14 +1,45 @@
-<div>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" formControlName="username" required>
+<div class="main-container">
+
+  <div class="info-container">
+    <img src="assets/kit_building_drone.webp" alt="kitcoek image" />
+  </div>
+
+  <div class="login-container">
+    <div class="login-box">
+      <div class="company-name">
+        <div>
+          <img src="assets/kitcoek_logo.png" width="80" height="80">
+        </div>
+        <div class="text">
+          <p class="heading">KITCoEK</p>
+          <p class="subtitle">Internal ERP System</p>
+        </div>
+      </div>
+      <div class="login-toptext">
+        <p>Welcome!</p>
+        <p>Please sign in to continue</p>
+      </div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="login-input">
+          <p-floatLabel>
+            <input id="username" type="text" pInputText formControlName="username" />
+            <label for="username">Username</label>
+          </p-floatLabel>
+        </div>
+        <div class="login-input">
+          <p-floatLabel>
+            <p-password name="password" id="password" feedback="false" formControlName="password" />
+            <label for="password">Password</label>
+          </p-floatLabel>
+        </div>
+        <div class="login-extra">
+          <p>Form status: {{loginForm.status}}</p>
+        </div>
+        <div class="login-btn">
+          <p-button size="small" type="submit" [disabled]="!loginForm.valid">Login</p-button>
+        </div>
+      </form>
     </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" formControlName="password" required>
-    </div>
-    <h3>Form status: {{loginForm.status}}</h3>
-    <button type="submit" [disabled]="!loginForm.valid">Login</button>
-  </form>
+  </div>
+
 </div>

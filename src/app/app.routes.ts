@@ -1,28 +1,28 @@
 import { Routes, Route } from '@angular/router';
-import { authGuard } from './_helpers/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { AppBuilderComponent } from './app-builder/app-builder.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CompLoaderComponent } from './app-builder/comp-loader/comp-loader.component';
 
-console.log("START of APP ROUTES.ts");
+console.log("[log] app.routes.ts || start of routes code");
 
 export let routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: "full" },
     { path: 'login', component: LoginComponent }
 ];
 
-let accessConfig: any = JSON.parse(localStorage.getItem("access_config") as string);
+let roleConfig: any = JSON.parse(localStorage.getItem("roleconf") as string);
+let name: any = localStorage.getItem("name");
 
-// if access_config is there, setup routes accordingly
-if (accessConfig) {
-    console.log("RUNNING ACCESS CONFIG INSIDE ROUTES");
-    let navData: any = accessConfig.nav;
+// if rolec is there in localstorage, setup routes accordingly
+if (roleConfig) {
+    console.log("[log] app.routes.ts || inside roleConfig if block");
+    let navData: any = roleConfig.nav;
 
     let appRoute: any = {
         path: 'app',
         component: AppBuilderComponent,
-        data: { navData: navData },
+        data: { navData: navData, name: name },
         children: []
     };
 
@@ -31,7 +31,8 @@ if (accessConfig) {
         component: PageNotFoundComponent
     };
 
-    //iterate in each node of top array i.e. level2 elments from tree
+    // check type field in navData array of objects,
+    // add an object to routes based on type field
     for (let i = 0; i < navData.length; i++) {
         if (navData[i].type === "entry") {
             appRoute.children.push({
@@ -57,5 +58,3 @@ if (accessConfig) {
     routes.push(appRoute);
     routes.push(wildcardRoute);
 }
-
-

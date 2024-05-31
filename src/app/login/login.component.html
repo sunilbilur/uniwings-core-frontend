@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="container">
 
   <div class="info-container">
     <img src="assets/kit_building_drone.webp" alt="kitcoek image" />
@@ -6,37 +6,36 @@
 
   <div class="login-container">
     <div class="login-box">
-      <div class="company-name">
+
+      <div class="college-name">
+        <img src="assets/kitcoek_logo.png" width="70" height="70">
         <div>
-          <img src="assets/kitcoek_logo.png" width="80" height="80">
-        </div>
-        <div class="text">
-          <p class="heading">KITCoEK</p>
-          <p class="subtitle">Internal ERP System</p>
+          <p cds-text="headline medium">KITCoEK</p>
+          <hr style="margin: 8px 0;">
+          <p cds-text="secondary regular" >Internal ERP System</p>
         </div>
       </div>
-      <div class="login-toptext">
-        <p>Welcome!</p>
-        <p>Please sign in to continue</p>
+
+      <div class="login-welcome">
+        <p cds-text="headline">Welcome!</p>
+        <p cds-text="section" style="margin-top: 8px;">Please sign in to continue</p>
       </div>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="login-input">
-          <p-floatLabel>
-            <input id="username" type="text" pInputText formControlName="username" />
-            <label for="username">Username</label>
-          </p-floatLabel>
-        </div>
-        <div class="login-input">
-          <p-floatLabel>
-            <p-password name="password" id="password" feedback="false" formControlName="password" />
-            <label for="password">Password</label>
-          </p-floatLabel>
-        </div>
-        <div class="login-extra">
-          <p>Form status: {{loginForm.status}}</p>
-        </div>
+
+      <form class="login-form" clrForm clrLabelSize="3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <clr-input-container style="margin-top: 5px;">
+          <label for="username">Username</label>
+          <input clrInput type="text" id="username" placeholder="sunilbilur@gmail.com" formControlName="username" />
+        </clr-input-container>
+
+        <clr-input-container>
+          <label for="password">Password</label>
+          <input clrInput type="password" type="password" id="password" placeholder="type password here"
+            formControlName="password" />
+        </clr-input-container>
+
         <div class="login-btn">
-          <p-button size="small" type="submit" [disabled]="!loginForm.valid">Login</p-button>
+          <p>Form status: {{loginForm.status}}</p>
+          <button class="btn btn-primary" [disabled]="!loginForm.valid">Login</button>
         </div>
       </form>
     </div>

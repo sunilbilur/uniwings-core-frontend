@@ -1,9 +1,9 @@
-.main-container {
+.container {
     display: flex;
     height: 100%;
 }
 
-.main-container>div {
+.container>div {
     width: 50%;
 }
 
@@ -14,70 +14,37 @@
 }
 
 .login-container {
-    background-color: #f1f1f1;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-}
-
-.company-name {
-    display: flex;
-    margin: 0 0 40px -10px;
-    justify-content: start;
-    align-items: center;
-}
-.company-name .text {
-    margin-left: 2px;
-}
-
-.company-name .heading {
-    font-size: 28px;
-    font-weight: 520;
-    color: blueviolet;
-    margin: 0;
-}
-
-.company-name .subtitle {
-    font-size: 16px;
-    font-weight: 450;
-    color: rgb(59, 3, 110);
-    margin: 0;
-}
-
-.login-toptext {
-    font-size: 24px;
-    font-weight: 500;
-    margin-bottom: 35px;
-}
-
-.login-toptext p:last-child {
-    margin-top: 8px;
-    font-size: 18px;
-    color: gray;
-}
-
-.login-toptext p {
-    margin  : 5px 0;
+    background-color: #f1f1f1;
 }
 
 .login-box {
-    margin-top: 10px;
+    width: 400px;
     border: 1px solid gray;
     border-radius: 5px;
     padding: 40px;
     background-color: white;
 }
 
-.login-input {
-    margin-top: 25px;
+.college-name {
+    display: flex;
+    margin: 0 0 -10px;
+    align-items: center;
+    width: 210px;
 }
 
-.login-extra {
-    margin-top: 35px;
+.login-welcome {
+    margin-top: 48px;
+}
+
+.login-form {
+    margin-top: 48px;
 }
 
 .login-btn {
+    margin-top: 32px;
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
 }

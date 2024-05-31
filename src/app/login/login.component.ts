@@ -2,22 +2,17 @@ import { Component, Input } from '@angular/core';
 import { Route, Router, Routes } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { AuthService } from '../_kitcoek-services/auth.service';
+import { AuthService } from '../_services/auth.service';
 import { AppBuilderComponent } from '../app-builder/app-builder.component';
 import { CompLoaderComponent } from '../app-builder/comp-loader/comp-loader.component';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { ButtonModule } from 'primeng/button';
-
-
+import { ClarityModule } from '@clr/angular';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, InputTextModule, FloatLabelModule, PasswordModule, ButtonModule],
+  imports: [ReactiveFormsModule, ClarityModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -51,19 +46,21 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
       (data: any) => {
         localStorage.setItem('user', data.jwt);
-        localStorage.setItem('access_config', JSON.stringify(data.access_config));
-        console.log("[log] START of onsubmit of login component");
+        localStorage.setItem('name', data.name);
+        localStorage.setItem('roleconf', JSON.stringify(data.roleConfig));
 
-        let navData: any = data.access_config.nav;
-        console.log("[log] navData: ",navData);
+        let navData: any = data.roleConfig.nav;
+
+        console.log("[log] login.component.ts || start of onSubmit() function");
+        console.log("[log] login.component.ts || navData: ", navData);
 
         // appRoutes configuration
-        // navData to NavBar is sent through AppBuilder
-        // compsData is sent directly to CompsGrid
+        // navData is sent to AppBuilder, navigation is built inside AppBuilder Component
+        // compData is sent directly to the dynamically loaded components
         let appRoute: any = {
           path: 'app',
           component: AppBuilderComponent,
-          data: { navData: navData },
+          data: { navData: navData, name: data.name},
           children: []
         };
 
@@ -73,14 +70,18 @@ export class LoginComponent {
           component: PageNotFoundComponent
         };
 
-        //iterate in each node of top array i.e. level2 elments from tree
+        //set up routes according `type` field in navData in appRoutes
         for (let i = 0; i < navData.length; i++) {
-          console.log(navData[i]);
           if (navData[i].type === "entry") {
             appRoute.children.push({
               path: navData[i].route,
               component: CompLoaderComponent,
-              data: { compData: { compName: navData[i].comp, compOptions: navData[i].options } }
+              data: {
+                compData: {
+                  compName: navData[i].comp,
+                  compOptions: navData[i].options
+                }
+              }
             });
 
           } else if (navData[i].type === "menu") {
@@ -88,7 +89,12 @@ export class LoginComponent {
               appRoute.children.push({
                 path: navData[i].entries[j].route,
                 component: CompLoaderComponent,
-                data: { compData: { compName: navData[i].entries[j].comp, compOptions: navData[i].entries[j].options } }
+                data: {
+                  compData: {
+                    compName: navData[i].entries[j].comp,
+                    compOptions: navData[i].entries[j].options
+                  }
+                }
               });
             }
           }
@@ -98,8 +104,9 @@ export class LoginComponent {
         this.router.config.push(appRoute);
         this.router.config.push(wildcardRoute);
 
+        //print paths from router.config and log to console
         this.printpath('', this.router.config);
-        console.log("[log] END of onsubmit of login component")
+        console.log("[log] login.component.ts || End of onSubmit() function")
 
         this.router.navigate(['/app/dashboard']);
       }

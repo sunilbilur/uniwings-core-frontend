@@ -11,17 +11,15 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    console.log("hit login function from authService");
+    console.log("[log] auth.service.ts || inside login() function");
     return this.http.post('http://localhost:8000/auth/login', { username, password })
-    // this is just the HTTP call, 
-    // we still need to handle the reception of the token
     //.shareReplay();
   }
 
   logout() {
     // remove user from local storage and set current user to null
     localStorage.removeItem('user');
-    localStorage.removeItem('access_config');
+    localStorage.removeItem('roleconf');
 
     this.router.config.pop();
     this.router.config.pop();

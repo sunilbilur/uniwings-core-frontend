@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { CompHtmlFetcherService } from '../../_kitcoek-services/comp-html-fetcher.service';
+import { CompHtmlFetcherService } from '../../_services/comp-html-fetcher.service';
 import { NgComponentOutlet } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,17 +13,16 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CompLoaderComponent implements OnInit {
   compData: any = null;
-  loadedComp: any = null;
+  compOptions: any =null;
+  compName: any = null;
 
   constructor(private compHtmlFetcher: CompHtmlFetcherService, private route: ActivatedRoute) {
-    console.log("[log] inside comploader component");
+    console.log("[log] comp-loader.component.ts || inside comploader component constructor");
   }
 
   async ngOnInit() {
-    console.log("[log] container created");
     this.compData= this.route.snapshot.data['compData'];
-    console.log(this.compData);
-
-    this.loadedComp = await this.compHtmlFetcher.fetch(this.compData.compName);
+    this.compOptions = this.compData.compOptions;
+    this.compName = await this.compHtmlFetcher.fetch(this.compData.compName);
   }
 }

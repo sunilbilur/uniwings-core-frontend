@@ -1,12 +1,81 @@
-<div class="main-container">
-    <div class="navbar-container">
-        <app-navbar [navData]="navData"></app-navbar>
-    </div>
+<clr-main-container>
+    <clr-header>
+        <div class="branding">
+            <a href="javascript:void(0)">
+                <cds-icon shape="vm-bug"></cds-icon>
+                <span class="title">Uniwings Cloud</span>
+            </a>
+        </div>
+        <div class="header-nav" [clr-nav-level]="1">
+            <a href="#" class="nav-link nav-text">ERP</a>
+            <a href="#" class="nav-link nav-text">LMS</a>
+        </div>
+        <div class="settings">
+            <clr-dropdown>
+                <button class="nav-icon" clrDropdownTrigger>
+                    <cds-icon style="color: white" shape="user"></cds-icon>
+                    <p cds-text="" style="color: white">{{name}}</p>
+                    <cds-icon style="color: white" shape="angle" direction="down"></cds-icon>
+                </button>
+                <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+                    <a href="#" clrDropdownItem>Profile</a>
+                    <a href="#" clrDropdownItem>Settings</a>
+                    <a href="#" clrDropdownItem>About</a>
+                    <div style="border-bottom: 1px solid gray; margin: 8px 0;"></div>
+                    <a (click)="logoutUser()" clrDropdownItem>Log out</a>
+                </clr-dropdown-menu>
+            </clr-dropdown>
+        </div>
+    </clr-header>
 
+    <div class="content-container">
+        <div class="navbar-container">
+            <clr-vertical-nav [clr-nav-level]="1">
 
-    <div class="page-container">
-        <div class="comploader-container">
+                <div class="college-name">
+                    <img src="assets/kitcoek_logo.png" width="70" height="70">
+                    <div>
+                        <p cds-text="headline medium">KITCoEK</p>
+                        <hr style="margin: 8px 0;">
+                        <p cds-text="secondary regular">Internal ERP System</p>
+                    </div>
+                </div>
+
+                @for(nav of navData; track $index)
+                {
+                @if(nav.type == "entry")
+                {
+                <a clrVerticalNavLink routerLinkActive="active" routerLink={{nav.route}}>
+                    <cds-icon shape={{nav.icon}} clrVerticalNavIcon></cds-icon>
+                    {{nav.name}}
+                </a>
+                }@else {
+                <clr-vertical-nav-group routerLinkActive="active">
+                    <cds-icon shape={{nav.icon}} clrVerticalNavIcon></cds-icon>
+                    {{nav.name}}
+                    <clr-vertical-nav-group-children>
+                        @for(item of nav.entries; track $index)
+                        {
+                        <a clrVerticalNavLink routerLink={{item.route}} routerLinkActive="active">{{item.name}}</a>
+                        }
+                    </clr-vertical-nav-group-children>
+                </clr-vertical-nav-group>
+                }
+                }
+                <div class="nav-divider"></div>
+                <a clrVerticalNavLink routerLink="feature-request" routerLinkActive="active">Request Feature</a>
+                <a clrVerticalNavLink routerLink="about" routerLinkActive="active">About</a>
+
+            </clr-vertical-nav>
+
+        </div>
+
+        <div class="content-area">
             <router-outlet></router-outlet>
         </div>
+
+        <!-- <div class="navbar-container">
+            <app-navbar [navData]="navData"></app-navbar>
+        </div> -->
     </div>
-</div>
+</clr-main-container>

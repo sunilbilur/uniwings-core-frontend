@@ -1,21 +1,18 @@
 import { Component, Input } from '@angular/core';
 
-import { CardModule } from 'primeng/card';
-import { TableModule } from 'primeng/table';
-import { FeedbackService } from '../../_kitcoek-services/feedback.service';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { TagModule } from 'primeng/tag';
+import { FeedbackService } from '../../_services/feedback.service';
+
+
 
 @Component({
   selector: 'app-feedback-questions',
   standalone: true,
-  imports: [CardModule, TableModule, ButtonModule, InputTextModule, TagModule],
+  imports: [],
   templateUrl: './feedback-questions.component.html',
   styleUrl: './feedback-questions.component.css'
 })
 export class FeedbackQuestionsComponent {
-  @Input() compConfig = null;
+  @Input() compOptions = null;
   questions: any = null;
   addQuestionVisible: any =null;
 
@@ -25,4 +22,7 @@ export class FeedbackQuestionsComponent {
       console.log("[log] questions: ",this.questions);
     })
   }
+
+
+
 }

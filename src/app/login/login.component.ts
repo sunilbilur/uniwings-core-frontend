@@ -3,8 +3,8 @@ import { Route, Router, Routes } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AuthService } from '../_services/auth.service';
-import { AppBuilderComponent } from '../app-builder/app-builder.component';
-import { CompLoaderComponent } from '../app-builder/comp-loader/comp-loader.component';
+import { AppLayoutComponent } from '../app-layout/app-layout.component';
+import { CompLoaderComponent } from '../app-layout/comp-loader/comp-loader.component';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 import { ClarityModule } from '@clr/angular';
@@ -59,7 +59,7 @@ export class LoginComponent {
         // compData is sent directly to the dynamically loaded components
         let appRoute: any = {
           path: 'app',
-          component: AppBuilderComponent,
+          component: AppLayoutComponent,
           data: { navData: navData, name: data.name},
           children: []
         };

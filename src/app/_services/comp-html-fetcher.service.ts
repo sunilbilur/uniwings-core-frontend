@@ -12,7 +12,7 @@ export class CompHtmlFetcherService {
   async fetch(compName: any) {
     switch (compName) {
       case "feedback-questions":
-        return (await import('../app-components/feedback-questions/feedback-questions.component')).FeedbackQuestionsComponent;
+        return (await import('../app-components/feedback/feedback-questions/feedback-questions.component')).FeedbackQuestionsComponent;
         break;
 
       default:

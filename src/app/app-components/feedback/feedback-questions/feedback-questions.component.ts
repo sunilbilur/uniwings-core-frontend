@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { FeedbackService } from '../../_services/feedback.service';
-
-
+import { FeedbackService } from '../../../_services/feedback.service';
 
 @Component({
   selector: 'app-feedback-questions',

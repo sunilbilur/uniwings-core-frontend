@@ -25,7 +25,7 @@ ClarityIcons.addIcons(assignUserIcon)
   styleUrl: './app-builder.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppBuilderComponent implements OnInit, OnDestroy {
+export class AppLayoutComponent implements OnInit, OnDestroy {
 
   // AppBuilder gets navData from login
   // navData is passed from AppBuilder to NavBar

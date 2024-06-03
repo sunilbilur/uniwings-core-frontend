@@ -1,8 +1,8 @@
 import { Routes, Route } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { AppBuilderComponent } from './app-builder/app-builder.component';
+import { AppLayoutComponent } from './app-layout/app-layout.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { CompLoaderComponent } from './app-builder/comp-loader/comp-loader.component';
+import { CompLoaderComponent } from './app-layout/comp-loader/comp-loader.component';
 
 console.log("[log] app.routes.ts || start of routes code");
 
@@ -21,7 +21,7 @@ if (roleConfig) {
 
     let appRoute: any = {
         path: 'app',
-        component: AppBuilderComponent,
+        component: AppLayoutComponent,
         data: { navData: navData, name: name },
         children: []
     };

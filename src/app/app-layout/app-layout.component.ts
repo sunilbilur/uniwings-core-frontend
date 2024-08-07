@@ -21,8 +21,8 @@ ClarityIcons.addIcons(assignUserIcon)
   selector: 'app-app-builder',
   standalone: true,
   imports: [RouterModule, ClarityModule],
-  templateUrl: './app-builder.component.html',
-  styleUrl: './app-builder.component.css',
+  templateUrl: './app-layout.component.html',
+  styleUrl: './app-layout.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppLayoutComponent implements OnInit, OnDestroy {
@@ -30,7 +30,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   // AppBuilder gets navData from login
   // navData is passed from AppBuilder to NavBar
   navData: any = null;
-  name: string = '';
+  userFullname: string = '';
 
   constructor(
     private authService: AuthService,
@@ -40,7 +40,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.navData = this.route.snapshot.data['navData'];
-    this.name = this.route.snapshot.data['name'];
+    this.userFullname = this.route.snapshot.data['name'];
   }
 
   ngOnDestroy(): void {

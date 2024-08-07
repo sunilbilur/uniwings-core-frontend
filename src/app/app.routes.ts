@@ -38,7 +38,7 @@ if (roleConfig) {
             appRoute.children.push({
                 path: navData[i].route,
                 component: CompLoaderComponent,
-                data: { compData: { compName: navData[i].comp, compOptions: navData[i].options } }
+                data: { compData: navData[i].comp }
             });
 
         } else if (navData[i].type === "menu") {
@@ -47,7 +47,7 @@ if (roleConfig) {
                     path: navData[i].entries[j].route,
                     component: CompLoaderComponent,
                     data: {
-                        compData: { compName: navData[i].entries[j].comp, compOptions: navData[i].entries[j].options }
+                        compData: navData[i].entries[j].comp
                     }
                 });
             }

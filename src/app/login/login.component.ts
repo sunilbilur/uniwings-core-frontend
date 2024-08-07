@@ -49,10 +49,8 @@ export class LoginComponent {
         localStorage.setItem('name', data.name);
         localStorage.setItem('roleconf', JSON.stringify(data.roleConfig));
 
-        let navData: any = data.roleConfig.nav;
-
         console.log("[log] login.component.ts || start of onSubmit() function");
-        console.log("[log] login.component.ts || navData: ", navData);
+        console.log("[log] login.component.ts || navData: ", data.roleConfig.nav);
 
         // appRoutes configuration
         // navData is sent to AppBuilder, navigation is built inside AppBuilder Component
@@ -60,7 +58,10 @@ export class LoginComponent {
         let appRoute: any = {
           path: 'app',
           component: AppLayoutComponent,
-          data: { navData: navData, name: data.name},
+          data: {
+            navData: data.roleConfig.nav,
+            name: data.name
+          },
           children: []
         };
 
@@ -70,6 +71,7 @@ export class LoginComponent {
           component: PageNotFoundComponent
         };
 
+        let navData: any = data.roleConfig.nav;
         //set up routes according `type` field in navData in appRoutes
         for (let i = 0; i < navData.length; i++) {
           if (navData[i].type === "entry") {
@@ -77,10 +79,7 @@ export class LoginComponent {
               path: navData[i].route,
               component: CompLoaderComponent,
               data: {
-                compData: {
-                  compName: navData[i].comp,
-                  compOptions: navData[i].options
-                }
+                compData: navData[i].comp,
               }
             });
 
@@ -90,10 +89,7 @@ export class LoginComponent {
                 path: navData[i].entries[j].route,
                 component: CompLoaderComponent,
                 data: {
-                  compData: {
-                    compName: navData[i].entries[j].comp,
-                    compOptions: navData[i].entries[j].options
-                  }
+                  compData: navData[i].entries[j].comp,
                 }
               });
             }

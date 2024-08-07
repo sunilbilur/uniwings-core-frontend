@@ -6,7 +6,7 @@
                 <span class="title">Uniwings Cloud</span>
             </a>
         </div>
-        <div class="header-nav" [clr-nav-level]="1">
+        <div class="header-nav" [clr-nav-level]="2">
             <a href="#" class="nav-link nav-text">ERP</a>
             <a href="#" class="nav-link nav-text">LMS</a>
         </div>
@@ -14,7 +14,7 @@
             <clr-dropdown>
                 <button class="nav-icon" clrDropdownTrigger>
                     <cds-icon style="color: white" shape="user"></cds-icon>
-                    <p cds-text="" style="color: white">{{name}}</p>
+                    <p cds-text="" style="color: white">{{userFullname}}</p>
                     <cds-icon style="color: white" shape="angle" direction="down"></cds-icon>
                 </button>
                 <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
@@ -74,8 +74,5 @@
             <router-outlet></router-outlet>
         </div>
 
-        <!-- <div class="navbar-container">
-            <app-navbar [navData]="navData"></app-navbar>
-        </div> -->
     </div>
 </clr-main-container>

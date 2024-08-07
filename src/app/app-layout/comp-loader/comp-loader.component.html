@@ -1,3 +1,70 @@
-<div>
-    <ng-container *ngComponentOutlet="compName; inputs: { compOptions: compOptions};"></ng-container>
-</div>
+
+@for(item1 of compData; track $index) {
+    <!-- Top level array component, which is mostly row -->
+    @if(item1[0]=="row"){
+        <div class="clr-row">
+        <!-- Remove 'row' item1 and traverse the array -->
+        @for(item2 of item1.slice(1); track $index) {
+            @if(item2[0]=="col"){
+                <div class="clr-col-lg-{{item2[1]}}">
+                <!-- Remove 'col' and traverse item2 -->
+                @for(item3 of item2.slice(2); track $index) {
+                    @if(item3[0]=="row")
+                    {
+                        <div class="clr-row">
+                            @for(item4 of item3.slice(1); track $index) {
+                                @if(item4[0]=="col")
+                                {
+                                    <div class="clr-col-lg-{{item4[1]}}">
+                                        @for(item5 of item4.slice(2); track $index) {
+                                                <ng-container *ngComponentOutlet="compsMap.get(item5[0]); inputs: { compOptions: item5[1]};"></ng-container>
+                                        }
+                                    </div>
+                                }
+                            }
+                        </div>
+                    } @else
+                    {
+                        <ng-container *ngComponentOutlet="compsMap.get(item3[0]); inputs: { compOptions: item3[1]};"></ng-container>
+                    }
+                    
+                }
+                </div>
+            }
+        }
+        </div>
+    }
+
+}
+
+<!-- Recursive solution to build DOM from compData -->
+<!-- Better to write custom responsive grid framework for this -->
+<!-- @for(item of rowColComp; track $index) {
+    @if(item[0]=="row")
+    {
+        <div class="clr-row">
+            <app-comps-container [rowColComp]="item.slice(1)" />
+        </div>
+    }@else if(item[0]=="col")
+    {
+        <div class="col" style="width: {{item[1]}}%">
+            <app-comps-container [rowColComp]="item.slice(2)" />
+        </div>
+    }@else { 
+        @if (!isObject(item)) {
+            <ng-container *ngComponentOutlet="this.compHTML; inputs: { compOptions: item[1]};"></ng-container>
+        }
+    }
+} -->
+
+<!-- solution for arbitrary depth rowcolcomp tree -->
+<!--THIS DOESN'T WORK -->
+<!-- @for(item of htmlArr; track $index) {
+        
+    @if(item[0]=="row")
+    {
+        <div class="clr-row"></div>
+    } @else if (item[0]=="col") {
+        </div>
+    }
+} -->

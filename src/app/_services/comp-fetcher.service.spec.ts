@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CompHtmlFetcherService } from './comp-html-fetcher.service';
+import { CompFetcherService } from './comp-fetcher.service';
 
 describe('CompHtmlFetcherService', () => {
-  let service: CompHtmlFetcherService;
+  let service: CompFetcherService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CompHtmlFetcherService);
+    service = TestBed.inject(CompFetcherService);
   });
 
   it('should be created', () => {

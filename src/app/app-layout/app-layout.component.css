@@ -34,3 +34,9 @@
     flex-grow: 1;
     background-color: #eef1f9;
 }
+
+@media screen and (max-width: 992px) {
+    .user-name {
+        display: none;
+    }
+}

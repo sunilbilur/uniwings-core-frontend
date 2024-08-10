@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { CompHtmlFetcherService } from '../../_services/comp-html-fetcher.service';
+import { CompFetcherService } from '../../_services/comp-fetcher.service';
 import { NgComponentOutlet } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
@@ -17,7 +17,7 @@ export class CompLoaderComponent implements OnInit {
   compHTML: any = null;
   compsMap: any = new Map();
 
-  constructor(private compHtmlFetcher: CompHtmlFetcherService, private route: ActivatedRoute) {
+  constructor(private compFetcher: CompFetcherService, private route: ActivatedRoute) {
     console.log("[log] comp-loader.component.ts || inside comploader component constructor");
   }
 
@@ -31,7 +31,7 @@ export class CompLoaderComponent implements OnInit {
 
     //fetch all the components and store them in the map
     for (let key of compsList) {
-      this.compsMap.set(key, await this.compHtmlFetcher.fetch(key));
+      this.compsMap.set(key, await this.compFetcher.fetch(key));
     }
 
     // // Recursive solution to fetch the component html

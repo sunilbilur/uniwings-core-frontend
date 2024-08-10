@@ -1,9 +1,0 @@
-.table-topbar {
-    display: flex;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-.table-topbar-right p-button {
-    margin-left: 20px;
-}

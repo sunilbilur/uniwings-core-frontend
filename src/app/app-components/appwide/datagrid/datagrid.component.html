@@ -1,0 +1,11 @@
+<div class="card">
+    <div class="custom-header">
+        <div>
+            <p class="header-title">{{title}}</p>
+        </div>
+        <div class="header-btns">
+            <ng-content select=".header-controls"></ng-content>
+        </div>
+    </div>
+    <ng-content select=".table-body"></ng-content>
+</div>

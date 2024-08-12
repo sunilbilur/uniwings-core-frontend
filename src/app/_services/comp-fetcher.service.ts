@@ -11,6 +11,16 @@ export class CompFetcherService {
 
   async fetch(compName: any) {
     switch (compName) {
+      case "feedback_mgmt_title":
+        return (await import('../app-components/feedback/feedback-mgmt-title/feedback-mgmt-title.component')).FeedbackMgmtTitleComponent;
+        break;
+
+      case "feedback-mgmt-schedule":
+        return (await import('../app-components/feedback/feedback-mgmt-schedule/feedback-mgmt-schedule.component')).FeedbackMgmtScheduleComponent;
+        break;
+      case "feedback-mgmt-analysis":
+        return (await import('../app-components/feedback/feedback-mgmt-analysis/feedback-mgmt-analysis.component')).FeedbackMgmtAnalysisComponent;
+        break;
       case "feedback_ques_overview":
         return (await import('../app-components/feedback/feedback-ques-overview/feedback-ques-overview.component')).FeedbackQuesOverviewComponent;
         break;

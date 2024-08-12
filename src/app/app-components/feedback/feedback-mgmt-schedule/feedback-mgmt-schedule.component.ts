@@ -1,19 +1,16 @@
 import { Component, Input } from '@angular/core';
-import { ClrDatagridModule, ClrIconModule } from '@clr/angular';
 import { DatagridComponent } from '../../appwide/datagrid/datagrid.component';
+import  {ClrDatagridModule, ClrIconModule} from '@clr/angular';
 
 @Component({
-  selector: 'app-feedback-ques-list',
+  selector: 'app-feedback-mgmt-schedule',
   standalone: true,
   imports: [DatagridComponent, ClrDatagridModule, ClrIconModule],
-  templateUrl: './feedback-ques-list.component.html',
-  styleUrl: './feedback-ques-list.component.css'
+  templateUrl: './feedback-mgmt-schedule.component.html',
+  styleUrl: './feedback-mgmt-schedule.component.css'
 })
-export class FeedbackQuesListComponent {
+export class FeedbackMgmtScheduleComponent {
   @Input() compOptions = null;
   users: any = [];
-
-  constructor() {
-  }
 
 }

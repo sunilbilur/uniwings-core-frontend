@@ -1,6 +1,9 @@
 <app-datagrid title="Feedback Schedule">
     <div class="header-controls">
-        <button class="btn btn-primary">New Feedback</button>
+        @if(!compConfig.revoke.includes('new-feedback'))
+        {
+            <button class="btn btn-primary">New Feedback</button>
+        }
     </div>
 
     <div class="table-body">

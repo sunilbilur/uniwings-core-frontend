@@ -9,7 +9,7 @@
 }
 
 .header-title {
-    font-size: var(--cds-global-typography-headline-font-size);
+    font-size: var(--cds-global-typography-title-font-size);
     padding: 6px 0 6px;
     margin: 0;
 }

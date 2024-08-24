@@ -1,15 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { PageTitleComponent } from '../../appwide/page-title/page-title.component';
 import { PageSubtitleComponent } from '../../appwide/page-subtitle/page-subtitle.component';
 
 @Component({
-  selector: 'app-feedback-ques-title',
+  selector: 'app-student-info-title',
   standalone: true,
   imports: [PageTitleComponent, PageSubtitleComponent],
-  templateUrl: './feedback-ques-title.component.html',
-  styleUrl: './feedback-ques-title.component.css'
+  templateUrl: './student-info-title.component.html',
+  styleUrl: './student-info-title.component.css'
 })
-export class FeedbackQuesTitleComponent {
-  @Input() compConfig: any;
+
+export class StudentInfoTitleComponent {
 
 }

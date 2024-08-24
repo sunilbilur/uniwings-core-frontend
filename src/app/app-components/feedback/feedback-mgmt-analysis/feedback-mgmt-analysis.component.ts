@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-feedback-mgmt-analysis',
@@ -8,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './feedback-mgmt-analysis.component.css'
 })
 export class FeedbackMgmtAnalysisComponent {
+  @Input() compConfig: any;
 
 }

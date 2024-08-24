@@ -9,6 +9,6 @@ import { PageTitleComponent } from "../../appwide/page-title/page-title.componen
   styleUrl: './feedback-ques-overview.component.css'
 })
 export class FeedbackQuesOverviewComponent {
-  @Input() compOptions = null;
+  @Input() compConfig = null;
 
 }

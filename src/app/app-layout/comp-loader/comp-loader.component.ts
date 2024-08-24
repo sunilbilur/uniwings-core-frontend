@@ -4,6 +4,10 @@ import { CompFetcherService } from '../../_services/comp-fetcher.service';
 import { NgComponentOutlet } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
+//following line ensures that manual code splitting happens for paths defined inside following component
+//but (hopefully?) this component is never loaded, it is only there to implement manual code splitting
+import  '../../manual-code-splitting/manual-code-splitting.component';
+
 @Component({
   selector: 'comp-loader-component',
   standalone: true,
@@ -12,9 +16,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './comp-loader.component.css'
 })
 export class CompLoaderComponent implements OnInit {
-  @Input() rowColComp: any = null;
+  // @Input() rowColComp: any = null;
   compData: any = null;
-  compHTML: any = null;
   compsMap: any = new Map();
 
   constructor(private compFetcher: CompFetcherService, private route: ActivatedRoute) {
@@ -23,7 +26,7 @@ export class CompLoaderComponent implements OnInit {
 
   async ngOnInit() {
     this.compData = this.route.snapshot.data['compData'];
-    console.log("compData: ", this.compData);
+    console.log("[log] comp-loader-component.ts || compData: ", this.compData);
 
     //extract the list of component names from the compData
     let flatCompData: [] = this.flattenArray(this.compData);
@@ -31,7 +34,7 @@ export class CompLoaderComponent implements OnInit {
 
     //fetch all the components and store them in the map
     for (let key of compsList) {
-      this.compsMap.set(key, await this.compFetcher.fetch(key));
+      this.compsMap.set(key, (await this.compFetcher.fetch(key)));
     }
 
     // // Recursive solution to fetch the component html

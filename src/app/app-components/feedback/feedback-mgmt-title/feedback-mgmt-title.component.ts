@@ -10,6 +10,9 @@ import { PageSubtitleComponent } from '../../appwide/page-subtitle/page-subtitle
   styleUrl: './feedback-mgmt-title.component.css'
 })
 export class FeedbackMgmtTitleComponent {
-  @Input() compOptions = null;
+  @Input() compConfig: any;
 
+  constructor() {
+    console.log("[log] feedback-mgmt-title.component.ts || compConfig: ", this.compConfig);
+  }
 }

@@ -17,7 +17,7 @@
                                 {
                                     <div class="clr-col-lg-{{item4[1]}}">
                                         @for(item5 of item4.slice(2); track $index) {
-                                                <ng-container *ngComponentOutlet="compsMap.get(item5[0]); inputs: { compOptions: item5[1]};"></ng-container>
+                                                <ng-container *ngComponentOutlet="compsMap.get(item5[0]); inputs: { compConfig: item5[1]};"></ng-container>
                                         }
                                     </div>
                                 }
@@ -25,13 +25,13 @@
                         </div>
                     } @else
                     {
-                        <ng-container *ngComponentOutlet="compsMap.get(item3[0]); inputs: { compOptions: item3[1]};"></ng-container>
+                        <ng-container *ngComponentOutlet="compsMap.get(item3[0]); inputs: {compConfig : item3[1]};"></ng-container>
                     }
                     
                 }
                 </div>
             } @else {
-                <ng-container *ngComponentOutlet="compsMap.get(item2[0]); inputs: { compOptions: item2[1]};"></ng-container>
+                <ng-container *ngComponentOutlet="compsMap.get(item2[0]); inputs: { compConfig: item2[1] };"></ng-container>
             }
         }
         </div>

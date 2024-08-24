@@ -10,7 +10,7 @@ import { DatagridComponent } from '../../appwide/datagrid/datagrid.component';
   styleUrl: './feedback-ques-list.component.css'
 })
 export class FeedbackQuesListComponent {
-  @Input() compOptions = null;
+  @Input() compConfig = null;
   users: any = [];
 
   constructor() {

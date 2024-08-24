@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './feedback-ques-tags-chart.component.css'
 })
 export class FeedbackQuesTagsChartComponent {
-  @Input() compOptions = null;
+  @Input() compConfig = null;
 }

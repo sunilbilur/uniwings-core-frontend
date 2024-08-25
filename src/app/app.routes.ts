@@ -3,6 +3,7 @@ import { LoginComponent } from './login/login.component';
 import { AppLayoutComponent } from './app-layout/app-layout.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CompLoaderComponent } from './app-layout/comp-loader/comp-loader.component';
+import { ContentContainerComponent } from './app-layout/content-container/content-container.component';
 
 console.log("[log] app.routes.ts || start of routes code");
 
@@ -11,47 +12,57 @@ export let routes: Routes = [
     { path: 'login', component: LoginComponent }
 ];
 
-let roleConfig: any = JSON.parse(localStorage.getItem("roleconf") as string);
+let priNav: any = JSON.parse(localStorage.getItem("pri_nav") as string);
+let secNav: any = JSON.parse(localStorage.getItem("sec_nav") as string);
 let name: any = localStorage.getItem("name");
 
-// if rolec is there in localstorage, setup routes accordingly
-if (roleConfig) {
-    console.log("[log] app.routes.ts || inside roleConfig if block");
-    let navData: any = roleConfig.nav;
+function generateRoutes(navData: any) {
+    if (!navData) return [];
 
+    return navData.flatMap((nav: any) => {
+        const entries = nav.type === "entry" ? [nav] : nav.entries;
+        return entries.map((entry: any) => ({
+            path: entry.route,
+            component: CompLoaderComponent,
+            data: {
+                compData: entry.comp,
+            },
+        }));
+    });
+}
+
+console.log("[log] app.routes.ts || priNav: ", priNav);
+console.log("[log] app.routes.ts || secNav: ", secNav);
+
+if (priNav) {
+    console.log("[log] app.routes.ts || inside roleConfig if block");
+
+    // appRoutes configuration
     let appRoute: any = {
         path: 'app',
         component: AppLayoutComponent,
-        data: { navData: navData, name: name },
+        data: {
+            priNav: priNav,
+            name: name
+        },
         children: []
     };
 
+    // wildcard route configuration
     let wildcardRoute: Route = {
         path: '**',
         component: PageNotFoundComponent
     };
 
-    // check type field in navData array of objects,
-    // add an object to routes based on type field
-    for (let i = 0; i < navData.length; i++) {
-        if (navData[i].type === "entry") {
-            appRoute.children.push({
-                path: navData[i].route,
-                component: CompLoaderComponent,
-                data: { compData: navData[i].comp }
-            });
-
-        } else if (navData[i].type === "menu") {
-            for (let j = 0; j < navData[i].entries.length; j++) {
-                appRoute.children.push({
-                    path: navData[i].entries[j].route,
-                    component: CompLoaderComponent,
-                    data: {
-                        compData: navData[i].entries[j].comp
-                    }
-                });
-            }
-        }
+    for (let nav of priNav) {
+        appRoute.children.push({
+            path: nav.route,
+            component: ContentContainerComponent,
+            data: {
+                secNav: secNav[nav.route],
+            },
+            children: generateRoutes(secNav[nav.route])
+        });
     }
 
     // push dynamically created routes to main routes array

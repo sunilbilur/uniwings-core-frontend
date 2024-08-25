@@ -7,10 +7,9 @@
             </a>
         </div>
         <div class="header-nav" [clr-nav-level]="2">
-            <a href="#" class="nav-link nav-text">Notice Board</a>
-            <a href="#" class="nav-link nav-text">Office</a>
-            <a href="#" class="nav-link nav-text">Exams & Results</a>
-            <a href="#" class="nav-link nav-text">LMS</a>
+            @for(nav of priNav; track $index) {
+                <a routerLink={{nav.route}} class="nav-link nav-text">{{nav.name}}</a>
+            }
         </div>
         <div class="settings">
             <clr-dropdown>
@@ -30,51 +29,6 @@
         </div>
     </clr-header>
 
-    <div class="content-container">
-        <div class="navbar-container">
-            <clr-vertical-nav [clr-nav-level]="1">
+    <router-outlet></router-outlet>
 
-                <div class="college-name">
-                    <img src="assets/kitcoek_logo.png" width="70" height="70">
-                    <div>
-                        <p cds-text="headline medium">KITCoEK</p>
-                        <hr style="margin: 8px 0;">
-                        <p cds-text="secondary regular">Internal ERP System</p>
-                    </div>
-                </div>
-
-                @for(nav of navData; track $index)
-                {
-                @if(nav.type == "entry")
-                {
-                <a clrVerticalNavLink routerLinkActive="active" routerLink={{nav.route}}>
-                    <cds-icon shape={{nav.icon}} clrVerticalNavIcon></cds-icon>
-                    {{nav.name}}
-                </a>
-                }@else {
-                <clr-vertical-nav-group routerLinkActive="active">
-                    <cds-icon shape={{nav.icon}} clrVerticalNavIcon></cds-icon>
-                    {{nav.name}}
-                    <clr-vertical-nav-group-children>
-                        @for(item of nav.entries; track $index)
-                        {
-                        <a clrVerticalNavLink routerLink={{item.route}} routerLinkActive="active">{{item.name}}</a>
-                        }
-                    </clr-vertical-nav-group-children>
-                </clr-vertical-nav-group>
-                }
-                }
-                <div class="nav-divider"></div>
-                <a clrVerticalNavLink routerLink="feature-request" routerLinkActive="active">Request Feature</a>
-                <a clrVerticalNavLink routerLink="about" routerLinkActive="active">About</a>
-
-            </clr-vertical-nav>
-
-        </div>
-
-        <div class="content-area">
-            <router-outlet></router-outlet>
-        </div>
-
-    </div>
 </clr-main-container>

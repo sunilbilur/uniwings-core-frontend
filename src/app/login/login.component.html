@@ -12,7 +12,7 @@
         <div>
           <p cds-text="headline medium">KITCoEK</p>
           <hr style="margin: 8px 0;">
-          <p cds-text="secondary regular" >Internal ERP System</p>
+          <p cds-text="secondary regular">Internal ERP System</p>
         </div>
       </div>
 
@@ -32,6 +32,16 @@
           <input clrInput type="password" type="password" id="password" placeholder="type password here"
             formControlName="password" />
         </clr-input-container>
+
+        @if(displayLoginAlert == true) {
+        <div class="alert-message">
+          <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false" [clrAlertSizeSmall]="true">
+            <clr-alert-item>
+              <span class="alert-text">Wrong username or password</span>
+            </clr-alert-item>
+          </clr-alert>
+        </div>
+      }
 
         <div class="login-btn">
           <p>Form status: {{loginForm.status}}</p>

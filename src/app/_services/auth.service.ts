@@ -12,7 +12,9 @@ export class AuthService {
 
   login(username: string, password: string) {
     console.log("[log] auth.service.ts || inside login() function");
-    return this.http.post('http://localhost:8000/auth/login', { username, password })
+    let loginStatus = this.http.post('http://localhost:8000/auth/login', { username, password })
+    console.log(loginStatus);
+    return loginStatus;
     //.shareReplay();
   }
 

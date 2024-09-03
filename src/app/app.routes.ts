@@ -9,11 +9,15 @@ console.log("[log] app.routes.ts || start of routes code");
 
 export let routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: "full" },
-    { path: 'login', component: LoginComponent }
+    {
+        path: 'login/:iid/:iname',
+        component: LoginComponent
+    }
 ];
 
 let priNav: any = JSON.parse(localStorage.getItem("pri_nav") as string);
 let secNav: any = JSON.parse(localStorage.getItem("sec_nav") as string);
+let iid: any = localStorage.getItem("iid");
 let name: any = localStorage.getItem("name");
 
 function generateRoutes(navData: any) {
@@ -31,8 +35,8 @@ function generateRoutes(navData: any) {
     });
 }
 
-console.log("[log] app.routes.ts || priNav: ", priNav);
-console.log("[log] app.routes.ts || secNav: ", secNav);
+// console.log("[log] app.routes.ts || priNav: ", priNav);
+// console.log("[log] app.routes.ts || secNav: ", secNav);
 
 if (priNav) {
     console.log("[log] app.routes.ts || inside roleConfig if block");
@@ -42,6 +46,7 @@ if (priNav) {
         path: 'app',
         component: AppLayoutComponent,
         data: {
+            iid: iid,
             priNav: priNav,
             name: name
         },

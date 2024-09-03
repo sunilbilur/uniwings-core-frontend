@@ -28,9 +28,7 @@ ClarityIcons.addIcons(assignUserIcon)
   encapsulation: ViewEncapsulation.None
 })
 export class AppLayoutComponent implements OnInit, OnDestroy {
-
-  // AppBuilder gets navData from login
-  // navData is passed from AppBuilder to NavBar
+  iid: any;
   priNav: any = null;
   userFullname: string = '';
 
@@ -41,6 +39,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.iid = this.route.snapshot.data['iid'];
     this.priNav = this.route.snapshot.data['priNav'];
     this.userFullname = this.route.snapshot.data['name'];
   }
@@ -50,6 +49,6 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   }
 
   logoutUser() {
-    this.authService.logout();
+    this.authService.logout(this.iid);
   }
 }

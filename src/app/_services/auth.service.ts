@@ -10,23 +10,33 @@ export class AuthService {
   constructor(private router: Router, private http: HttpClient) {
   }
 
-  login(username: string, password: string) {
+  login(username: string, password: string, iid: string) {
     console.log("[log] auth.service.ts || inside login() function");
-    let loginStatus = this.http.post('http://localhost:8000/auth/login', { username, password })
+    let loginStatus = this.http.post('http://localhost:8000/auth/login', { username, password, iid })
     console.log(loginStatus);
     return loginStatus;
     //.shareReplay();
   }
 
-  logout() {
+  checkInstitutionValidity(iid: string) {
+    console.log("[log] auth.service.ts || inside checkInstitutionIidValidity() function");
+    let institutionStatus = this.http.post('http://localhost:8000/auth/checkInstitutionIidValidity', { iid })
+    console.log(institutionStatus);
+    // return institutionStatus;
+    return true;
+  }
+
+  logout(iid: string) {
     // remove user from local storage and set current user to null
     localStorage.removeItem('user');
-    localStorage.removeItem('roleconf');
+    localStorage.removeItem('pri_nav');
+    localStorage.removeItem('sec_nav');
+    localStorage.removeItem('name');
 
     this.router.config.pop();
     this.router.config.pop();
 
-    this.router.navigate(['login']);
+    this.router.navigate(['login/' + iid + '/doesNotMatter']);
   }
 
   getJWT() {

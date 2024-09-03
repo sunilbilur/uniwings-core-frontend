@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Route, Router, Routes } from '@angular/router';
+import { ActivatedRoute, Route, Router, Routes } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AuthService } from '../_services/auth.service';
@@ -19,10 +19,16 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  iid: any;
+  iname: any;
+
   loginForm: FormGroup;
   displayLoginAlert: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {
+  constructor(private authService: AuthService,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute) {
     // Redirect to home if already logged in
     if (this.authService.isLoggedIn()) {
       this.router.navigate(["/app/"]);
@@ -42,6 +48,17 @@ export class LoginComponent {
         const currentPath = route.path ? `${parent}/${route.path}` : parent;
         this.printpath(currentPath, route.children);
       }
+    }
+  }
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.iid = params['iid'];
+      this.iname = params['iname'];
+    });
+
+    if(this.authService.checkInstitutionValidity(this.iid) === false) {
+      this.router.navigate(['/error']);
     }
   }
 
@@ -77,15 +94,16 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
+    this.authService.login(this.loginForm.value.username, this.loginForm.value.password, this.iid).subscribe(
       (data: any) => {
-        if(data.status === 401) {
+        if (data.status === 401) {
           console.log("[log] login.component.ts ");
         }
 
         console.log("[log] login.component.ts || data: ", data);
         localStorage.setItem('user', data.jwt);
         localStorage.setItem('name', data.name);
+        localStorage.setItem('iid', this.iid);
         localStorage.setItem('pri_nav', JSON.stringify(data.pri_nav));
         localStorage.setItem('sec_nav', JSON.stringify(data.sec_nav));
 
@@ -96,6 +114,7 @@ export class LoginComponent {
           path: 'app',
           component: AppLayoutComponent,
           data: {
+            iid: this.iid,
             priNav: data.pri_nav,
             name: data.name
           },
@@ -130,7 +149,7 @@ export class LoginComponent {
         this.router.navigate(['/app']);
       },
       (error: HttpErrorResponse) => {
-        if(error.status == 401) {
+        if (error.status == 401) {
           console.log("ERROR: WRONG username/password");
           this.displayLoginAlert = true;
         }

@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { CompFetcherService } from '../../_services/comp-fetcher.service';
+import { CompFetcherService } from '../../_services/comp-fetcher-dyn.service';
 import { NgComponentOutlet } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 //following line ensures that manual code splitting happens for paths defined inside following component
 //but (hopefully?) this component is never loaded, it is only there to implement manual code splitting
-import  '../../manual-code-splitting/manual-code-splitting.component';
+import '../../manual-code-splitting/manual-code-splitting.component';
 
 @Component({
   selector: 'comp-loader-component',

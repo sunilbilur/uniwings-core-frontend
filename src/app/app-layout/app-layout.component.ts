@@ -7,7 +7,9 @@ import { AuthService } from '../_services/auth.service';
 import { ClarityModule } from '@clr/angular';
 import {
   ClarityIcons, cogIcon, vmBugIcon, userIcon, angleIcon, formIcon,
-  dashboardIcon, assignUserIcon
+  dashboardIcon, assignUserIcon, bankIcon,
+  bankIconName,
+  employeeGroupIcon
 } from '@cds/core/icon'
 
 ClarityIcons.addIcons(cogIcon);
@@ -17,6 +19,8 @@ ClarityIcons.addIcons(angleIcon);
 ClarityIcons.addIcons(formIcon);
 ClarityIcons.addIcons(dashboardIcon);
 ClarityIcons.addIcons(assignUserIcon)
+ClarityIcons.addIcons(employeeGroupIcon);
+ClarityIcons.addIcons(bankIcon);
 
 @Component({
   selector: 'app-app-builder',

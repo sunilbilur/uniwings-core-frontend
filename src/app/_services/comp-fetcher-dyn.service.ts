@@ -11,10 +11,16 @@ export class CompFetcherService {
 
   async fetch(compName: any) {
     switch (compName) {
+		case 'forms-management':
+			return (await import('../app-components/admin/forms-management/forms-management.component')).FormsManagementComponent
+		case 'institutions-management':
+			return (await import('../app-components/admin/institutions-management/institutions-management.component')).InstitutionsManagementComponent
+		case 'navigation-management':
+			return (await import('../app-components/admin/navigation-management/navigation-management.component')).NavigationManagementComponent
+		case 'role-configs-management':
+			return (await import('../app-components/admin/role-configs-management/role-configs-management.component')).RoleConfigsManagementComponent
 		case 'datagrid':
 			return (await import('../app-components/appwide/datagrid/datagrid.component')).DatagridComponent
-		case 'page-subtitle':
-			return (await import('../app-components/appwide/page-subtitle/page-subtitle.component')).PageSubtitleComponent
 		case 'page-title':
 			return (await import('../app-components/appwide/page-title/page-title.component')).PageTitleComponent
 		case 'feedback-mgmt-analysis':

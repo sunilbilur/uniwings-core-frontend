@@ -35,6 +35,8 @@
             }
         }
         </div>
+    } @else {
+        <ng-container *ngComponentOutlet="compsMap.get(item1[0]); inputs: { compConfig: item1[1] };"></ng-container>
     }
 
 }

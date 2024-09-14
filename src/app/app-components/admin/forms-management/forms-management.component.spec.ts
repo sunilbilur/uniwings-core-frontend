@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageSubtitleComponent } from './page-subtitle.component';
+import { FormsManagementComponent } from './forms-management.component';
 
-describe('PageSubtitleComponent', () => {
-  let component: PageSubtitleComponent;
-  let fixture: ComponentFixture<PageSubtitleComponent>;
+describe('FormsManagementComponent', () => {
+  let component: FormsManagementComponent;
+  let fixture: ComponentFixture<FormsManagementComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PageSubtitleComponent]
+      imports: [FormsManagementComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(PageSubtitleComponent);
+    fixture = TestBed.createComponent(FormsManagementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

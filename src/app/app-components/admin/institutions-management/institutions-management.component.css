@@ -1,0 +1,71 @@
+.search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: var(--cds-global-layout-space-lg);
+}
+
+/* apply bootstrap like style to input */
+.search-bar input {
+    width: 80%; /* set the width of the input to 60% */
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    height: var(--clr-btn-height); /* add this line to set the height of the input */
+}
+
+/* apply bootstrap like style to button */
+.search-bar button {
+    width: 20%; /* set the width of the button to 20% */
+    height: var(--clr-btn-height); /* add this line to set the height of the input */
+    margin-left: 10px; /* add this line to set the margin between the input and the button */
+    margin-right: 0;
+}
+
+
+.institution-content {
+    margin-top: var(--cds-global-layout-space-xl);
+}
+
+.institution-table-title {
+    margin-top: var(--cds-global-layout-space-lg);
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.institution-table-title button {
+    margin-left: 20px;
+}
+
+.vertical-line {
+    border-left: 1px solid #b9babb;
+    height: 30px;
+    margin-left: 20px;
+}
+
+.horizontal-line {
+    border-top: 1px solid #b9babb;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.institution-card-title-info {
+    display: flex;
+    align-items: center;
+    margin: 12px 0 0;
+}
+
+.institution-card-title-info p {
+    margin-top: 0;
+}
+
+.institution-card-title-info p:not(:first-child) {
+    margin-left: 8px;
+}

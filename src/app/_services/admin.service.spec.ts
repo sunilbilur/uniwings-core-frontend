@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CompFetcherService } from './comp-fetcher.service';
+import { AdminService } from './admin.service';
 
-describe('CompHtmlFetcherService', () => {
-  let service: CompFetcherService;
+describe('AdminService', () => {
+  let service: AdminService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CompFetcherService);
+    service = TestBed.inject(AdminService);
   });
 
   it('should be created', () => {

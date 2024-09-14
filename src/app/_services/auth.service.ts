@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class AuthService {
   constructor(private router: Router, private http: HttpClient) {
   }
 
-  login(username: string, password: string, iid: string) {
+  login(username: string, password: string, iid: string): Observable<any> {
     console.log("[log] auth.service.ts || inside login() function");
     let loginStatus = this.http.post('http://localhost:8000/auth/login', { username, password, iid })
     console.log(loginStatus);

@@ -9,6 +9,6 @@ export class FeedbackService {
   constructor(private http: HttpClient ) { }
 
   getQuestions(){
-    return this.http.get('http://localhost:8000/feedback/get-questions');
+
   }
 }

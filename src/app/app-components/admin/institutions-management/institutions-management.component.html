@@ -1,1 +1,97 @@
 <app-page-title title="Institutions" subtitle="See and manage all Institutions" />
+
+
+<div class="clr-row clr-justify-content-center">
+    <div class="clr-col-10">
+        <form clrForm clrLayout="horizontal" clrLabelSize="1">
+            <div class="search-bar">
+                <input type="text" placeholder="Search for an institution" />
+                <button class="btn btn-primary">Search</button>
+            </div>
+            <clr-radio-container clrInline style="margin-top: 16px">
+                <label>Search In</label>
+                <clr-radio-wrapper>
+                    <input type="radio" clrRadio name="options" required value="option1" />
+                    <label>Everything</label>
+                </clr-radio-wrapper>
+                <clr-radio-wrapper>
+                    <input type="radio" clrRadio name="options" required value="option1" />
+                    <label>ID</label>
+                </clr-radio-wrapper>
+                <clr-radio-wrapper>
+                    <input type="radio" clrRadio name="options" required value="option1" />
+                    <label>Name</label>
+                </clr-radio-wrapper>
+                <clr-radio-wrapper>
+                    <input type="radio" clrRadio name="options" required value="option2" />
+                    <label>Shortname</label>
+                </clr-radio-wrapper>
+            </clr-radio-container>
+        </form>
+        <div class="horizontal-line"></div>
+    </div>
+</div>
+
+<div class="clr-row institution-content">
+    <div class="clr-col-3">
+        <div class="card">
+            <div class="card-block">
+                Total number of Institutions
+            </div>
+            <div class="card-footer">
+                123
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-block">
+                Total number of Institutions
+            </div>
+            <div class="card-footer">
+                123
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-block">
+                Total number of Institutions
+            </div>
+            <div class="card-footer">
+                123
+            </div>
+        </div>
+    </div>
+    <div class="clr-col-9">
+        <div class="institution-table-title">
+            <h1 cds-text="title">All Institutions</h1>
+            <div class="vertical-line"></div>
+            <button class="btn btn-primary">Add Institution</button>
+        </div>
+
+        @for(item of institutions; track $index)
+        {
+        <div class="card">
+            <div class="card-header">
+                <div style="display: flex; align-items: center;">
+                    <div>
+                        <img src="/assets/login/{{item.id}}/logo.png" style="width: 60px; height: auto;" alt="Institution" />
+                    </div>
+                    <div style="margin-left: 16px">
+                        <h3 cds-text="section">{{ item.name }}</h3>
+                        <div class="institution-card-title-info">
+                            <p><span style="font-weight: 600">ID: </span>{{ item.id }} </p>
+                            <p><span style="font-weight: 600;">Shortname:</span> {{ item.shortname }} </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="horizontal-line" style="margin-top: 12px"></div>
+                <div style="display: flex; margin-top: 8px">
+                    <button class="btn btn-sm ">Info</button>
+                    <button class="btn btn-sm ">Edit</button>
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

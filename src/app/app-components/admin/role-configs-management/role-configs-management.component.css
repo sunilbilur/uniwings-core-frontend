@@ -1,0 +1,28 @@
+.selected-role {
+    border : 1px solid #4d4d4d;
+    border-radius: 5px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+ 
+.pri_entries:first-child {
+    margin-top: 0;
+}
+
+.pri_entries {
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+.role-info-line {
+    color: #4d4d4d;
+}
+
+.pri-entry-action-btns :not(:first-child) {
+    margin-left: 8px;
+}
+
+
+.pri_entries .card-block {
+    padding: 8px;
+}

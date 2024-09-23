@@ -11,6 +11,8 @@ export class CompFetcherService {
 
   async fetch(compName: any) {
     switch (compName) {
+		case 'components-library':
+			return (await import('../app-components/admin/components-library/components-library.component')).ComponentsLibraryComponent
 		case 'forms-management':
 			return (await import('../app-components/admin/forms-management/forms-management.component')).FormsManagementComponent
 		case 'institutions-management':
@@ -19,6 +21,12 @@ export class CompFetcherService {
 			return (await import('../app-components/admin/navigation-management/navigation-management.component')).NavigationManagementComponent
 		case 'role-configs-management':
 			return (await import('../app-components/admin/role-configs-management/role-configs-management.component')).RoleConfigsManagementComponent
+		case 'components-tab':
+			return (await import('../app-components/admin/role-configs-management/components-tab/components-tab.component')).ComponentsTabComponent
+		case 'information-tab':
+			return (await import('../app-components/admin/role-configs-management/information-tab/information-tab.component')).InformationTabComponent
+		case 'navigation-entries-tab':
+			return (await import('../app-components/admin/role-configs-management/navigation-entries-tab/navigation-entries-tab.component')).NavigationEntriesTabComponent
 		case 'datagrid':
 			return (await import('../app-components/appwide/datagrid/datagrid.component')).DatagridComponent
 		case 'page-title':

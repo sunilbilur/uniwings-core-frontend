@@ -1,9 +1,3 @@
-.selected-role {
-    border-bottom: 1px solid rgb(200, 200, 200);
-    padding: 12px 0;
-    margin-bottom: 12px;
-}
-
 .card-list-entries:first-child {
     margin-top: 0;
 }
@@ -15,10 +9,6 @@
 
 .card-list-entries .pri-entry-block {
     padding: 8px;
-}
-
-.role-info-line {
-    color: #4d4d4d;
 }
 
 .pri-entry-action-btns :not(:first-child) {
@@ -37,11 +27,6 @@
     margin-top: 8px;
 }
 
-.vertical-line {
-    border-left: 1px solid rgb(200, 200, 200);
-}
-
-
 .horizontal-line {
     border-top: 1px solid rgb(200, 200, 200);
     width: 100%;
@@ -55,29 +40,3 @@
     width: 70%;
     margin-left: 16px;
 }
-
-.entries-card {
-    margin-top: 16px;
-    background-color: rgb(235, 235, 235);
-}
-
-.entries-holder {
-    display: flex;
-}
-
-.entries-holder div {
-    padding: 2px;
-    border: 1px solid gray;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.entries-holder div:not(:first-child) {
-    margin-left: 8px;
-}
-
-.entries-holder div p {
-    margin: 5px;
-    font-size: 12px;
-}
-

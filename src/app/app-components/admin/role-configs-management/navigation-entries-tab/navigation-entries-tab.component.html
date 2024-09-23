@@ -1,0 +1,136 @@
+<div class="clr-row">
+
+    <div class="clr-col-4">
+        <div class="card">
+            <div class="card-block">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <p cds-text="message">Primary Entries</p>
+                    <button class="btn btn-sm btn-primary" (click)="addPriEntry()"><cds-icon shape="plus"></cds-icon>Add
+                        Entry</button>
+                </div>
+            </div>
+            <div class="card-block" dndDropzone (dndDrop)="onDrop($event, roleConfig.pri_nav)"
+                dndEffectAllowed="copyMove">
+
+                <div class="card" dndPlaceholderRef></div>
+
+                <div class="card card-list-entries" *ngFor="let item of roleConfig.pri_nav" [dndDraggable]="item"
+                    dndEffectAllowed="move" (dndMoved)="onDragged(item, 'start', roleConfig.pri_nav)"
+                    (click)="selectPriEntry(item)">
+                    <div class="card-block pri-entry-block">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center;">
+                                <cds-icon shape="drag-handle" size="md"></cds-icon>
+                                <p cds-text="body"> {{ item.name }}</p>
+                            </div>
+                            <div class="pri-entry-action-btns">
+                                <!-- <button class="btn btn-sm btn-icon"><cds-icon
+                                            shape="pencil"></cds-icon></button> -->
+                                <button class="btn btn-sm btn-icon"><cds-icon shape="eraser"></cds-icon></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="horizontal-line"></div>
+        <div class="card-block">
+            <button class="btn btn-info" style="width: 100%">Save Changes</button>
+        </div>
+    </div>
+
+    <div class="clr-col-7">
+        <div class="card">
+            <div class="card-block">
+                @if(currentPriEntry === null){
+                <h1 cds-text="section" style="color: gray">Please select a primary entry</h1>
+                }@else {
+                <p cds-text="body-md" style="color: rgb(66, 66, 66)">{{currentPriEntry.name}}</p>
+                <div style="border-bottom: 1px solid gray; margin: 12px 0;"></div>
+
+                <div style="display: flex; padding: 8px 0">
+                    <div style="width:30%">
+                        <div class="card" style="margin-top: 0">
+                            <div class="card-block">
+                                <div class="card card-list-entries" dndDraggable="entry">
+                                    <div class="card-block">
+                                        <p cds-text="section">Entry</p>
+                                    </div>
+                                </div>
+                                <div class="card card-list-entries" dndDraggable="menu">
+                                    <div class="card-block">
+                                        <p cds-text="section">Menu</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="horizontal-line"></div>
+                        <p cds-text="caption" style="margin-top:8px; color: gray">
+                            Drag and placethese items in the gray box to the right
+                        </p>
+                    </div>
+
+                    <div class="gray-box" dndDropzone
+                        (dndDrop)="onDrop($event, roleConfig.sec_nav[currentPriEntry.route])">
+
+                        <!-- placeholder ref -->
+                        <div class="card" dndPlaceholderRef></div>
+
+                        <div class="card card-list-entries"
+                            *ngFor="let item of roleConfig.sec_nav[currentPriEntry.route]" [dndDraggable]="item"
+                            dndEffectAllowed="move"
+                            (dndMoved)="onDragged(item,'start',roleConfig.sec_nav[currentPriEntry.route])">
+                            <div class="card-block">
+                                <div style="display: flex">
+
+                                    <form clrForm clrLayout="horizontal" style="padding: 0">
+                                        <clr-input-container class="form-control-entry">
+                                            <label>Name</label>
+                                            <input clrInput value="{{item.name}}" name="name" />
+
+                                        </clr-input-container>
+                                    </form>
+                                    @if(item.type === 'entry') {
+                                    <span class="label label-info" style="margin-left: 8px;">{{item.type}}</span>
+                                    }@else {
+                                    <span class="label label-warning" style="margin-left: 8px;">{{item.type}}</span>
+                                    }
+                                </div>
+                                @if(item.type === 'menu') {
+                                <div class="card entries-card">
+                                    <div class="card-block" dndDropzone (dndDrop)="onDrop($event, item.entries)">
+                                        @if(item.entries.length == 0) {
+                                        <p cds-text="body">No entries in this menu</p>
+                                        }@else {
+                                        <div class="card" dndPlaceholderRef></div>
+                                        }
+                                        @for(entry of item.entries; track $index) {
+                                        <div class="card card-list-entries" [dndDraggable]="entry"
+                                            dndEffectAllowed="move" (dndMoved)="onDragged(entry,'start',item.entries)">
+                                            <div class="card-block">
+                                                <form clrForm clrLayout="horizontal" style="padding: 0">
+                                                    <clr-input-container class="form-control-entry">
+                                                        <label>Name</label>
+                                                        <input clrInput value="{{entry.name}}" name="name" />
+                                                    </clr-input-container>
+                                                    <clr-input-container class="form-control-entry">
+                                                        <label>Route</label>
+                                                        <input clrInput value="{{entry.route}}" name="name" />
+                                                    </clr-input-container>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

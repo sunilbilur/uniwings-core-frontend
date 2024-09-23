@@ -1,0 +1,37 @@
+<div class="clr-row">
+    <div class="clr-col">
+        <div class="card">
+            <div class="card-header">
+                <p cds-text="subsection" style="color: black">Select Entry</p>
+            </div>
+            <div class="card-block">
+                <p cds-text="message" style="margin-bottom: 16px;">Primary Entries</p>
+                <div class="entries-holder">
+                    @for(item of roleConfig.pri_nav; track $index) {
+                    <div style="color: rgb(66, 66, 66)" (click)="selectPriEntry(item)">
+                        <p>{{item.name}}</p>
+                    </div>
+                    }
+                </div>
+                <div class="horizontal-line"></div>
+                <p cds-text="message" style="margin: 16px 0">Secondary Entries</p>
+                <div class="entries-holder">
+                    @for(item of roleConfig.sec_nav[currentPriEntry.route]; track $index) {
+                    @if(item.type === 'entry') {
+                    <div style="color: rgb(66, 66, 66)">
+                        <p>{{item.name}}</p>
+                    </div>
+                    } @else if(item.type === 'menu') {
+                    @for(entry of item.entries; track $index) {
+                    <div style="color: rgb(66, 66, 66)">
+                        <p>{{entry.name}}</p>
+                    </div>
+                    }
+                    }
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,2 +1,137 @@
-<app-page-title title="Components Library"
-subtitle="add, remove and manage components library"></app-page-title>
+<app-page-title title="Components Library" subtitle="add, remove and manage components library"></app-page-title>
+
+<div class="clr-row">
+    <div class="clr-col-md-12">
+        <div style="display: flex; align-items: center;">
+            <p cds-text="title">Components List</p>
+            <div style="height: 48px; margin: 0 16px; border-left: 1px solid gray"></div>
+            @if(showSyncComponentsForm){
+            <form clrForm style="padding: 0" [formGroup]="compsyncform" (ngSubmit)="onSubmit()"
+                enctype="multipart/form-data">
+                <div style="display: flex; align-items: center;">
+                    <clr-file-input-container style="margin-top: 0;">
+                        <label>Select File</label>
+                        <input type="file" formControlName="compsyncfile" clrFileInput />
+                        <clr-control-helper>Select components sync file</clr-control-helper>
+                    </clr-file-input-container>
+                    <div style="height: 48px; margin: 0 32px 0 8px; border-left: 1px solid gray"></div>
+                    <button class="btn btn-primary">Upload & Sync</button>
+                    <button class="btn btn-primary" (click)="cancelSyncComponents()">Cancel</button>
+                </div>
+            </form>
+            }@else {
+            <button class=" btn btn-primary" style="margin-left: 16px;" (click)="syncComponents()">
+                <cds-icon shape="sync"></cds-icon>Sync Components
+            </button>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="clr-row" style="margin-top: 24px">
+    <div class="clr-col-12">
+        <div style="display: flex; align-items: center">
+            <input type="text" #compinput placeholder="Search components..." class="comp-search-input" name="search" />
+            <button class="btn" style="margin-left: 16px" (click)="searchComponents(compinput.value)">Search</button>
+        </div>
+    </div>
+</div>
+
+<div class="clr-row">
+    @for(item of componentsList; track $index)
+    {
+    <div class="clr-col-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">{{ item.comp_name }}</h5>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-sm btn-link" (click)="openCompEditModal(item)">Edit Component</button>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+@if(currentComp !== null){
+<clr-modal [(clrModalOpen)]="compEditModalOpen" clrModalSize="lg">
+    <h3 class="modal-title">Editing {{currentComp.comp_name}}</h3>
+    <div class="modal-body">
+        <div class="clr-row">
+            <div class="clr-col-4">
+                <p cds-text="subsection">Select entries to add</p>
+                <div class="horizontal-line"></div>
+                <div class="card card-entry-list {{highlightTypeEntry[0]}}" (click)="setHighlightTypeEntry('enum')">
+                    <div class="card-block">
+                        <p cds-text="subsection">Enum</p>
+                    </div>
+                </div>
+                <div class="card card-entry-list {{highlightTypeEntry[1]}}" (click)="setHighlightTypeEntry('boolean')">
+                    <div class="card-block">
+                        <p cds-text="subsection">Boolean</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 16px" (click)="addEntry()">Add Entry</button>
+            </div>
+            <div class="clr-col">
+                @if(currentComp.comp_config.length == 0) {
+                <p cds-text="section" style="color: rgb(100,100,100)">No entries for this component'ss configuration</p>
+                <p cds-text="body" style="color: gray; margin-top: 8px">Select type of entry to add from left panel</p>
+                }
+                @for(item of currentComp.comp_config ; track $index)
+                {
+                <div class="card comp-config-entries">
+                    <div class="card-block">
+                        <div style="display: flex">
+                            <form clrForm clrLayout="horizontal" style="padding: 0" (submit)="preventDefault($event)">
+                                <clr-input-container class="form-control-entry">
+                                    <label>Name</label>
+                                    <input clrInput value="{{item.name}}" name="name"
+                                        (change)="setEnumName(item, enumNameRef.value)" #enumNameRef />
+                                </clr-input-container>
+                            </form>
+                            <button class="btn btn-sm" type="button"
+                                (click)="delEnumEntry(currentComp.comp_config, $index)">Del</button>
+                            @if(item.type === 'entry') {
+                            <span class="label label-info" style="margin-left: 8px;">{{item.type}}</span>
+                            }@else {
+                            <span class="label label-warning" style="margin-left: 8px;">{{item.type}}</span>
+                            }
+                        </div>
+                        <button class="btn btn-sm" style="margin-top: 24px;" (click)="addNewEnumOption(item)">Add new
+                            option</button>
+                        <div class="card" style="margin-top: 16px">
+                            <div class="card-block">
+                                @if(item.options.length == 0) {
+                                <p cds-text="secondary" style="color: gray">No options in this enum</p>
+                                }
+                                <form clrForm clrLayout="horizontal" style="padding: 0"
+                                    (submit)="preventDefault($event)">
+                                    @for(entry of item.options; track $index){
+                                    <div class="option-entries-list">
+                                        <clr-input-container class="form-control-entry">
+                                            <label>Option</label>
+                                            <input clrInput value="{{entry}}"
+                                                (change)="setEnumOptionValue(item.options, $index, enumOptionRef.value)"
+                                                #enumOptionRef name="name" />
+                                        </clr-input-container>
+                                        <button class="btn btn-sm" type="button"
+                                            (click)="delEnumOption(item.options, $index)">Del</button>
+                                    </div>
+                                    }
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline" (click)="closeCompEditModal('cancel')">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="closeCompEditModal('save')">Save Changes</button>
+        </div>
+    </div>
+</clr-modal>
+}

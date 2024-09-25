@@ -1,0 +1,52 @@
+.horizontal-line {
+    border-bottom: 1px solid #c7c7c7;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.comp-search-input {
+    width: 30%;
+    padding: 6px 16px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+.card-entry-list {
+    margin-top: 16px;
+    width: 180px;
+    cursor: pointer;
+}
+
+.highlight-type-entry {
+    background-color: #e4e4e4;
+}
+
+.comp-config-entries:first-child {
+    margin-top: 0;
+}
+
+.comp-config-entries {
+    margin-top: 16px;
+}
+
+.form-control-entry:first-child {
+    margin-top: 0;
+}
+
+.form-control-entry {
+    margin-top: 8px;
+}
+
+.option-entries-list:first-child {
+    margin-top: 0;
+}
+
+.option-entries-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+}

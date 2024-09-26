@@ -11,12 +11,12 @@
     padding: 8px;
 }
 
-.pri-entry-action-btns :not(:first-child) {
-    margin-left: 8px;
+.pri-entry-block cds-icon[shape="drag-handle"] {
+    cursor: grab;
 }
 
-.pri-entry-block cds-icon {
-    cursor: grab;
+.clr-form-control{
+    margin-top: 0 !important;
 }
 
 .form-control-entry:first-child {

@@ -1,9 +1,10 @@
 <div class="clr-row">
 
     <div class="clr-col-4">
+        <!-- Primary entries card -->
         <div class="card">
             <div class="card-block">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="flex justify-between items-center">
                     <p cds-text="message">Primary Entries</p>
                     <button class="btn btn-sm btn-primary" (click)="addPriEntry()"><cds-icon shape="plus"></cds-icon>Add
                         Entry</button>
@@ -12,21 +13,27 @@
             <div class="card-block" dndDropzone (dndDrop)="onDrop($event, roleConfig.pri_nav)"
                 dndEffectAllowed="copyMove">
 
+                <!-- Placeholder Ref -->
                 <div class="card" dndPlaceholderRef></div>
 
-                <div class="card card-list-entries" *ngFor="let item of roleConfig.pri_nav" [dndDraggable]="item"
-                    dndEffectAllowed="move" (dndMoved)="onDragged(item, 'start', roleConfig.pri_nav)"
-                    (click)="selectPriEntry(item)">
+                <!-- Primary entries list card -->
+                <div class="card card-list-entries" *ngFor="let item of roleConfig.pri_nav; let i=index"
+                    [dndDraggable]="item" dndEffectAllowed="move"
+                    (dndMoved)="onDragged(item, 'start', roleConfig.pri_nav)" (click)="selectPriEntry(item)">
                     <div class="card-block pri-entry-block">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div style="display: flex; align-items: center;">
+                        <div class="flex justify-between">
+                            <div class="flex items-center items-center">
                                 <cds-icon shape="drag-handle" size="md"></cds-icon>
-                                <p cds-text="body"> {{ item.name }}</p>
+                                <clr-input-container class="form-control-entry">
+                                    <label>Entry Name</label>
+                                    <input clrInput (input)="setPriEntryName(priEntryRef.value)" #priEntryRef
+                                        placeholder="Please add entry name" value="{{item.name}}" name="name" />
+                                </clr-input-container>
                             </div>
-                            <div class="pri-entry-action-btns">
-                                <!-- <button class="btn btn-sm btn-icon"><cds-icon
-                                            shape="pencil"></cds-icon></button> -->
-                                <button class="btn btn-sm btn-icon"><cds-icon shape="eraser"></cds-icon></button>
+                            <div class="flex items-center">
+                                <button class="btn btn-sm btn-icon" (click)="deletePriEntry(i)">
+                                    <cds-icon shape="eraser"></cds-icon>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -39,37 +46,72 @@
         </div>
     </div>
 
-    <div class="clr-col-7">
+    <div class="clr-col">
         <div class="card">
             <div class="card-block">
+
+
+                <!-- Selected primary entry and route input -->
                 @if(currentPriEntry === null){
                 <h1 cds-text="section" style="color: gray">Please select a primary entry</h1>
                 }@else {
-                <p cds-text="body-md" style="color: rgb(66, 66, 66)">{{currentPriEntry.name}}</p>
-                <div style="border-bottom: 1px solid gray; margin: 12px 0;"></div>
+                <div class="flex justify-between items-center">
+                    @if(currentPriEntry.name===''){
+                    <clr-input-container>
+                        <label>Route of: (null) </label>
+                        <input clrInput placeholder="add entry name" value="{{currentPriEntry.route}}" disabled />
+                    </clr-input-container>
+                    }@else {
+                    <clr-input-container>
+                        <label>Route of: {{currentPriEntry.name}} </label>
+                        <input clrInput placeholder="add entry name" value="{{currentPriEntry.route}}" />
+                    </clr-input-container>
+                    }
+                </div>
+                <div class="border-b border-gray my-3"></div>
 
-                <div style="display: flex; padding: 8px 0">
+
+                <div class="flex px-2">
+
+                    <!-- Entry and menu card -->
                     <div style="width:30%">
                         <div class="card" style="margin-top: 0">
                             <div class="card-block">
                                 <div class="card card-list-entries" dndDraggable="entry">
                                     <div class="card-block">
-                                        <p cds-text="section">Entry</p>
+                                        <p cds-text="section" class="text-center my-2 font-bold">Entry</p>
                                     </div>
                                 </div>
                                 <div class="card card-list-entries" dndDraggable="menu">
                                     <div class="card-block">
-                                        <p cds-text="section">Menu</p>
+                                        <p cds-text="section" class="text-center my-2 font-bold">Menu</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="horizontal-line"></div>
-                        <p cds-text="caption" style="margin-top:8px; color: gray">
-                            Drag and placethese items in the gray box to the right
+                        <p cds-text="caption" class="mt-2 text-gray">
+                            Drag and place these items in the gray box to the right
                         </p>
+
+                        <div class="mt-8">
+                            @if(currentSecEntry !== null)
+                            {
+                            <clr-input-container class="form-control-entry">
+                                <label>Route: {{currentSecEntry.name}} </label>
+                                <input clrInput placeholder="add entry name" (input)="setSecEntryRouteName(secEntryRouteRef.value)" #secEntryRouteRef value="{{currentSecEntry.route}}" />
+                            </clr-input-container>
+                            } @else {
+                            <clr-input-container class="form-control-entry">
+                                <label>Route: (Select an entry)</label>
+                            </clr-input-container>
+                            }
+
+                        </div>
                     </div>
 
+                    <!-- Entries drag and drop area -->
                     <div class="gray-box" dndDropzone
                         (dndDrop)="onDrop($event, roleConfig.sec_nav[currentPriEntry.route])">
 
@@ -77,17 +119,18 @@
                         <div class="card" dndPlaceholderRef></div>
 
                         <div class="card card-list-entries"
-                            *ngFor="let item of roleConfig.sec_nav[currentPriEntry.route]" [dndDraggable]="item"
-                            dndEffectAllowed="move"
+                            *ngFor="let item of roleConfig.sec_nav[currentPriEntry.route]; let i=index"
+                            [dndDraggable]="item" dndEffectAllowed="move"
                             (dndMoved)="onDragged(item,'start',roleConfig.sec_nav[currentPriEntry.route])">
-                            <div class="card-block">
-                                <div style="display: flex">
+                            <div class="card-block" (click)="selectSecEntry(item)">
 
+                                <!-- Top level entry or menu -->
+                                <div class="flex">
+                                    <cds-icon shape="drag-handle" size="md"></cds-icon>
                                     <form clrForm clrLayout="horizontal" style="padding: 0">
                                         <clr-input-container class="form-control-entry">
                                             <label>Name</label>
-                                            <input clrInput value="{{item.name}}" name="name" />
-
+                                            <input clrInput value="{{item.name}}" (input)="setSecEntryName(secEntryRef.value)" #secEntryRef name="name" />
                                         </clr-input-container>
                                     </form>
                                     @if(item.type === 'entry') {
@@ -95,35 +138,44 @@
                                     }@else {
                                     <span class="label label-warning" style="margin-left: 8px;">{{item.type}}</span>
                                     }
+                                    <button class="btn btn-sm btn-icon" (click)="deleteSecEntry(i)">
+                                        <cds-icon shape="eraser"></cds-icon>
+                                    </button>
                                 </div>
+
+                                <!-- If menu, render sub entries -->
                                 @if(item.type === 'menu') {
                                 <div class="card entries-card">
                                     <div class="card-block" dndDropzone (dndDrop)="onDrop($event, item.entries)">
                                         @if(item.entries.length == 0) {
                                         <p cds-text="body">No entries in this menu</p>
-                                        }@else {
-                                        <div class="card" dndPlaceholderRef></div>
                                         }
+                                        <div class="card" dndPlaceholderRef></div>
                                         @for(entry of item.entries; track $index) {
-                                        <div class="card card-list-entries" [dndDraggable]="entry"
-                                            dndEffectAllowed="move" (dndMoved)="onDragged(entry,'start',item.entries)">
+                                        <div class="card card-list-entries" (click)="selectSecEntry(entry)"
+                                            [dndDraggable]="entry" dndEffectAllowed="move"
+                                            (dndMoved)="onDragged(entry,'start',item.entries)">
                                             <div class="card-block">
-                                                <form clrForm clrLayout="horizontal" style="padding: 0">
-                                                    <clr-input-container class="form-control-entry">
-                                                        <label>Name</label>
-                                                        <input clrInput value="{{entry.name}}" name="name" />
-                                                    </clr-input-container>
-                                                    <clr-input-container class="form-control-entry">
-                                                        <label>Route</label>
-                                                        <input clrInput value="{{entry.route}}" name="name" />
-                                                    </clr-input-container>
-                                                </form>
+                                                <div class="flex justify-between">
+                                                    <cds-icon shape="drag-handle" size="md"></cds-icon>
+                                                    <form clrForm clrLayout="horizontal" style="padding: 0">
+                                                        <clr-input-container class="form-control-entry">
+                                                            <label>Name</label>
+                                                            <input clrInput value="{{entry.name}}" (input)="setSecEntryName(secEntryRef.value)" #secEntryRef name="name" />
+                                                        </clr-input-container>
+                                                    </form>
+                                                    <button class="btn btn-sm btn-icon"
+                                                        (click)="deleteSecMenuEntry(item.entries,$index)">
+                                                        <cds-icon shape="eraser"></cds-icon>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                         }
                                     </div>
                                 </div>
                                 }
+
                             </div>
                         </div>
                     </div>

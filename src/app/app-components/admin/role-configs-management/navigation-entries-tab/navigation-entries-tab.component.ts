@@ -23,6 +23,8 @@ ClarityIcons.addIcons(dragHandleIcon);
 export class NavigationEntriesTabComponent {
   @Input() roleConfig: any = null;
   currentPriEntry: any = null;
+  currentSecEntry: any = null;
+  tempRouteCounter: number = 1;
 
   constructor(private adminService: AdminService) {
 
@@ -33,13 +35,46 @@ export class NavigationEntriesTabComponent {
   }
 
   addPriEntry() {
-    this.roleConfig.pri_nav.push({ name: "", route: "" });
+    this.roleConfig.pri_nav.push({ name: "", route: "temp-route-"+this.tempRouteCounter});
+    this.roleConfig.sec_nav["temp-route-"+this.tempRouteCounter] = [];
+  }
+
+  deletePriEntry(index: number) {
+    this.roleConfig.pri_nav.splice(index, 1);
+    this.currentPriEntry = null;
   }
 
   selectPriEntry(priEntry: { name: string; route: string; }) {
-    console.log("selected pri: ", priEntry);
+    this.currentSecEntry = null;
     this.currentPriEntry = priEntry;
+  }
 
+  selectSecEntry(secEntry: any) {
+    if(secEntry.type === "entry") {
+    this.currentSecEntry = secEntry;
+    }
+  }
+
+  setPriEntryName(name: string) {
+    this.currentPriEntry.name = name;
+  }
+
+  setSecEntryName(name: string) {
+    this.currentSecEntry.name = name;
+    console.log("current sec entry: ", this.currentSecEntry);
+  }
+
+  setSecEntryRouteName(route: string) {
+    this.currentSecEntry.route = route;
+    console.log("current sec entry: ", this.currentSecEntry);
+  }
+
+  deleteSecEntry(index: number) { 
+    this.roleConfig.sec_nav[this.currentPriEntry.route].splice(index, 1);
+  }
+
+  deleteSecMenuEntry(list: any, index: number) {
+    list.splice(index, 1);
   }
 
   onDragged(item: any, type: string, list: any) {

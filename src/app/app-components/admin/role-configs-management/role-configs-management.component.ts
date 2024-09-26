@@ -24,7 +24,7 @@ export class RoleConfigsManagementComponent {
   selectedRole: string = "";
 
   constructor(private adminService: AdminService) {
-
+    
   }
 
   async ngOnInit() {

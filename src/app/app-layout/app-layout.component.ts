@@ -9,6 +9,7 @@ import {
   ClarityIcons, cogIcon, vmBugIcon, userIcon, angleIcon, formIcon,
   dashboardIcon, assignUserIcon, bankIcon, employeeGroupIcon, libraryIcon
 } from '@cds/core/icon'
+import { ActiveInstitutionService } from '../_services/active-institution.service';
 
 ClarityIcons.addIcons(cogIcon);
 ClarityIcons.addIcons(vmBugIcon);
@@ -34,10 +35,11 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
   iid: any;
   priNav: any = null;
   userFullname: string = '';
+  activeInstitutionName: string ='';
 
   constructor(
     private authService: AuthService,
-    private router: Router,
+    private activeInstitution: ActiveInstitutionService,
     private route: ActivatedRoute) {
   }
 
@@ -45,6 +47,18 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     this.iid = this.route.snapshot.data['iid'];
     this.priNav = this.route.snapshot.data['priNav'];
     this.userFullname = this.route.snapshot.data['name'];
+    console.log("[log] app-builder.component.ts || iid: ", this.iid);
+
+    this.activeInstitution.institutionName.subscribe(data => {
+      this.activeInstitutionName = data;
+    });
+
+    this.activeInstitution.setInstitutionIid("abcdef");
+    this.activeInstitution.setInstitutionName("KITCoEK");
+  }
+
+  disconnectInstitution() {
+    this.activeInstitution.disconnect();
   }
 
   ngOnDestroy(): void {

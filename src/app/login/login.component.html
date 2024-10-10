@@ -1,27 +1,42 @@
-<div class="container">
+<div class="flex h-[100%]">
 
-  <div class="info-container">
-    <img src="assets/login/{{iid}}/main.webp" alt="kitcoek image" />
+  <div class="info-container w-[50%]">
+    @if(this.iid==="admin")
+    {
+    <div class="bg-[#e8e8e8] flex h-full justify-center flex-col items-center">
+      <img class="object-contain h-[40%]" src="assets/login/{{iid}}/main.webp" alt="kitcoek image" />
+      <div class="w-full h-[20%] bg-[#e8e8e8] flex justify-center items-center">
+        <p class="text-4xl font-bold font-mono">Uniwings Cloud</p>
+      </div>
+    </div>
+    } @else {
+    <img class="object-cover w-[100%] h-[100%]" src="assets/login/{{iid}}/main.webp" alt="kitcoek image" />
+    }
   </div>
 
-  <div class="login-container">
-    <div class="login-box">
+  <div class="flex justify-center items-center bg-[#f1f1f1] w-[50%]">
+    <div class="w-[400px] border border-gray-400 rounded p-10 bg-white">
 
-      <div class="college-name">
-        <img src="assets/login/{{iid}}/logo.png" width="70" height="70">
-        <div>
+      <div class="flex items-center">
+        @if(this.iid==="admin")
+        {
+        <p class="border-b border-gray-200 text-xl font-medium">Uniwings Admin portal</p>
+        } @else {
+        <img class="ml-[-8px]" src="assets/login/{{iid}}/logo.png" width="70" height="70">
+        <div class="ml-2">
           <p cds-text="headline medium">KITCoEK</p>
-          <hr style="margin: 8px 0;">
+          <hr class="my-2 border-stone-400">
           <p cds-text="secondary regular">Internal ERP System</p>
         </div>
+        }
       </div>
 
-      <div class="login-welcome">
+      <div class="mt-11">
         <p cds-text="headline">Welcome!</p>
-        <p cds-text="section" style="margin-top: 8px;">Please sign in to continue</p>
+        <p cds-text="section" class="mt-2">Please sign in to continue</p>
       </div>
 
-      <form class="login-form" clrForm clrLabelSize="3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form class="mt-11" clrForm clrLabelSize="3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <clr-input-container style="margin-top: 5px;">
           <label for="username">Username</label>
           <input clrInput type="text" id="username" placeholder="sunilbilur@gmail.com" formControlName="username" />
@@ -34,16 +49,16 @@
         </clr-input-container>
 
         @if(displayLoginAlert == true) {
-        <div class="alert-message">
+        <div class="my-8">
           <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false" [clrAlertSizeSmall]="true">
             <clr-alert-item>
               <span class="alert-text">Wrong username or password</span>
             </clr-alert-item>
           </clr-alert>
         </div>
-      }
+        }
 
-        <div class="login-btn">
+        <div class="flex justify-between mt-8">
           <p>Form status: {{loginForm.status}}</p>
           <button class="btn btn-primary" [disabled]="!loginForm.valid">Login</button>
         </div>

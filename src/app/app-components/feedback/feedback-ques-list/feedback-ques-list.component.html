@@ -1,28 +1,127 @@
-<app-datagrid title="Questions">
+<div class="lg:flex mt-4">
+  <div>
+    <p class="text-xl">Questions List</p>
+  </div>
+  <div class="flex items-center ml-auto">
     <div class="header-controls">
-        <button class="btn btn-primary">Add Question</button>
-        <button class="btn btn-outline">Manage Tags</button>
+      <button class="btn btn-primary" (click)="addQuestionModal = true">Add Question</button>
+      <button class="btn btn-outline" (click)="manageTagsModal = true">Manage Tags</button>
+    </div>
+  </div>
+</div>
+
+<!-- modal to add questions -->
+<clr-modal [(clrModalOpen)]="addQuestionModal" clrModalSize="lg">
+  <h3 class="modal-title">Add New Question</h3>
+  <div class="modal-body h-[60vh]">
+    <div class="flex">
+      <div class="w-3/4">
+        <clr-textarea-container class="mt-0">
+          <label>Question</label>
+          <textarea class="w-full" clrTextarea name="description" required></textarea>
+        </clr-textarea-container>
+      </div>
+
+      <div class="w-1/4 ml-4">
+        <clr-radio-container>
+          <label>Type</label>
+          <clr-radio-wrapper>
+            <input type="radio" clrRadio name="options" required value="option1" />
+            <label>Scale</label>
+          </clr-radio-wrapper>
+          <clr-radio-wrapper>
+            <input type="radio" clrRadio name="options" required value="option2" />
+            <label>Descriptive</label>
+          </clr-radio-wrapper>
+        </clr-radio-container>
+      </div>
     </div>
 
-    <div class="table-body">
-        <clr-datagrid>
-            <clr-dg-column>ID</clr-dg-column>
-            <clr-dg-column>Question</clr-dg-column>
-            <clr-dg-column>Tags</clr-dg-column>
+    <div class="border-b border-gray-300 my-8"></div>
 
-            <clr-dg-row *clrDgItems="let user of users">
-                <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-                <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-                <clr-dg-cell>{{ user.creation }}</clr-dg-cell>
-            </clr-dg-row>
-
-            <clr-dg-footer>
-                <clr-dg-pagination #pagination [clrDgPageSize]="10">
-                    <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Users per page</clr-dg-page-size>
-                    {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
-                    {{ pagination.totalItems }} users
-                </clr-dg-pagination>
-            </clr-dg-footer>
-        </clr-datagrid>
+    <div class="flex mt-2">
+      <div class="w-3/4">
+        <p class="font-semibold">Select Tags</p>
+        <input type="text" placeholder="search tags..." class="border p-1 rounded">
+        <div class="mt-4 px-2 py-3 h-[200px] overflow-scroll border rounded">
+          @for(tag of tagsList.tags; track $index){
+          <span (click)="selectTag(tag)"
+            class="border border-black cursor-pointer rounded p-[2px] text-gray-600 font-semibold">{{tag}}</span>
+          }
+        </div>
+      </div>
+      <div class="w-1/4 ml-4">
+        <p class="font-semibold">Selected Tags</p>
+        <div class="border rounded h-[250px] px-2 flex flex-col overflow-scroll">
+          @for(tag of selectedTags; track $index){
+          <span class="border border-black rounded p-1 mt-2 text-gray-600 font-semibold">{{tag}}</span>
+          }
+        </div>
+      </div>
     </div>
-</app-datagrid>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="addQuestionModal = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="addNewQuestion()">Add</button>
+  </div>
+</clr-modal>
+
+<!-- modal to manage tags -->
+<clr-modal [(clrModalOpen)]="manageTagsModal" clrModalSize="lg">
+  <h3 class="modal-title">Manage Tags</h3>
+  <div class="modal-body">
+    <div class="flex justify-end">
+      <input placeholder="New tag name..." class="p-1 border rounded">
+      <button class="btn btn-sm ml-2">Add Tag</button>
+    </div>
+    <div class="h-[400px] overflow-scroll mt-4 border rounded">
+      @for(tag of tagsList.tags; track $index){
+      <div class="card w-[25%] m-2">
+        <div class="card-block">
+          <p>{{tag}}</p>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-link btn-sm">Edit</button>
+          <button class="btn btn-link btn-sm">Delete</button>
+        </div>
+      </div>
+      }
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="manageTagsModal = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="manageTagsModal = false">Add</button>
+  </div>
+</clr-modal>
+
+<!-- modal to edit questions -->
+@if(currentEditQuestion!==null)
+{
+<clr-modal [(clrModalOpen)]="editQuestionModal" clrModalSize="lg">
+  <h3 class="modal-title">Edit Question</h3>
+  <div class="modal-body">
+    <clr-textarea-container class="mt-0">
+      <label>Question</label>
+      <textarea class="w-full" clrTextarea name="description" required>{{currentEditQuestion.question}}</textarea>
+    </clr-textarea-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="editQuestionModal = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="editQuestionModal = false">Ok</button>
+  </div>
+</clr-modal>
+}
+
+@for(question of questionsList; track $index)
+{
+<div class="p-2 border-b border-gray-400">
+  <div class="font-medium">{{ question.question }}</div>
+  <div>{{ question.tags }}</div>
+  <div>
+    <button class="btn btn-sm" (click)="openQuestionEditModal(question)">Edit</button>
+    <button class="btn btn-sm">Delete</button>
+  </div>
+</div>
+}

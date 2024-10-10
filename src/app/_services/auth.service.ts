@@ -13,9 +13,7 @@ export class AuthService {
 
   login(username: string, password: string, iid: string): Observable<any> {
     console.log("[log] auth.service.ts || inside login() function");
-    let loginStatus = this.http.post('http://localhost:8000/auth/login', { username, password, iid })
-    console.log(loginStatus);
-    return loginStatus;
+    return this.http.post('http://localhost:8000/auth/login', { username, password, iid })
     //.shareReplay();
   }
 

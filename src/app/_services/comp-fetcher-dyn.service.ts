@@ -17,8 +17,6 @@ export class CompFetcherService {
 			return (await import('../app-components/admin/forms-management/forms-management.component')).FormsManagementComponent
 		case 'institutions-management':
 			return (await import('../app-components/admin/institutions-management/institutions-management.component')).InstitutionsManagementComponent
-		case 'navigation-management':
-			return (await import('../app-components/admin/navigation-management/navigation-management.component')).NavigationManagementComponent
 		case 'role-configs-management':
 			return (await import('../app-components/admin/role-configs-management/role-configs-management.component')).RoleConfigsManagementComponent
 		case 'components-tab':

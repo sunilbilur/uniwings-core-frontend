@@ -1,0 +1,14 @@
+<div class="card mt-4">
+    <div class="card-block py-2 bg-zinc-200">
+        <div class="flex items-center">
+            <clr-input-container class="form-control-entry mt-0">
+                <label>
+                    <cds-icon shape="drag-handle" size="md"></cds-icon>
+                    <span class="label">component</span>
+                </label>
+                <input clrInput (input)="setCompName(compNameRef.value)" #compNameRef placeholder="Select Component"
+                    value="{{compItem[0]}}" name="name" />
+            </clr-input-container>
+        </div>
+    </div>
+</div>

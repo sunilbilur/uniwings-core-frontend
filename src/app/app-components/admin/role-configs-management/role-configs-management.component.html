@@ -1,9 +1,38 @@
 <app-page-title title="Role Configs" subtitle="See and manage all role configs" />
 
+@if(institutionIid === "null") {
 <div class="clr-row">
+    <div class="clr-col">
+        <p cds-text="section" class="text-gray-600">Please connect to an institution from institutions tab on left, in
+            order to edit role configs</p>
+    </div>
+</div>
+}@else {
 
+<!-- add new role modal -->
+<clr-modal [(clrModalOpen)]="addRoleModal" clrModalSize="sm">
+    <h3 class="modal-title">New Role Name</h3>
+    <div class="modal-body">
+        <clr-input-container>
+            <label>Role Name</label>
+            <input clrInput placeholder="give name to the role" #roleNameRef />
+        </clr-input-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="addRoleModal = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="addNewRole(roleNameRef.value);">Save</button>
+    </div>
+</clr-modal>
+
+<div class="clr-row">
     <div class="clr-col-2">
-        <h1 cds-text="title">Roles</h1>
+        <div class="flex items-center justify-between">
+            <h1 class="text-xl mt-0">Roles</h1>
+            <button class="btn btn-sm m-0" (click)="addRoleModal=true; roleNameRef.value='' ">
+                <cds-icon shape="plus"></cds-icon>
+                New Role
+            </button>
+        </div>
         @for(item of roles; track $index) {
         <div class="card">
             <div class="card-block">
@@ -11,6 +40,7 @@
             </div>
             <div class="card-footer">
                 <button class="btn btn-sm btn-link" (click)="selectRole(item.role)">Select</button>
+                <button class="btn btn-sm btn-link" (click)="deleteRole(item.role)">delete</button>
             </div>
         </div>
         }
@@ -50,3 +80,4 @@
     </div>
 
 </div>
+}

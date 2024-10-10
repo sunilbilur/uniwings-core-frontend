@@ -1,37 +1,256 @@
 <div class="clr-row">
     <div class="clr-col">
         <div class="card">
-            <div class="card-header">
-                <p cds-text="subsection" style="color: black">Select Entry</p>
-            </div>
             <div class="card-block">
-                <p cds-text="message" style="margin-bottom: 16px;">Primary Entries</p>
-                <div class="entries-holder">
+                <p cds-text="message">Primary Entries</p>
+                <div class="flex mt-4">
                     @for(item of roleConfig.pri_nav; track $index) {
-                    <div style="color: rgb(66, 66, 66)" (click)="selectPriEntry(item)">
-                        <p>{{item.name}}</p>
+                    <div class="p-2 ml-4 border border-black rounded cursor-pointer first:ml-0"
+                        (click)="selectPriEntry(priEntryRef, item)" #priEntryRef>
+                        <span>{{item.name}}</span>
                     </div>
                     }
                 </div>
-                <div class="horizontal-line"></div>
-                <p cds-text="message" style="margin: 16px 0">Secondary Entries</p>
-                <div class="entries-holder">
+                <div class="border-b border-gray-400 mt-4"></div>
+
+                @if(currentPriEntry !== null) {
+                <p cds-text="message" class="mt-4">Secondary Entries</p>
+                <div class="clr-row">
                     @for(item of roleConfig.sec_nav[currentPriEntry.route]; track $index) {
                     @if(item.type === 'entry') {
-                    <div style="color: rgb(66, 66, 66)">
-                        <p>{{item.name}}</p>
+                    <div class="clr-col-3">
+                        <div class="card">
+                            <div class="card-block">
+                                <p>{{item.name}}</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-sm btn-link" (click)="openCompEditModal(item)">Components &
+                                    Permission</button>
+                            </div>
+                        </div>
                     </div>
                     } @else if(item.type === 'menu') {
                     @for(entry of item.entries; track $index) {
-                    <div style="color: rgb(66, 66, 66)">
-                        <p>{{entry.name}}</p>
+                    <div class="clr-col-3">
+                        <div class="card">
+                            <div class="card-block">
+                                <p>{{entry.name}}</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-sm btn-link" (click)="openCompEditModal(entry)">Components &
+                                    Permission</button>
+                            </div>
+                        </div>
                     </div>
                     }
                     }
                     }
                 </div>
-
+                }
+                @else {
+                <div class="clr-row">
+                    <p class="text-gray-600 m-4">(Please select a primary entry from above)</p>
+                </div>
+                }
             </div>
         </div>
     </div>
 </div>
+
+<clr-modal [(clrModalOpen)]="compEditModal" clrModalSize="full-screen">
+    <h3 class="modal-title">Edit Components Grid and Access</h3>
+    <div class="modal-body">
+        <div class="clr-row">
+            <div class="clr-col-2">
+                <div class="card mt-0">
+                    <div class="card-block">
+                        <p class="text-lg font-medium text-gray-800">Elements </p>
+                        <div class="card mt-2" dndDraggable="row">
+                            <div class="card-block flex justify-center items-center">
+                                <p class="font-bold">Row</p>
+                            </div>
+                        </div>
+                        <div class="card mt-2" dndDraggable="col">
+                            <div class="card-block flex justify-center items-center">
+                                <p class="font-bold">Column</p>
+                            </div>
+                        </div>
+                        <div class="card mt-2" dndDraggable="component">
+                            <div class="card-block flex justify-center items-center">
+                                <p class="font-bold">Component</p>
+                            </div>
+                        </div>
+
+                        <div class="border-b mt-4 border-gray-600"></div>
+                        <p cds-text="caption" class="mt-2 text-gray-600">
+                            Drag and place these elements in the components grid to the right
+                        </p>
+
+                        <div class="card mt-4" dndDraggable="component">
+                            <div class="card-block flex justify-center items-center">
+                                <p class="text-gray">Drop here to delete</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-gray-700 mt-4 text-base">Elements Nesting Rule</p>
+                    <div class="border-b my-1 border-gray-600"></div>
+                    <p cds-text="caption" class="text-gray-600">
+                        Only row or component Element can be placed inside a column element or as a toplevel element and
+                        only column Element can be placed only inside a row element.
+                    </p>
+                </div>
+            </div>
+            @if(currentSecEntry !== null) {
+            <div class="clr-col">
+                <div class="card mt-0">
+                    <div class="overflow-y-scroll h-[72vh] card-block bg-slate-100 pt-0" dndDropzone
+                        (dndDrop)="onDrop($event, currentSecEntry.comp, 'toplevel')">
+                        @if(currentSecEntry.comp.length === 0) {
+                        <p class="text-gray-600 text-lg">No Rows or Components in this grid</p>
+                        }
+
+                        <!-- placeholder ref -->
+                        <div class="card" dndPlaceholderRef></div>
+
+                        <!--LEVEL 1 Top level loop for rows and components -->
+                        @for(rowCompElement1 of currentSecEntry.comp; track $index) {
+                        @if(rowCompElement1[0] === 'row') {
+
+                        <div class="card mt-4" [dndDraggable]="rowCompElement1" dndEffectAllowed="move"
+                            (dndMoved)="onDragged($index, currentSecEntry.comp)">
+                            <div class="card-block p-2 flex">
+                                <cds-icon shape="drag-handle" size="md"></cds-icon>
+                                <span class="label">row</span>
+                                <div class="flex flex-1 ml-1" dndDropzone
+                                    (dndDrop)="onDrop($event, rowCompElement1, 'row')">
+
+
+                                    @if (rowCompElement1.length === 1) {
+                                    <p class="text-gray-700 text-sm">No Columns in this row</p>
+                                    }
+                                    <!-- placeholder ref -->
+                                    <div class="card rounded-none shadow-none border-gray-400 mt-0 ml-2 first:ml-0"
+                                        dndPlaceholderRef></div>
+
+                                    <!-- LEVEL 2 loop to traverse through top level row, can contain only col-->
+                                    @for(colElement1 of rowCompElement1.slice(1); track $index)
+                                    {
+                                    <div class="card ml-2 mt-0 first:ml-0 rounded-none shadow-none border-gray-400 ">
+                                        <div class="card-block p-2" [dndDraggable]="colElement1" dndEffectAllowed="move"
+                                            (dndMoved)="onDragged($index, rowCompElement1)">
+                                            <cds-icon shape="drag-handle" size="md"></cds-icon>
+                                            <span class="label">column</span>
+                                            <span class="badge bg-stone-500">{{colElement1[1]}}</span>
+
+                                            <div class="card mt-2">
+                                                <div class="card-block pt-0" dndDropzone
+                                                    (dndDrop)="onDrop($event, colElement1, 'col')">
+                                                    @if(colElement1.length === 2) {
+                                                    <p class="text-gray-700 mt-4 text-sm">No rows or components in this
+                                                        column
+                                                    </p>
+                                                    }
+
+                                                    <div class="card rounded-none shadow-none border-gray-400 mt-4 ml-2 first:ml-0"
+                                                        dndPlaceholderRef></div>
+
+                                                    <!--LEVEL3 loop to traverse through col, can contain row or component -->
+                                                    @for(rowCompElement2 of colElement1.slice(2); track $index)
+                                                    {
+                                                    @if(rowCompElement2[0]=="row")
+                                                    {
+                                                    <div class="card mt-4">
+                                                        <div class="card-block p-2 flex">
+                                                            <cds-icon shape="drag-handle" size="md"></cds-icon>
+                                                            <span class="label">row</span>
+                                                            <div class="flex flex-1 ml-1" dndDropzone
+                                                                (dndDrop)="onDrop($event, rowCompElement2, 'row')">
+
+                                                                @if(rowCompElement2.length === 1) {
+                                                                <p class="text-gray-700 text-sm">No Columns in this row
+                                                                </p>
+                                                                }
+
+                                                                <!-- placeholder ref -->
+                                                                <div class="card rounded-none shadow-none border-gray-400 mt-0 ml-2 first:ml-0"
+                                                                    dndPlaceholderRef></div>
+
+                                                                <!--LEVEL 4 loop to traverse through row, can contain only column -->
+                                                                @for(colElement2 of rowCompElement2.slice(1); track
+                                                                $index)
+                                                                {
+                                                                <div class="card ml-2 mt-0 first:ml-0 rounded-none shadow-none border-gray-400 "
+                                                                    [dndDraggable]="colElement2" dndEffectAllowed="move"
+                                                                    (dndMoved)="onDragged($index, rowCompElement2)">
+
+                                                                    <div class="card-block">
+                                                                        <cds-icon shape="drag-handle"
+                                                                            size="md"></cds-icon>
+                                                                        <span class="label">column</span>
+                                                                        <span
+                                                                            class="badge bg-stone-500">{{colElement2[1]}}</span>
+
+                                                                        <div class="card mt-2">
+                                                                            <div class="card-block pt-0" dndDropzone
+                                                                                (dndDrop)="onDrop($event, colElement2, 'lastcol')">
+                                                                                @if(colElement2.length === 2) {
+                                                                                <p class="text-gray-700 mt-4 text-sm">No
+                                                                                    rows
+                                                                                    or components in this last column
+                                                                                </p>
+                                                                                }
+
+                                                                                <div class="card rounded-none shadow-none border-gray-400 mt-4 ml-2 first:ml-0"
+                                                                                    dndPlaceholderRef></div>
+
+                                                                                <!--LEVEL 5 loop to traverse through col, can contain row or component -->
+                                                                                @for(lastCompElement of
+                                                                                colElement2.slice(2);
+                                                                                track $index)
+                                                                                {
+                                                                                <app-comp-element
+                                                                                    [compItem]="lastCompElement"
+                                                                                    (compItemChange)="updateCompItem($event, lastCompElement)"></app-comp-element>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    }@else {
+                                                    <app-comp-element [compItem]="rowCompElement2"
+                                                        [dndDraggable]="rowCompElement2"
+                                                        (compItemChange)="updateCompItem($event, rowCompElement2)"></app-comp-element>
+                                                    }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                        }@else {
+                        <app-comp-element [dndDraggable]="rowCompElement1" dndEffectAllowed="move"
+                            (dndMoved)="onDragged($event,currentSecEntry.comp)" [compItem]="rowCompElement1"
+                            (compItemChange)="updateCompItem($index, rowCompElement1)"></app-comp-element>
+                        }
+                        }
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="compEditModal = false">Discard</button>
+        <button type="button" class="btn btn-primary" (click)="compEditModal = false">Save Changes</button>
+    </div>
+</clr-modal>

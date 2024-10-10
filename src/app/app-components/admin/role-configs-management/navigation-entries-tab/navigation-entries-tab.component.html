@@ -16,13 +16,17 @@
                 <!-- Placeholder Ref -->
                 <div class="card" dndPlaceholderRef></div>
 
+                @if(roleConfig.pri_nav.length == 0) {
+                <p cds-text="subsection" class="text-gray-600">No primary entries</p>
+                }
+
                 <!-- Primary entries list card -->
                 <div class="card card-list-entries" *ngFor="let item of roleConfig.pri_nav; let i=index"
                     [dndDraggable]="item" dndEffectAllowed="move"
                     (dndMoved)="onDragged(item, 'start', roleConfig.pri_nav)" (click)="selectPriEntry(item)">
                     <div class="card-block pri-entry-block">
                         <div class="flex justify-between">
-                            <div class="flex items-center items-center">
+                            <div class="flex items-center">
                                 <cds-icon shape="drag-handle" size="md"></cds-icon>
                                 <clr-input-container class="form-control-entry">
                                     <label>Entry Name</label>
@@ -99,12 +103,14 @@
                             @if(currentSecEntry !== null)
                             {
                             <clr-input-container class="form-control-entry">
-                                <label>Route: {{currentSecEntry.name}} </label>
-                                <input clrInput placeholder="add entry name" (input)="setSecEntryRouteName(secEntryRouteRef.value)" #secEntryRouteRef value="{{currentSecEntry.route}}" />
+                                <label>Route of: {{currentSecEntry.name}} </label>
+                                <input clrInput placeholder="add entry name"
+                                    (input)="setSecEntryRouteName(secEntryRouteRef.value)" #secEntryRouteRef
+                                    value="{{currentSecEntry.route}}" />
                             </clr-input-container>
                             } @else {
                             <clr-input-container class="form-control-entry">
-                                <label>Route: (Select an entry)</label>
+                                <label>Route of: (Select an entry)</label>
                             </clr-input-container>
                             }
 
@@ -112,8 +118,14 @@
                     </div>
 
                     <!-- Entries drag and drop area -->
-                    <div class="gray-box" dndDropzone
+                    <div class="bg-gray-200 rounded p-4 w-[70%] ml-4" dndDropzone
                         (dndDrop)="onDrop($event, roleConfig.sec_nav[currentPriEntry.route])">
+                        @if(roleConfig.sec_nav[currentPriEntry.route].length == 0)
+                        {
+                        <div class="bg-gray-200 rounded w-[70%]">
+                            <p cds-text="subsection" class="text-gray-800">No secondary entries</p>
+                        </div>
+                        }
 
                         <!-- placeholder ref -->
                         <div class="card" dndPlaceholderRef></div>
@@ -130,7 +142,8 @@
                                     <form clrForm clrLayout="horizontal" style="padding: 0">
                                         <clr-input-container class="form-control-entry">
                                             <label>Name</label>
-                                            <input clrInput value="{{item.name}}" (input)="setSecEntryName(secEntryRef.value)" #secEntryRef name="name" />
+                                            <input clrInput value="{{item.name}}"
+                                                (input)="setSecEntryName(secEntryRef.value)" #secEntryRef name="name" />
                                         </clr-input-container>
                                     </form>
                                     @if(item.type === 'entry') {
@@ -161,7 +174,9 @@
                                                     <form clrForm clrLayout="horizontal" style="padding: 0">
                                                         <clr-input-container class="form-control-entry">
                                                             <label>Name</label>
-                                                            <input clrInput value="{{entry.name}}" (input)="setSecEntryName(secEntryRef.value)" #secEntryRef name="name" />
+                                                            <input clrInput value="{{entry.name}}"
+                                                                (input)="setSecEntryName(secEntryRef.value)"
+                                                                #secEntryRef name="name" />
                                                         </clr-input-container>
                                                     </form>
                                                     <button class="btn btn-sm btn-icon"
@@ -179,6 +194,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
                 }
             </div>

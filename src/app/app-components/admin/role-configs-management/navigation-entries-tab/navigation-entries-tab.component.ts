@@ -78,7 +78,6 @@ export class NavigationEntriesTabComponent {
   }
 
   onDragged(item: any, type: string, list: any) {
-    console.log("dragged: ", item, type);
     list.splice(list.indexOf(item), 1);
   }
 

@@ -1,6 +1,5 @@
 <app-page-title title="Institutions" subtitle="See and manage all Institutions" />
 
-
 <div class="clr-row clr-justify-content-center">
     <div class="clr-col-10">
         <form clrForm clrLayout="horizontal" clrLabelSize="1">
@@ -35,31 +34,23 @@
 <div class="clr-row institution-content">
     <div class="clr-col-3">
         <div class="card">
-            <div class="card-block">
-                Total number of Institutions
+            <div class="card-header">
+                <p class="font-bold">Number of Institutions</p>
             </div>
-            <div class="card-footer">
-                123
+            <div class="card-block">
+                <p class="text-4xl">{{institutions.length}}</p>
             </div>
         </div>
 
         <div class="card">
-            <div class="card-block">
-                Total number of Institutions
+            <div class="card-header">
+                <p class="font-bold">Insitituions analysis</p>
             </div>
-            <div class="card-footer">
-                123
+            <div class="card-block">
+                <p class="text-gray-600">TODO: add a pie chart here</p>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-block">
-                Total number of Institutions
-            </div>
-            <div class="card-footer">
-                123
-            </div>
-        </div>
     </div>
     <div class="clr-col-9">
         <div class="institution-table-title">
@@ -74,21 +65,22 @@
             <div class="card-header">
                 <div style="display: flex; align-items: center;">
                     <div>
-                        <img src="/assets/login/{{item.id}}/logo.png" style="width: 60px; height: auto;" alt="Institution" />
+                        <img src="/assets/login/{{item.iid}}/logo.png" style="width: 60px; height: auto;" />
                     </div>
                     <div style="margin-left: 16px">
                         <h3 cds-text="section">{{ item.name }}</h3>
                         <div class="institution-card-title-info">
-                            <p><span style="font-weight: 600">ID: </span>{{ item.id }} </p>
+                            <p><span style="font-weight: 600">ID: </span>{{ item.iid }} </p>
                             <p><span style="font-weight: 600;">Shortname:</span> {{ item.shortname }} </p>
                         </div>
                     </div>
                 </div>
                 <div class="horizontal-line" style="margin-top: 12px"></div>
                 <div style="display: flex; margin-top: 8px">
+                    <button class="btn btn-sm bg-green-100 text-zinc-900" (click)="connectInstitution(item)">Connect</button>
                     <button class="btn btn-sm ">Info</button>
                     <button class="btn btn-sm ">Edit</button>
-                    <button class="btn btn-danger btn-sm">Delete</button>
+                    <button class="btn btn-sm">Delete</button>
                 </div>
             </div>
         </div>

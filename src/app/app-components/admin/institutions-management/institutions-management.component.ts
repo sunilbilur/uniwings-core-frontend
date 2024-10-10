@@ -6,6 +6,7 @@ import { AdminService } from '../../../_services/admin.service';
 
 import { ClarityModule } from '@clr/angular';
 import { firstValueFrom } from 'rxjs';
+import { ActiveInstitutionService } from '../../../_services/active-institution.service';
 
 @Component({
   selector: 'app-institutions-management',
@@ -18,11 +19,16 @@ export class InstitutionsManagementComponent {
   @Input() compConfig: any = null;
   institutions: any = [];
 
-  constructor(private adminService: AdminService) {
+  constructor(private adminService: AdminService, private activeInstitution: ActiveInstitutionService) {
   }
 
   async ngOnInit() {
     this.institutions = await firstValueFrom(this.adminService.getInstitutions());
+  }
+
+  connectInstitution(institution: any) {
+    this.activeInstitution.setInstitutionName(institution.name);
+    this.activeInstitution.setInstitutionIid(institution.iid);
   }
 
 }

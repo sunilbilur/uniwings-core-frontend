@@ -21,6 +21,8 @@ export class CompFetcherService {
 			return (await import('../app-components/admin/role-configs-management/role-configs-management.component')).RoleConfigsManagementComponent
 		case 'components-tab':
 			return (await import('../app-components/admin/role-configs-management/components-tab/components-tab.component')).ComponentsTabComponent
+		case 'comp-element':
+			return (await import('../app-components/admin/role-configs-management/components-tab/utilities/comp-element/comp-element.component')).CompElementComponent
 		case 'information-tab':
 			return (await import('../app-components/admin/role-configs-management/information-tab/information-tab.component')).InformationTabComponent
 		case 'navigation-entries-tab':
@@ -49,10 +51,20 @@ export class CompFetcherService {
 			return (await import('../app-components/feedback/feedback-schedule/feedback-schedule.component')).FeedbackScheduleComponent
 		case 'feedback-students':
 			return (await import('../app-components/feedback/feedback-students/feedback-students.component')).FeedbackStudentsComponent
+		case 'apply-leaves':
+			return (await import('../app-components/leaves/apply-leaves/apply-leaves.component')).ApplyLeavesComponent
+		case 'approve-leaves':
+			return (await import('../app-components/leaves/approve-leaves/approve-leaves.component')).ApproveLeavesComponent
+		case 'library-bookbank-management':
+			return (await import('../app-components/library/library-bookbank-management/library-bookbank-management.component')).LibraryBookbankManagementComponent
+		case 'library-books-management':
+			return (await import('../app-components/library/library-books-management/library-books-management.component')).LibraryBooksManagementComponent
+		case 'library-student':
+			return (await import('../app-components/library/library-student/library-student.component')).LibraryStudentComponent
+		case 'student-admission':
+			return (await import('../app-components/student-management/student-admission/student-admission.component')).StudentAdmissionComponent
 		case 'student-info-control-bar':
 			return (await import('../app-components/student-management/student-info-control-bar/student-info-control-bar.component')).StudentInfoControlBarComponent
-		case 'student-info-table':
-			return (await import('../app-components/student-management/student-info-table/student-info-table.component')).StudentInfoTableComponent
 		case 'student-info-title':
 			return (await import('../app-components/student-management/student-info-title/student-info-title.component')).StudentInfoTitleComponent
 		default:

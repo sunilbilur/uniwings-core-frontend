@@ -1,1 +1,201 @@
-<p>student-info-control-bar works!</p>
+<!-- use tailwinds and add a bootstrap style search bar -->
+<div class="flex flex-col mt-4 w-full items-center justify-center">
+    <div class="flex w-[80%] ">
+        <input type="text" class="border w-[80%] p-1 rounded" (input)="setSearchQuery($event)"
+            placeholder="Search for a student" />
+        <button class="btn btn-primary w-[20%]  ml-4 my-0" (click)="submitSearchQuery()">Search</button>
+    </div>
+    <div class="w-[80%]">
+        <clr-radio-container on clrInline>
+            <label>Search In</label>
+            <clr-radio-wrapper>
+                <input type="radio" [defaultChecked]="true" clrRadio name="options" required value="option1" />
+                <label (click)="setSearchIn('prn')">PRN</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+                <input type="radio" clrRadio name="options" required value="option1" />
+                <label (click)="setSearchIn('fname')">First Name</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+                <input type="radio" clrRadio name="options" required value="option1" />
+                <label (click)="setSearchIn('mname')">Middle Name</label>
+            </clr-radio-wrapper>
+            <clr-radio-wrapper>
+                <input type="radio" clrRadio name="options" required value="option1" />
+                <label (click)="setSearchIn('lname')">Last Name</label>
+            </clr-radio-wrapper>
+        </clr-radio-container>
+    </div>
+    <div class="w-[80%] mt-4 border-b border-b-gray-400">
+    </div>
+</div>
+
+@if(selectedStudent !== null ) {
+<clr-side-panel [(clrSidePanelOpen)]="viewPanelOpened" clrSidePanelSize="xl">
+    <div class="side-panel-title">Student Information</div>
+    <div class="side-panel-body">
+        @for(field of admissionForm.fields; track $index) {
+
+        @if(field.type ==="title")
+        {
+        <p class="text-lg mt-6 font-medium">{{field.name}}</p>
+        }@else if( field[0] === "row")
+        {
+        <div class="flex mt-2">
+            @for(item of field.slice(1); track $index)
+            {
+            <div class="w-1/4">
+                @if(item.type==="input")
+                {
+                @if(item.input_type === "string") {
+                @if(item.name == "First Name")
+                {
+                <p class="text-sm">{{item.name}}: <span class="font-medium">{{selectedStudent.first_name}}</span></p>
+                } @else if(item.name == "Middle Name") {
+                <p class="text-sm">{{item.name}}: <span class="font-medium">{{selectedStudent.middle_name}}</span></p>
+                } @else if (item.name == "Last Name") {
+                <p class="text-sm">{{item.name}}: <span class="font-medium">{{selectedStudent.last_name}}</span></p>
+                } @else {
+                <p class="text-sm">{{item.name}}: <span class="font-medium">{{getFieldValue(item.name)}}</span></p>
+                }
+                } @else if(item.input_type === "radio")
+                {
+                <p class="text-sm">{{item.name}}: <span class="font-medium">{{getFieldValue(item.name)}}</span></p>
+                }
+                @else if(item.input_type ==="date")
+                {
+                <p class="text-sm">{{item.name}}: <span class="font-medium">{{getFieldValue(item.name)}}</span></p>
+                }
+                }
+                @else if(item.type === "textarea"){
+                <p class="text-sm">{{item.name}}: <span class="font-medium">{{getFieldValue(item.name)}}</span></p>
+                }@else if(item.type === "select") {
+                <p class="text-sm">{{item.name}}: <span class="font-medium">{{getFieldValue(item.name)}}</span></p>
+                }
+            </div>
+            }
+        </div>
+        }
+
+        }
+    </div>
+    <div class="side-panel-footer">
+        <button type="button" class="btn btn-primary" (click)="viewPanelOpened = false">Ok</button>
+    </div>
+</clr-side-panel>
+}
+
+@if(selectedStudent !== null) {
+<clr-side-panel [(clrSidePanelOpen)]="editPanelOpened" clrSidePanelSize="xl">
+    <div class="side-panel-title">XL panel</div>
+    <div class="side-panel-body">
+        @for(field of admissionForm.fields; track $index) {
+
+        @if(field.type ==="title")
+        {
+        <p class="text-lg mt-6 font-medium">{{field.name}}</p>
+        }@else if( field[0] === "row")
+        {
+        <div class="flex">
+            @for(item of field.slice(1); track $index)
+            {
+            <div class="w-1/4">
+                @if(item.type==="input")
+                {
+                @if(item.input_type === "string") {
+                <clr-input-container>
+                    <label>{{item.name}}</label>
+                    @if(item.name == "First Name")
+                    {
+                    <input clrInput value="{{selectedStudent.first_name}}" placeholder="Enter {{item.name}}" #inputRef
+                        (input)="setInputValue(item, inputRef)" />
+                    }@else if (item.name == "Middle Name") {
+                    <input clrInput value="{{selectedStudent.middle_name}}" placeholder="Enter {{item.name}}" #inputRef
+                        (input)="setInputValue(item, inputRef)" />
+
+                    } @else if(item.name == "Last Name") {
+                    <input clrInput value="{{selectedStudent.last_name}}" placeholder="Enter {{item.name}}" #inputRef
+                        (input)="setInputValue(item, inputRef)" />
+                    } @else {
+                    <input clrInput value="{{getFieldValue(item.name)}}" placeholder="Enter {{item.name}}" #inputRef
+                        (input)="setInputValue(item, inputRef)" />
+
+                    }
+                </clr-input-container>
+                } @else if(item.input_type === "radio")
+                {
+                <clr-radio-container clrInline>
+                    <label>{{item.name}}</label>
+                    @for(option of item.options; track $index)
+                    {
+                    <clr-radio-wrapper>
+                        @if(getFieldValue(item.name) === option) {
+                        <input type="radio" [defaultChecked]="true" clrRadio value="{{option}}" name="{{item.name}}" />
+                        } @else {
+                        <input type="radio" clrRadio value="{{option}}" name="{{item.name}}" />
+                        }
+                        <label (click)="setRadioValue(item, option)">{{option}}</label>
+                    </clr-radio-wrapper>
+                    }
+                </clr-radio-container>
+                }
+                @else if(item.input_type ==="date")
+                {
+                <clr-date-container>
+                    <label>{{item.name}}</label>
+                    <input type="date" autocomplete="off" value="{{getFieldValue(item.name)}}" clrDate #dateRef
+                        (input)="setDateValue(item, dateRef)" />
+                </clr-date-container>
+                }
+                }
+                @else if(item.type === "textarea"){
+                <clr-textarea-container>
+                    <label>{{item.name}}</label>
+                    <textarea clrTextarea name="description" required #textareaRef
+                        (input)="setTextareaValue(item, textareaRef)">{{getFieldValue(item.name)}}</textarea>
+                </clr-textarea-container>
+                }@else if(item.type === "select") {
+                <clr-select-container>
+                    <label>{{item.name}}</label>
+                    <select clrSelect name="options" #selectRef (input)="setSelectValue(item, selectRef)">
+                        @for(option of item.options; track $index)
+                        {
+                        @if(getFieldValue(item.name) === option) {
+                        <option selcted value="{{option}}">{{option}}</option>
+                        }@else {
+                        <option value="{{option}}">{{option}}</option>
+                        }
+                        }
+                    </select>
+                </clr-select-container>
+                }
+
+            </div>
+            }
+        </div>
+        }
+
+        }
+
+    </div>
+    <div class="side-panel-footer">
+        <button type="button" class="btn btn-primary" (click)="editPanelOpened = false">Ok</button>
+    </div>
+</clr-side-panel>
+}
+
+@for(student of students; track $index)
+{
+<div class="card">
+    <div class="card-block">
+        <p cds-text="section">Name: <span class="role-info-line">{{student.first_name}} {{student.middle_name}}
+                {{student.last_name}}</span></p>
+        <p cds-text="body-md" class="mt-2">PRN: <span class="role-info-line">{{student._id}}</span></p>
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-link btn-sm" (click)="viewStudent($index)">View</button>
+        <button class="btn btn-link btn-sm" (click)="editStudent($index)">Edit</button>
+        <button class="btn btn-link btn-sm" (click)="deleteStudent($index)">Delete</button>
+    </div>
+</div>
+}

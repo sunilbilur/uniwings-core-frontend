@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { PageTitleComponent } from '../../appwide/page-title/page-title.component';
 
 @Component({
@@ -10,5 +10,6 @@ import { PageTitleComponent } from '../../appwide/page-title/page-title.componen
 })
 
 export class StudentInfoTitleComponent {
+  @Input() compConfig = null;
 
 }

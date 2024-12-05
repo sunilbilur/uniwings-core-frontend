@@ -1,11 +1,118 @@
+<clr-wizard #wizard [(clrWizardOpen)]="scheduleFeedbackWizardOpened" clrWizardSize="xl">
+    <clr-wizard-title>Schedule New Feedback</clr-wizard-title>
+
+    <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+    <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+    <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'" (click)="scheduleFeedback()">Finish</clr-wizard-button>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Choose Name</ng-template>
+        <clr-textarea-container class="mt-0">
+            <label>Feedback Name</label>
+            <textarea class="w-full" clrTextarea name="name" required #textareaRef (input)="setFeedbackName(textareaRef)"></textarea>
+        </clr-textarea-container>
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Choose Courses</ng-template>
+        <form clrForm clrLayout="horizontal">
+            <clr-select-container>
+                <label>Program</label>
+                <select clrSelect name="program" #programRef (input)="setProgram(programRef)">
+                    <option disabled selected value="">Select Program</option>
+                    @for(option of programList; track $index)
+                    {
+                    <option value="{{option._id}}">{{option.dept}}</option>
+                    }
+                </select>
+            </clr-select-container>
+            @if(selectedDepartment) {
+            <clr-select-container>
+                <label>Course</label>
+                <select clrSelect name="courses" #courseRef>
+                    <option disabled selected value="">Select Course</option>
+                    @for(opt of coursesList; track $index)
+                    {
+                    <option value="{{opt._id}}">{{opt.name}}</option>
+                    }
+                </select>
+            </clr-select-container>
+            <button class="btn mt-4" type="button" (click)="addToSelectedCourses(courseRef)">Add Course</button>
+            }
+        </form>
+
+        <div class="border roundedp h-[250px] overflow-y-scroll">
+            @for(course of feedbackCourses; track $index){
+            <div class="p-2 border-b border-gray-400 flex justify-between">
+                <div class="flex items-center">
+                    <p class="mr-2 font-medium">{{course.shortcode}} - {{course.name}}</p>
+                </div>
+                <div class="flex items-center">
+                    <button class="btn btn-sm" type="button" (click)="removeFromSelectedCourses(course)">Remove</button>
+                </div>
+            </div>
+            }
+
+        </div>
+
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Choose Date & Questions</ng-template>
+        <clr-date-container class="mt-0">
+            <label>Start Date</label>
+            <input type="date" autocomplete="off" clrDate [(clrDate)]="feedbackStartDate" />
+        </clr-date-container>
+        <clr-date-container>
+            <label>End Date</label>
+            <input type="date" autocomplete="off" clrDate [(clrDate)]="feedbackEndDate" />
+        </clr-date-container>
+
+        <div class="border-b my-4"></div>
+
+        <p class="mt-2 font-medium text-sm">Choose tags</p>
+        <p>Click on the tags to toggle. All questions from selected tags will be included</p>
+        <div class="mt-2 border rounded flex flex-wrap">
+            @for(tag of tagsDocument.tags; track $index){
+            <div #tagRef class="p-2 hover:cursor-pointer hover:bg-slate-200 border w-[21%] ml-[2%] my-[2%]"
+                (click)="toggleTag(tagRef, tag)">
+                <p>{{tag}}</p>
+            </div>
+            }
+        </div>
+    </clr-wizard-page>
+
+</clr-wizard>
+
 <div class="lg:flex">
     <div>
         <p class="text-xl">Questions List</p>
     </div>
     <div class="flex items-center ml-auto">
         <div class="header-controls">
-            <button class="btn btn-primary">New Feedback</button>
+            <button class="btn btn-primary" (click)="scheduleFeedbackWizardOpened = true">New Feedback</button>
+        </div>
+
+    </div>
+</div>
+<div class="border-b border-gray-400 my-2"></div>
+@if(scheduledFeedbacks.length == 0) {
+<p class="text-gray-400">No feedback scheduled</p>
+}@else {
+@for(feedback of scheduledFeedbacks; track $index){
+<div class="card mt-4">
+    <div class="card-block">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <p class="text-sm font-medium mr-2">{{feedback.name}}</p>
+            </div>
+            <div class="flex items-center">
+                <button class="btn btn-sm" type="button" (click)="selectFeedback(feedback)">Open</button>
+                <button class="btn btn-sm ml-2" type="button" (click)="deleteScheduledFeedback(feedback._id)">Delete</button>
+            </div>
         </div>
     </div>
 </div>
-
+}
+}

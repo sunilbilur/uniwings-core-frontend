@@ -1,0 +1,60 @@
+<app-page-title title="Leave Application" subtitle="Apply for leaves" />
+
+<div class="clr-row">
+    <div class="clr-col-3">
+        <div class="card mt-0">
+            <div class="card-header">
+                <p class="font-medium">Leaves Applied in last 7 days</p>
+            </div>
+            <div class="card-footer">
+                <p class="text-2xl">2</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-block">
+                <p class="font-medium">Approved in last 7 days</p>
+            </div>
+            <div class="card-footer">
+                <p class="text-2xl">1</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-block">
+                <p class="font-medium">Pending for approval</p>
+            </div>
+            <div class="card-footer">
+                <p class="text-2xl">1</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="clr-col">
+        <button class="btn btn-primary mb-4">Apply for leave</button>
+        
+        <clr-tabs>
+            <clr-tab>
+              <button clrTabLink>Pending Approval</button>
+              <clr-tab-content *clrIfActive>
+                <p cds-text="body" cds-layout="m-t:md">
+                  Content for Dashboard tab. Here is a
+                  <a href="javascript://">link</a>
+                  that can be accessed via clicking or through keyboard via tabbing.
+                </p>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink>Approved</button>
+              <clr-tab-content *clrIfActive>
+                <p cds-text="body" cds-layout="m-t:md">Content for Management tab.</p>
+              </clr-tab-content>
+            </clr-tab>
+            <clr-tab>
+              <button clrTabLink>All leaves</button>
+              <clr-tab-content *clrIfActive>
+                <p cds-text="body" cds-layout="m-t:md">Content for Cloud tab.</p>
+              </clr-tab-content>
+            </clr-tab>
+          </clr-tabs>
+
+    </div>
+</div>

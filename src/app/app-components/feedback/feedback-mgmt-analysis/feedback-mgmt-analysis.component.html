@@ -2,11 +2,47 @@
     <clr-tab>
         <button clrTabLink>Details</button>
         <clr-tab-content *clrIfActive>
-            <p cds-text="body" cds-layout="m-t:md">
-                Content for Dashboard tab. Here is a
-                <a href="javascript://">link</a>
-                that can be accessed via clicking or through keyboard via tabbing.
-            </p>
+            @if(selectedFeedback=== null)
+            {
+            <p class="text-gray-500 text-lg mt-2">No feedback selected</p>
+            } @else {
+            <div>
+                <div class="mt-4 pb-2 border-b border-gray-400">
+                    <p class="leading-none text-sm text-gray-600">Feedback Name</p>
+                    <p class="text-lg font-bold leading-none">{{selectedFeedback.name}}</p>
+                </div>
+                <div class="flex mt-4 pb-2 border-b border-gray-400">
+                    <div>
+                        <p class="leading-none text-sm text-gray-600">Start Date</p>
+                        <p class="text-lg font-bold leading-none">{{selectedFeedback.start_date.split('T')[0]}}</p>
+                    </div>
+                    <div class="ml-8">
+                        <p class="leading-none text-sm text-gray-600">End Date</p>
+                        <p class="text-lg font-bold leading-none">{{selectedFeedback.end_date.split('T')[0]}}</p>
+                    </div>
+                </div>
+                <div class="mt-4 pb-2 border-b border-gray-400">
+                    <p class="text-sm text-gray-600">Tags</p>
+                    <div>
+                        @for(tag of selectedFeedback.tags; track $index){
+                        <p class="label text-gray-600">{{tag}}</p>
+                        }
+                    </div>
+                </div>
+                <div class="mt-4 pb-2 border-gray-400">
+                    <p class="text-sm text-gray-600">Courses</p>
+                    <div class="mt-2">
+                        @for(course of selectedFeedback.courses; track $index){
+                        <div class="card mt-2">
+                            <div class="card-block">
+                                <p class="text-gray-600">{{course.shortcode}} - {{course.name}}</p>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            }
         </clr-tab-content>
     </clr-tab>
     <clr-tab>

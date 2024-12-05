@@ -18,20 +18,20 @@
       <div class="w-3/4">
         <clr-textarea-container class="mt-0">
           <label>Question</label>
-          <textarea class="w-full" clrTextarea name="description" required></textarea>
+          <textarea class="w-full" #questionRef (input)="setNewQuestion(questionRef.value)" clrTextarea name="description" required></textarea>
         </clr-textarea-container>
       </div>
 
       <div class="w-1/4 ml-4">
-        <clr-radio-container>
+        <clr-radio-container >
           <label>Type</label>
           <clr-radio-wrapper>
-            <input type="radio" clrRadio name="options" required value="option1" />
-            <label>Scale</label>
+            <input type="radio" [defaultChecked]="true" clrRadio name="question-option" required value="option1" />
+            <label (click)="setNewQuestionType('scale')">Scale</label>
           </clr-radio-wrapper>
           <clr-radio-wrapper>
-            <input type="radio" clrRadio name="options" required value="option2" />
-            <label>Descriptive</label>
+            <input type="radio" clrRadio name="question-option" required value="option2" />
+            <label (click)="setNewQuestionType('descriptive')">Descriptive</label>
           </clr-radio-wrapper>
         </clr-radio-container>
       </div>
@@ -42,9 +42,8 @@
     <div class="flex mt-2">
       <div class="w-3/4">
         <p class="font-semibold">Select Tags</p>
-        <input type="text" placeholder="search tags..." class="border p-1 rounded">
         <div class="mt-4 px-2 py-3 h-[200px] overflow-scroll border rounded">
-          @for(tag of tagsList.tags; track $index){
+          @for(tag of tagsDocument.tags; track $index){
           <span (click)="selectTag(tag)"
             class="border border-black cursor-pointer rounded p-[2px] text-gray-600 font-semibold">{{tag}}</span>
           }
@@ -72,18 +71,17 @@
   <h3 class="modal-title">Manage Tags</h3>
   <div class="modal-body">
     <div class="flex justify-end">
-      <input placeholder="New tag name..." class="p-1 border rounded">
-      <button class="btn btn-sm ml-2">Add Tag</button>
+      <input placeholder="New tag name..." #tagNameRef class="p-1 border rounded">
+      <button class="btn btn-sm ml-2" (click)="addNewTag(tagNameRef.value)">Add Tag</button>
     </div>
-    <div class="h-[400px] overflow-scroll mt-4 border rounded">
-      @for(tag of tagsList.tags; track $index){
-      <div class="card w-[25%] m-2">
+    <div class="flex flex-wrap flex-initial max-h-[400px] pb-4 mt-4 overflow-scroll border rounded">
+      @for(tag of tagsDocument.tags; track $index){
+      <div class="card w-[21%] mx-[2%] h-[100px]">
         <div class="card-block">
           <p>{{tag}}</p>
         </div>
         <div class="card-footer">
-          <button class="btn btn-link btn-sm">Edit</button>
-          <button class="btn btn-link btn-sm">Delete</button>
+          <button class="btn btn-link btn-sm" (click)="deleteTag(tag)">Delete</button>
         </div>
       </div>
       }
@@ -92,7 +90,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="manageTagsModal = false">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="manageTagsModal = false">Add</button>
+    <button type="button" class="btn btn-primary" (click)="saveTags()">Save</button>
   </div>
 </clr-modal>
 
@@ -118,10 +116,14 @@
 {
 <div class="p-2 border-b border-gray-400">
   <div class="font-medium">{{ question.question }}</div>
-  <div>{{ question.tags }}</div>
-  <div>
-    <button class="btn btn-sm" (click)="openQuestionEditModal(question)">Edit</button>
-    <button class="btn btn-sm">Delete</button>
+  <div class="mt-1">
+  @for(tag of question.tags; track $index){
+    <p cds-text="secondary" class="label label-warning">{{tag}}</p>
+  }
+  </div>
+  <div class="mt-2">
+    <!-- <button class="btn btn-sm" (click)="openQuestionEditModal(question)">Edit</button> -->
+    <button class="btn btn-sm" (click)="deleteQuestion(question._id)">Delete</button>
   </div>
 </div>
 }

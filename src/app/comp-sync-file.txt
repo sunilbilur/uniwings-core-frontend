@@ -1,11 +1,12 @@
 components-library
 forms-management
 institutions-management
-navigation-management
 role-configs-management
 components-tab
+comp-element
 information-tab
 navigation-entries-tab
+student-admission
 datagrid
 page-title
 feedback-mgmt-analysis

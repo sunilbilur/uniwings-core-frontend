@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { PageTitleComponent } from "../../appwide/page-title/page-title.component";
+import { FeedbackService } from '../../../_services/feedback.service';
 
 @Component({
   selector: 'app-feedback-ques-overview',
@@ -10,5 +11,17 @@ import { PageTitleComponent } from "../../appwide/page-title/page-title.componen
 })
 export class FeedbackQuesOverviewComponent {
   @Input() compConfig = null;
+  questionsList: any = [];
+  questionsTagsList: any = [];
+
+  constructor(private feedbackService: FeedbackService) { }
+
+  async ngOnInit() {
+    this.questionsList = await this.feedbackService.getDataQuestionsList();
+    this.questionsTagsList = await this.feedbackService.getDataTagsList();
+    console.log("question tags list: ", this.questionsTagsList);
+  }
+
+
 
 }

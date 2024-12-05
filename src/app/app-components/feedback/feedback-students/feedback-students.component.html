@@ -1,1 +1,54 @@
-<p>feedback-students works!</p>
+<app-page-title title="Feedback" subtitle="See pending feedbacks and give feedback"></app-page-title>
+
+@if(selectedFeedback === null) {
+@for(feedback of feedbackList; track $index) {
+<div>
+    <div class="card">
+        <div class="card-block">
+            <p><span class="text-gray-600">Feedback Name:</span> {{feedback.name}} </p>
+            <p><span class="text-gray-600">Last Date:</span> {{feedback.end_date.split('T')[0]}} </p>
+        </div>
+        <div class="card-footer">
+            <button class="btn" (click)="selectFeedback(feedback)">Give Feedback</button>
+        </div>
+    </div>
+</div>
+}
+} @else {
+@for(que of questionsList; track $index) {
+<div class="card mt-4">
+    <div class="card-block">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <p class="text-sm font-medium mr-2">{{que.question}}</p>
+            </div>
+        </div>
+        @if(que.type === 'scale') {
+        <div class="flex items-end" >
+            <p class="text-[0.6rem] font-medium mr-2 label">Bad</p>
+            <clr-radio-container clrInline class="mt-2">
+                @for(option of getArrayOfTen(); track $index) {
+                <clr-radio-wrapper>
+                    <input type="radio" clrRadio value="{{option}}" name="{{que._id}}" />
+                    <label (click)="setRadioValue(que, option)">{{option}}</label>
+                </clr-radio-wrapper>
+                }
+            </clr-radio-container>
+            <p class="text-[0.6rem] font-medium mr-2 label">Good</p>
+        </div>
+        }@else if(que.type === 'descriptive') {
+
+        <clr-textarea-container class="mt-2">
+            <label>Answer</label>
+            <textarea class="w-full" clrTextarea name="description" #textareaRef
+                (input)="setDescriptiveValue(que, textareaRef.value)" required></textarea>
+        </clr-textarea-container>
+        }
+    </div>
+</div>
+}
+<div class="mt-4">
+    <button class="btn" (click)="submitFeedback()">Submit Feedback</button>
+</div>
+
+}

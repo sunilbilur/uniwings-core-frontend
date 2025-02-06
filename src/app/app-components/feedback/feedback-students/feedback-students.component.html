@@ -1,16 +1,30 @@
 <app-page-title title="Feedback" subtitle="See pending feedbacks and give feedback"></app-page-title>
 
 @if(selectedFeedback === null) {
+@if(feedbackList.length ===0){
+<p class="text-xl text-gray-600 font-medium">No Feedbacks Scheduled For You</p>
+}
 @for(feedback of feedbackList; track $index) {
-<div>
-    <div class="card">
-        <div class="card-block">
-            <p><span class="text-gray-600">Feedback Name:</span> {{feedback.name}} </p>
-            <p><span class="text-gray-600">Last Date:</span> {{feedback.end_date.split('T')[0]}} </p>
-        </div>
-        <div class="card-footer">
+<div class="card mt-4">
+    <div class="card-block">
+        <p><span class="text-gray-600">Feedback Name:</span> {{feedback.name}} </p>
+        <p><span class="text-gray-600">Start Date:</span> {{feedback.start_date.split('T')[0]}} </p>
+        <p><span class="text-gray-600">End Date:</span> {{feedback.end_date.split('T')[0]}} </p>
+    </div>
+    <div class="card-footer">
+        @if(feedback.alreadyAttempted === true)
+        {
+        <p class="p-2 border border-gray border-gray-400 bg-slate-100 rounded" disabled>Feedback Submitted</p>
+        } @else {
+        <div class="flex items-center">
+            @if(feedback.canAttempt === true) {
             <button class="btn" (click)="selectFeedback(feedback)">Give Feedback</button>
+            } @else {
+            <button class="btn" disabled (click)="selectFeedback(feedback)">Give Feedback</button>
+            <p class="ml-4 text-gray-600">(Cannot give this feedback now.)</p>
+            }
         </div>
+        }
     </div>
 </div>
 }
@@ -24,7 +38,7 @@
             </div>
         </div>
         @if(que.type === 'scale') {
-        <div class="flex items-end" >
+        <div class="flex items-end">
             <p class="text-[0.6rem] font-medium mr-2 label">Bad</p>
             <clr-radio-container clrInline class="mt-2">
                 @for(option of getArrayOfTen(); track $index) {

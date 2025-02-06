@@ -18,12 +18,13 @@
       <div class="w-3/4">
         <clr-textarea-container class="mt-0">
           <label>Question</label>
-          <textarea class="w-full" #questionRef (input)="setNewQuestion(questionRef.value)" clrTextarea name="description" required></textarea>
+          <textarea class="w-full" #questionRef (input)="setNewQuestion(questionRef.value)" clrTextarea
+            name="description" required></textarea>
         </clr-textarea-container>
       </div>
 
       <div class="w-1/4 ml-4">
-        <clr-radio-container >
+        <clr-radio-container>
           <label>Type</label>
           <clr-radio-wrapper>
             <input type="radio" [defaultChecked]="true" clrRadio name="question-option" required value="option1" />
@@ -42,10 +43,13 @@
     <div class="flex mt-2">
       <div class="w-3/4">
         <p class="font-semibold">Select Tags</p>
-        <div class="mt-4 px-2 py-3 h-[200px] overflow-scroll border rounded">
+        <div class="mt-4 pr-2 pb-3 h-[200px] overflow-scroll border rounded">
           @for(tag of tagsDocument.tags; track $index){
-          <span (click)="selectTag(tag)"
-            class="border border-black cursor-pointer rounded p-[2px] text-gray-600 font-semibold">{{tag}}</span>
+          <span
+            class="border inline-block mt-2 border-black cursor-pointer rounded p-[2px] text-gray-600 font-semibold ml-2"
+            (click)="selectTag(tag)">
+            {{tag}}
+          </span>
           }
         </div>
       </div>
@@ -53,7 +57,11 @@
         <p class="font-semibold">Selected Tags</p>
         <div class="border rounded h-[250px] px-2 flex flex-col overflow-scroll">
           @for(tag of selectedTags; track $index){
-          <span class="border border-black rounded p-1 mt-2 text-gray-600 font-semibold">{{tag}}</span>
+          <div
+            class="flex justify-between items-center border border-black rounded p-1 mt-2 text-gray-600 font-semibold">
+            <span>{{tag}}</span>
+            <button class="btn btn-sm" (click)="deleteSelectedTag(tag, selectedTags)">del</button>
+          </div>
           }
         </div>
       </div>
@@ -74,9 +82,9 @@
       <input placeholder="New tag name..." #tagNameRef class="p-1 border rounded">
       <button class="btn btn-sm ml-2" (click)="addNewTag(tagNameRef.value)">Add Tag</button>
     </div>
-    <div class="flex flex-wrap flex-initial max-h-[400px] pb-4 mt-4 overflow-scroll border rounded">
+    <div class="flex flex-wrap flex-initial max-h-[400px] pb-2 mt-4 overflow-scroll border rounded">
       @for(tag of tagsDocument.tags; track $index){
-      <div class="card w-[21%] mx-[2%] h-[100px]">
+      <div class="card first:mt-2 w-[21%] mx-[2%] h-[100px]">
         <div class="card-block">
           <p>{{tag}}</p>
         </div>
@@ -116,14 +124,15 @@
 {
 <div class="p-2 border-b border-gray-400">
   <div class="font-medium">{{ question.question }}</div>
-  <div class="mt-1">
-  @for(tag of question.tags; track $index){
+  <div class="flex mt-1">
+    <p class="border border-b mr-2 px-2 rounded bg-slate-200">{{ question.type }}</p>
+    @for(tag of question.tags; track $index){
     <p cds-text="secondary" class="label label-warning">{{tag}}</p>
-  }
+    }
   </div>
   <div class="mt-2">
     <!-- <button class="btn btn-sm" (click)="openQuestionEditModal(question)">Edit</button> -->
-    <button class="btn btn-sm" (click)="deleteQuestion(question._id)">Delete</button>
+    <button class="btn btn-sm" (click)="deleteQuestion(question._id, question)">Delete</button>
   </div>
 </div>
 }

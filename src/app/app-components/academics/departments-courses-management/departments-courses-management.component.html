@@ -1,0 +1,87 @@
+<app-page-title title="Programs and Classes" subtitle="See and manage all Programs and Classes" />
+
+<clr-modal [(clrModalOpen)]="addDepartmentModal">
+    <h3 class="modal-title">Add New Department</h3>
+    <div class="modal-body">
+        <clr-input-container>
+            <label>Department Name</label>
+            <input clrInput placeholder="department name..." (input)="setDepartmentName($event)" />
+        </clr-input-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="addDepartmentModal = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="handleAddDepartmentAdd()">Add</button>
+    </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="addCourseModal">
+    <h3 class="modal-title">Add New Department</h3>
+    <div class="modal-body">
+        @if(courseFormFields) {
+        <app-form-renderer (formChange)="courseFormData = $event" [form]="courseFormFields"></app-form-renderer>
+        }
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="addCourseModal = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="handleAddCourseAdd()">Add</button>
+    </div>
+</clr-modal>
+
+<div class="flex">
+    <div class="w-[50%] p-2 pt-0">
+        <div class="flex justify-between items-center">
+            <p class="text-xl font-regular">Departments</p>
+            <button nz-button (click)="addDepartmentModal = true">Add Department</button>
+        </div>
+        <div>
+            @for(department of departments; track $index) {
+            <div class="border border-gray-400 rounded mt-2">
+                <div class="px-2 py-1">
+                    <p class="text-gray-800 text-sm">{{department.dept}}</p>
+                </div>
+                <div class="border-b"></div>
+                <div class="px-2 py-1">
+                    <button class="btn btn-sm" (click)="deleteDepartment(department)">Delete</button>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+
+    <div class="w-[50%] p-2 pt-0">
+        <div class="flex justify-between items-center">
+            <p class="text-xl font-regular">Courses</p>
+        </div>
+        <div>
+            <clr-select-container>
+                <label>Department</label>
+                <select clrSelect (input)="selectDepartmentName($event)">
+                    <option disabled selected value="">Select Department</option>
+                    @for(department of departments; track $index) {
+                    <option [value]="department._id">{{department.dept}}</option>
+                    }
+                </select>
+            </clr-select-container>
+        </div>
+        @if(selectedDepartmentId) {
+        <div class="mt-4 mx-4">
+            <div class="mb-4">
+                <button nz-button (click)="openAddCourseModal()">Add Course</button>
+            </div>
+            @for(course of courses; track $index) {
+            @if(course.department === selectedDepartmentId) {
+            <div class="mt-2 rounded px-2 py-1 border border-gray-400 flex justify-between">
+                <div class="flex items-center">
+                    <p class="mr-2 font-medium">{{course.shortcode}} - {{course.name}}</p>
+                </div>
+                <div class="flex items-center">
+                    <button class="btn btn-sm" (click)="deleteCourse(course)">Delete</button>
+                </div>
+            </div>
+            }
+            }
+        </div>
+        }
+    </div>
+</div>

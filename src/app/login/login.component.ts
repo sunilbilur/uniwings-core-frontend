@@ -10,6 +10,7 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
 
 import { ClarityModule } from '@clr/angular';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AboutComponent } from '../about/about.component';
 
 @Component({
   selector: 'app-login',
@@ -19,8 +20,8 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  iid: any;
-  iname: any;
+  iid: string = "";
+  iname: string = "";
 
   loginForm: FormGroup;
   displayLoginAlert: boolean = false;
@@ -29,6 +30,7 @@ export class LoginComponent {
     private router: Router,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute) {
+
     // Redirect to home if already logged in
     if (this.authService.isLoggedIn()) {
       this.router.navigate(["/app/"]);
@@ -96,18 +98,13 @@ export class LoginComponent {
   onSubmit() {
     this.authService.login(this.loginForm.value.username, this.loginForm.value.password, this.iid).subscribe(
       (data: any) => {
-        if (data.status === 401) {
-          console.log("[log] login.component.ts ");
-        }
 
-        console.log("[log] login.component.ts || data: ", data);
+        console.log("[log] login.component.ts || recieved data on login: ", data);
         localStorage.setItem('user', data.jwt);
         localStorage.setItem('name', data.name);
         localStorage.setItem('iid', this.iid);
         localStorage.setItem('pri_nav', JSON.stringify(data.pri_nav));
         localStorage.setItem('sec_nav', JSON.stringify(data.sec_nav));
-
-        console.log("[log] login.component.ts || start of onSubmit() function");
 
         // appRoutes configuration
         let appRoute: any = {
@@ -118,7 +115,12 @@ export class LoginComponent {
             priNav: data.pri_nav,
             name: data.name
           },
-          children: []
+          children: [
+            {
+              path: 'about',
+              component: AboutComponent,
+            }
+          ]
         };
 
         // wildcard route configuration
@@ -143,14 +145,14 @@ export class LoginComponent {
         this.router.config.push(wildcardRoute);
 
         //print paths from router.config and log to console
+        console.log("[log] login.ts || dynamically generated paths: ");
         this.printpath('', this.router.config);
-        console.log("[log] login.component.ts || End of onSubmit() function")
 
         this.router.navigate(['/app']);
       },
       (error: HttpErrorResponse) => {
         if (error.status == 401) {
-          console.log("ERROR: WRONG username/password");
+          console.log("[err] login.component.ts || 401 STATUS; invalid credentials");
           this.displayLoginAlert = true;
         }
       }

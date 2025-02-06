@@ -1,8 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'ngx-toastr/toastr';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 html, body {
 	height: 100%;
@@ -17,6 +19,7 @@ footer, header, hgroup, menu, nav, section {
 
 p {
 	margin-top: 0 !important;
+	@apply leading-none
 }
 
 body {
@@ -24,5 +27,32 @@ body {
 }
 ol, ul {
 	list-style: none;
+}
+
+
+.card {
+	@apply border border-gray-300 shadow-lg backdrop-blur-sm rounded 
+	first:mt-0 mt-2
+}
+
+.card-header {
+	@apply px-3 py-2
+}
+
+.card-block {
+	@apply px-3 py-2
+}
+
+.card-content {
+	@apply px-3 py-2
+}
+
+.card-footer {
+	@apply px-3 py-2
+	border-t border-gray-300
+}
+
+.divider {
+	@apply border-b border-gray-400 my-2
 }
 

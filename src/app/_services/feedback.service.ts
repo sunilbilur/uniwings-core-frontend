@@ -17,13 +17,24 @@ export class FeedbackService {
     return this.http.post('http://localhost:8000/feedback/schedule-feedback', feedbackForm);
   }
 
+  getAllFeedbacks() {
+    return this.http.get('http://localhost:8000/feedback/get-all-feedbacks');
+  }
+
   getScheduledFeedbacks() {
     return this.http.get('http://localhost:8000/feedback/get-scheduled-feedbacks');
   }
 
   deleteScheduledFeedback(id: string) {
     return this.http.delete('http://localhost:8000/feedback/delete-scheduled-feedback/', { params: { feedbackid: id } });
+  }
 
+  getFeedbackAnalysis(id: any) {
+    return this.http.post('http://localhost:8000/feedback/get-feedback-analysis', { feedbackId: id });
+  }
+
+  getAllResponses(id: any) {
+    return this.http.post('http://localhost:8000/feedback/get-all-responses', { feedbackId: id });
   }
 
   setSelectedFeedbackData(feedback: any) {
@@ -77,6 +88,6 @@ export class FeedbackService {
   }
 
   submitStudentFeedback(feedbackFromData: any) {
-    return this.http.post('http://localhost:8000/feedback/submit-student-feedback', {feedback_form: feedbackFromData});
+    return this.http.post('http://localhost:8000/feedback/submit-student-feedback', {feedbackForm: feedbackFromData});
   }
 }

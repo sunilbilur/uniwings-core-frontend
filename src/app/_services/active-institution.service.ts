@@ -19,9 +19,14 @@ export class ActiveInstitutionService {
 
   setInstitutionIid(data: string) {
     this.iidDataSource.next(data); 
+
+    //set the same value in localstorage
+    localStorage.setItem('active_iid', data);
   }
 
   disconnect() {
+    localStorage.removeItem('active_iid');
+
     this.nameDataSource.next('(Please select an institution)');  
     this.iidDataSource.next('null');  
   }

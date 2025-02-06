@@ -9,13 +9,11 @@ import { NavigationEntriesTabComponent } from './navigation-entries-tab/navigati
 import { ComponentsTabComponent } from './components-tab/components-tab.component';
 import { AdminService } from '../../../_services/admin.service';
 import { ActiveInstitutionService } from '../../../_services/active-institution.service';
-import { active } from '@cds/core/internal';
-
 
 @Component({
   selector: 'app-role-configs-management',
   standalone: true,
-  imports: [ClarityModule, PageTitleComponent, InformationTabComponent, NavigationEntriesTabComponent, ComponentsTabComponent],
+  imports: [ClarityModule, PageTitleComponent, NavigationEntriesTabComponent, ComponentsTabComponent],
   templateUrl: './role-configs-management.component.html',
   styleUrl: './role-configs-management.component.css'
 })
@@ -68,6 +66,10 @@ export class RoleConfigsManagementComponent {
   async selectRole(role: string) {
     this.roleConfig = await firstValueFrom(this.adminService.getRoleConfig(role));
     this.selectedRole = role;
+  }
+
+  refreshComponents() {
+    this.adminService.refreshComponents().subscribe();
   }
 
 }

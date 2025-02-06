@@ -40,14 +40,26 @@ export class FeedbackStudentsComponent {
   }
 
   setRadioValue(question: any, answer: any) {
-    this.feedbackFormData.questions.push(
-      {
-        feedback_id: question._id,
-        question: question.question,
-        type: question.type,
-        answer: answer
+    let addNewValueFlag = true;
+
+    for (let q of this.feedbackFormData.questions) {
+      if (q.question_id === question._id) {
+        q.answer = answer;
+        addNewValueFlag = false;
+        break;
       }
-    );
+    }
+
+    if (addNewValueFlag) {
+      this.feedbackFormData.questions.push(
+        {
+          question_id: question._id,
+          question: question.question,
+          type: question.type,
+          answer: answer
+        }
+      );
+    }
   }
 
   setDescriptiveValue(question: any, answer: any) {
@@ -80,6 +92,10 @@ export class FeedbackStudentsComponent {
   submitFeedback() {
     this.feedbackFormData.feedback_id = this.selectedFeedback._id;
     this.feedbackService.submitStudentFeedback(this.feedbackFormData).subscribe();
+    console.log(this.feedbackFormData);
+    this.selectedFeedback.alreadyAttempted = true;
+
+    this.selectedFeedback = null;
   }
 
 }

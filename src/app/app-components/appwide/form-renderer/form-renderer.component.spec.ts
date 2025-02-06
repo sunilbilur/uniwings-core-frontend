@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CompElementComponent } from './comp-element.component';
+import { FormRendererComponent } from './form-renderer.component';
 
-describe('CompElementComponent', () => {
-  let component: CompElementComponent;
-  let fixture: ComponentFixture<CompElementComponent>;
+describe('FormRendererComponent', () => {
+  let component: FormRendererComponent;
+  let fixture: ComponentFixture<FormRendererComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CompElementComponent]
+      imports: [FormRendererComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(CompElementComponent);
+
+    fixture = TestBed.createComponent(FormRendererComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

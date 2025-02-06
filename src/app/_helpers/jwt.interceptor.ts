@@ -10,9 +10,9 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
     req = req.clone({
       setHeaders: { Authorization: `Bearer ${jwt}` }
     })
-    console.log("[log] jwt.interceptor.ts || appended JWT token to request");
+    // console.log("[log] jwt.interceptor.ts || appended JWT token to request");
   } else {
-    console.log("[log] jwt.interceptor.ts || failed to append JWT token to request");
+    // console.log("[log] jwt.interceptor.ts || failed to append JWT token to request");
   }
 
   return next(req);

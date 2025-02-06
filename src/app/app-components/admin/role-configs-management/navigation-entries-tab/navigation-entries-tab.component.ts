@@ -26,6 +26,8 @@ export class NavigationEntriesTabComponent {
   currentSecEntry: any = null;
   tempRouteCounter: number = 1;
 
+  skipDeletion: boolean = false;
+
   constructor(private adminService: AdminService) {
 
   }
@@ -59,14 +61,16 @@ export class NavigationEntriesTabComponent {
     this.currentPriEntry.name = name;
   }
 
-  setSecEntryName(name: string) {
-    this.currentSecEntry.name = name;
-    console.log("current sec entry: ", this.currentSecEntry);
+  setSecEntryName(e: any) {
+    this.currentSecEntry.name = e.target.value;
   }
 
-  setSecEntryRouteName(route: string) {
-    this.currentSecEntry.route = route;
-    console.log("current sec entry: ", this.currentSecEntry);
+  setSecEntryRouteName(e: any) {
+    this.currentSecEntry.route = e.target.value;
+  }
+
+  setSecEntryIconName(e: any) {
+    this.currentSecEntry.icon = e.target.value;
   }
 
   deleteSecEntry(index: number) { 
@@ -78,22 +82,37 @@ export class NavigationEntriesTabComponent {
   }
 
   onDragged(item: any, type: string, list: any) {
+    console.log("dragged: ", item);
+    if(this.skipDeletion) {
+      this.skipDeletion = false;
+      return;
+    }
     list.splice(list.indexOf(item), 1);
   }
 
-  onDrop(event: DndDropEvent, list: any) {
+  onDrop(event: DndDropEvent, list: any, dropPlace: any) {
     console.log("drop: ", event);
     let i = list.indexOf(event.data);
 
     if (event.data === "entry") {
-      list.splice(event.index, 0, {type: "entry", name: "", route: "" , comp: "", icon: ""});
+      list.splice(event.index, 0, {type: "entry", name: "", route: "" , comp: [], icon: ""});
     }
     else if (event.data === "menu") {
       list.splice(event.index, 0, { type: "menu", name: "", entries: [], icon: "" });
     }
     else {
+      console.log("rearrangement executed");
+      if(dropPlace === "menu" && event.data.type === "menu") {
+        this.skipDeletion = true;
+        return;
+      }
       list.splice(event.index, 0, event.data);
     }
+  }
+
+  saveChanges() {
+    this.adminService.updateRoleConfig(this.roleConfig.role, this.roleConfig).subscribe();
+    console.log("role config: ", this.roleConfig);
   }
 
 }

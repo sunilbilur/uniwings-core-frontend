@@ -44,9 +44,15 @@ export class FeedbackQuesListComponent {
 
   addNewQuestion() {
     this.addQuestionModal = false;
+
+    if(this.currentNewQuestion.type === undefined)
+    {
+      this.currentNewQuestion.type = "scale";
+    }
+
     this.currentNewQuestion.tags = this.selectedTags;
     this.feedbackService.addNewQuestion(this.currentNewQuestion).subscribe();
-    console.log(this.currentNewQuestion);
+    this.questionsList.push({...this.currentNewQuestion});
   }
 
   openQuestionEditModal(question: any) {
@@ -55,8 +61,8 @@ export class FeedbackQuesListComponent {
     console.log(question);
   }
 
-  deleteQuestion(id: string) {
-    this.questionsList.splice(this.questionsList.indexOf(id), 1);
+  deleteQuestion(id: string, question: any) {
+    this.questionsList.splice(this.questionsList.indexOf(question), 1);
     this.feedbackService.deleteQuestion(id).subscribe();
   }
 
@@ -73,6 +79,11 @@ export class FeedbackQuesListComponent {
       return;
     }
     this.selectedTags.push(tag);
+  }
+
+
+  deleteSelectedTag(tag: string, selectedTags: string[]) {
+    selectedTags.splice(selectedTags.indexOf(tag), 1);
   }
 
   deleteTag(tag: string) {

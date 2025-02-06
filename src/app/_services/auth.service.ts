@@ -31,6 +31,7 @@ export class AuthService {
     localStorage.removeItem('pri_nav');
     localStorage.removeItem('sec_nav');
     localStorage.removeItem('name');
+    localStorage.removeItem('active_iid')
 
     this.router.config.pop();
     this.router.config.pop();

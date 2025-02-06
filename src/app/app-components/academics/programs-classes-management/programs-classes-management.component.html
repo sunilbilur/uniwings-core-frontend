@@ -1,0 +1,103 @@
+<app-page-title title="Programs and Classes" subtitle="See and manage all Programs and Classes" />
+
+<clr-modal [(clrModalOpen)]="addProgramModal">
+    <h3 class="modal-title">Add New Program</h3>
+    <div class="modal-body">
+        @if(programFormFields) {
+        <app-form-renderer (formChange)="programFormData = $event" [form]="programFormFields"></app-form-renderer>
+        }
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="addProgramModal = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="handleAddProgram()">Ok</button>
+    </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="addClassesModal">
+    <h3 class="modal-title">Add New {{activeClassesOption}}</h3>
+    <div class="modal-body">
+        <clr-input-container>
+            <label>{{activeClassesOption}} Name</label>
+            <input clrInput placeholder="give name to the {{activeClassesOption}}" (change)="setActiveClassesName($event)" />
+        </clr-input-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="addClassesModal = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="handleAddClassesAdd()">Ok</button>
+    </div>
+</clr-modal>
+
+<div class="flex">
+    <div class="w-[50%] p-2 pt-0">
+        <div class="flex justify-between items-center">
+            <p class="text-xl font-regular">Programs</p>
+            <button nz-button (click)="addProgramModal = true">Add Program</button>
+        </div>
+        <div>
+            @for(program of programs; track $index){
+            <div class="border border-gray-300 rounded mt-2">
+                <div class="px-2 py-1">
+                    <p><span class="text-gray-600 border-r border-gray-900 pr-2 mr-2">{{program.degree}}</span>
+                        <span>{{program.name}}</span>
+                    </p>
+                </div>
+                <div class="border-b"></div>
+                <div class="px-2 py-1">
+                    <button class="btn btn-sm" (click)="deleteProgram(program)">Delete</button>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+    <div class="w-[50%] p-2 pt-0">
+        <div class="flex justify-between items-center">
+            <p class="text-xl font-regular">Classes Pattern</p>
+        </div>
+
+        <div class="flex flex-col p-4 border border-gray-300 rounded mt-2">
+            <div class="flex items-center">
+                <p class="text-lg leading-none">Years</p>
+                <button nz-button class="ml-2" (click)="openAddClassesModal('Year', classes.years)">Add Year</button>
+            </div>
+            <div class="flex mt-2 flex-wrap">
+                @for(year of classes.years; track $index){
+                <div class="border border-gray-300 rounded w-[21%] m-2 px-2 py-1">
+                    <p class="text-sm">{{year}}</p>
+                    <button class="btn btn-sm" (click)="deleteClass('year', classes.years, year)">Delete</button>
+                </div>
+                }
+            </div>
+        </div>
+
+        <div class="flex flex-col p-4 border border-gray-300 rounded mt-4">
+            <div class="flex items-center">
+                <p class="text-lg leading-none">Classes</p>
+                <button nz-button class="ml-2" (click)="openAddClassesModal('Class', classes.classes)">Add Class</button>
+            </div>
+            <div class="flex mt-2 flex-wrap">
+                @for(class of classes.classes; track $index){
+                <div class="border border-gray-300 rounded w-[21%] m-2 px-2 py-1">
+                    <p class="text-sm">{{class}}</p>
+                    <button class="btn btn-sm" (click)='deleteClass("class", classes.classes, class)'>Delete</button>
+                </div>
+                }
+            </div>
+        </div>
+
+        <div class="flex flex-col p-4 border border-gray-300 rounded mt-4">
+            <div class="flex items-center">
+                <p class="text-lg leading-none">Batches</p>
+                <button nz-button class="ml-2" (click)="openAddClassesModal('Batch', classes.batches)">Add Batch</button>
+            </div>
+            <div class="flex mt-2 flex-wrap">
+                @for(batch of classes.batches; track $index){
+                <div class="border border-gray-300 rounded w-[21%] m-2 px-2 py-1">
+                    <p class="text-sm">{{batch}}</p>
+                    <button class="btn btn-sm" (click)='deleteClass("batch", classes.batches, batch)'>Delete</button>
+                </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>

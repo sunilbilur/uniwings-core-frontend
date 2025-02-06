@@ -2,67 +2,75 @@
 
 @for(field of fields; track $index) {
 
-    @if(field.type ==="title")
+@if( field[0] === "row")
+{
+<div class="flex">
+    @for(item of field.slice(1); track $index) {
+    @if(item.type ==="title")
     {
-        <p class="text-lg mt-6 font-medium">{{field.name}}</p>
-    }@else if( field[0] === "row")
-    {
-        <div class="flex">
-            @for(item of field.slice(1); track $index)
-            {
-            <div class="w-1/4">
-                @if(item.type==="input")
-                {
-                    @if(item.input_type === "string") {
-                    <clr-input-container>
-                        <label>{{item.name}}</label>
-                        <input clrInput placeholder="Enter {{item.name}}" #inputRef (input)="setInputValue(item, inputRef)"/>
-                    </clr-input-container>
-                    } @else if(item.input_type === "radio")
-                    {
-                        <clr-radio-container clrInline>
-                        <label>{{item.name}}</label>
-                        @for(option of item.options; track $index)
-                        {
-                            <clr-radio-wrapper>
-                                <input type="radio" clrRadio value="{{option}}" name="{{item.name}}" />
-                                <label (click)="setRadioValue(item, option)">{{option}}</label>
-                            </clr-radio-wrapper>
-                        }
-                        </clr-radio-container>
-                    }
-                    @else if(item.input_type ==="date")
-                    {
-                    <clr-date-container>
-                        <label>{{item.name}}</label>
-                        <input type="date" autocomplete="off" clrDate #dateRef (change)="setDateValue(item, dateRef)"/>
-                    </clr-date-container>
-                    } 
-                }
-                @else if(item.type === "textarea"){
-                    <clr-textarea-container>
-                        <label>{{item.name}}</label>
-                        <textarea clrTextarea name="description" required #textareaRef ((input))="setTextareaValue(item, textareaRef)"></textarea>
-                    </clr-textarea-container>
-                }@else if(item.type === "select") {
-                    <clr-select-container>
-                        <label>{{item.name}}</label>
-                        <select clrSelect name="options" #selectRef (input)="setSelectValue(item, selectRef)" >
-                            <option disabled selected value="">Select {{item.name}} </option>
-                            @for(option of item.options; track $index)
-                            {
-                                <option value="{{option}}">{{option}}</option>
-                            }
-                        </select>
-                      </clr-select-container>
-                }
-
-            </div>
-            }
-        </div>
+    <p class="text-lg mt-6 font-medium">{{item.name}}</p>
     }
+    <div class="w-1/4">
+        @if(item.type==="input")
+        {
+        @if(item.input_type === "string") {
+        <clr-input-container>
+            <label>{{item.name}}</label>
+            <input clrInput placeholder="Enter {{item.name}}" #inputRef (input)="setInputValue(item, inputRef)" />
+        </clr-input-container>
+        } @else if(item.input_type === "radio")
+        {
+        <clr-radio-container clrInline>
+            <label>{{item.name}}</label>
+            @for(option of item.options; track $index)
+            {
+            <clr-radio-wrapper>
+                <input type="radio" clrRadio value="{{option}}" name="{{item.name}}" />
+                <label (click)="setRadioValue(item, option)">{{option}}</label>
+            </clr-radio-wrapper>
+            }
+        </clr-radio-container>
+        }
+        @else if(item.input_type ==="date")
+        {
+        <clr-date-container>
+            <label>{{item.name}}</label>
+            <input type="date" autocomplete="off" (input)="setDateText(item, dateRef)" clrDate #dateRef (clrDateChange)="setDateValue(item, $event)" />
+        </clr-date-container>
+        }
+        }
+        @else if(item.type === "textarea"){
+        <clr-textarea-container>
+            <label>{{item.name}}</label>
+            <textarea clrTextarea name="description" required #textareaRef
+                (input)="setTextareaValue(item, textareaRef)"></textarea>
+        </clr-textarea-container>
+        }@else if(item.type === "select") {
+        <clr-select-container>
+            <label>{{item.name}}</label>
+            <select clrSelect name="options" #selectRef (input)="setSelectValue(item, selectRef)">
+                <option disabled selected value="">Select {{item.name}} </option>
+                @if(item.external === undefined) {
+                @for(option of item.options; track $index)
+                {
+                <option value="{{option}}">{{option}}</option>
+                }
+                }@else {
+                @for(option of options[item.external]; track $index)
+                {
+                <option value="{{option}}">{{option}}</option>
+                }
+                }
+            </select>
+        </clr-select-container>
+        }
+
+    </div>
+    }
+</div>
+}
 
 }
 
 <div class="mt-8 border-b border-b-gray-400"></div>
-<button class="btn btn-primary mt-4" (click)="submitForm()">Submit</button>
+<button nz-button nzType="primary" class="mt-4" (click)="submitForm()">Submit</button>

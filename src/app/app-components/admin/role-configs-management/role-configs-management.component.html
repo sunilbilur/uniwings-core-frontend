@@ -26,7 +26,10 @@
 
 <div class="clr-row">
     <div class="clr-col-2">
-        <div class="flex items-center justify-between">
+        <div class="border-b border-gray-600 pb-2">
+            <button class="btn" (click)="refreshComponents()">Refresh Components</button>
+        </div>
+        <div class="flex items-center justify-between mt-2">
             <h1 class="text-xl mt-0">Roles</h1>
             <button class="btn btn-sm m-0" (click)="addRoleModal=true; roleNameRef.value='' ">
                 <cds-icon shape="plus"></cds-icon>
@@ -36,7 +39,7 @@
         @for(item of roles; track $index) {
         <div class="card">
             <div class="card-block">
-                <p cds-text="message"> {{ item.role }}</p>
+                <p class="text-sm"> {{ item.role }}</p>
             </div>
             <div class="card-footer">
                 <button class="btn btn-sm btn-link" (click)="selectRole(item.role)">Select</button>
@@ -56,22 +59,26 @@
         @if(selectedRole !== "")
         {
         <clr-tabs>
-            <clr-tab>
+            <!-- <clr-tab>
                 <button clrTabLink>Information</button>
                 <clr-tab-content *clrIfActive>
                     <app-information-tab [roleConfig]="roleConfig"></app-information-tab>
                 </clr-tab-content>
-            </clr-tab>
+            </clr-tab> -->
             <clr-tab>
                 <button clrTabLink>Navigation Entries</button>
                 <clr-tab-content *clrIfActive>
+                    <div class="mt-4">
                     <app-navigation-entries-tab [roleConfig]="roleConfig"></app-navigation-entries-tab>
+                    </div>
                 </clr-tab-content>
             </clr-tab>
             <clr-tab>
                 <button clrTabLink>Components</button>
                 <clr-tab-content *clrIfActive>
-                    <app-components-tab [roleConfig]="roleConfig"></app-components-tab>
+                    <div class="mt-4">
+                        <app-components-tab [roleConfig]="roleConfig"></app-components-tab>
+                    </div>
                 </clr-tab-content>
             </clr-tab>
         </clr-tabs>

@@ -11,24 +11,28 @@ export class CompFetcherService {
 
   async fetch(compName: any) {
     switch (compName) {
+		case 'departments-courses-management':
+			return (await import('../app-components/academics/departments-courses-management/departments-courses-management.component')).DepartmentsCoursesManagementComponent
+		case 'programs-classes-management':
+			return (await import('../app-components/academics/programs-classes-management/programs-classes-management.component')).ProgramsClassesManagementComponent
 		case 'components-library':
 			return (await import('../app-components/admin/components-library/components-library.component')).ComponentsLibraryComponent
-		case 'forms-management':
-			return (await import('../app-components/admin/forms-management/forms-management.component')).FormsManagementComponent
+		case 'forms-schemas-management':
+			return (await import('../app-components/admin/forms-schemas-management/forms-schemas-management.component')).FormsSchemasManagementComponent
 		case 'institutions-management':
 			return (await import('../app-components/admin/institutions-management/institutions-management.component')).InstitutionsManagementComponent
 		case 'role-configs-management':
 			return (await import('../app-components/admin/role-configs-management/role-configs-management.component')).RoleConfigsManagementComponent
 		case 'components-tab':
 			return (await import('../app-components/admin/role-configs-management/components-tab/components-tab.component')).ComponentsTabComponent
-		case 'comp-element':
-			return (await import('../app-components/admin/role-configs-management/components-tab/utilities/comp-element/comp-element.component')).CompElementComponent
 		case 'information-tab':
 			return (await import('../app-components/admin/role-configs-management/information-tab/information-tab.component')).InformationTabComponent
 		case 'navigation-entries-tab':
 			return (await import('../app-components/admin/role-configs-management/navigation-entries-tab/navigation-entries-tab.component')).NavigationEntriesTabComponent
 		case 'datagrid':
 			return (await import('../app-components/appwide/datagrid/datagrid.component')).DatagridComponent
+		case 'form-renderer':
+			return (await import('../app-components/appwide/form-renderer/form-renderer.component')).FormRendererComponent
 		case 'page-title':
 			return (await import('../app-components/appwide/page-title/page-title.component')).PageTitleComponent
 		case 'feedback-mgmt-analysis':
@@ -61,6 +65,8 @@ export class CompFetcherService {
 			return (await import('../app-components/library/library-books-management/library-books-management.component')).LibraryBooksManagementComponent
 		case 'library-student':
 			return (await import('../app-components/library/library-student/library-student.component')).LibraryStudentComponent
+		case 'student-academics-change':
+			return (await import('../app-components/student-management/student-academics-change/student-academics-change.component')).StudentAcademicsChangeComponent
 		case 'student-admission':
 			return (await import('../app-components/student-management/student-admission/student-admission.component')).StudentAdmissionComponent
 		case 'student-info-control-bar':

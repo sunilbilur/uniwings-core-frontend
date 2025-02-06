@@ -1,0 +1,123 @@
+<app-page-title title="Academics Management"
+    subtitle="See and change academic information of students"></app-page-title>
+
+<p class="text-xl font-semibold">Change Class of Students</p>
+
+<div class="clr-row mt-4">
+    <div class="clr-col">
+        <div>
+            <clr-select-container>
+                <label>Program</label>
+                <select clrSelect name="program" #programRef (input)="setFromProgram(programRef)">
+                    <option disabled selected value="">Select Program</option>
+                    @for(option of programs; track $index)
+                    {
+                    <option value="{{option}}">{{option}}</option>
+                    }
+                </select>
+            </clr-select-container>
+        </div>
+    </div>
+
+</div>
+<div class="text-lg font-medium mt-6">From Class:</div>
+<div class="clr-row">
+    <div class="clr-col-2">
+        <div class="flex">
+            <div>
+                <clr-select-container>
+                    <label>Year</label>
+                    <select clrSelect name="year" #yearRef (input)="setClass(yearRef,'from','year')">
+                        <option disabled selected value="">Select Year</option>
+                        @for(option of years; track $index)
+                        {
+                        <option value="{{option}}">{{option}}</option>
+                        }
+                    </select>
+                </clr-select-container>
+            </div>
+        </div>
+    </div>
+    <div class="clr-col-2">
+        <div>
+            <clr-select-container>
+                <label>Division</label>
+                <select clrSelect name="division" #divisionRef (input)="setClass(divisionRef,'from','class')">
+                    <option disabled selected value="">Select Division</option>
+                    @for(option of classes; track $index)
+                    {
+                    <option value="{{option}}">{{option}}</option>
+                    }
+                </select>
+            </clr-select-container>
+        </div>
+    </div>
+    <div class="clr-col-2">
+        <div>
+            <clr-select-container>
+                <label>Batch</label>
+                <select clrSelect name="batch" #batchRef (input)="setClass(batchRef,'from','batch')">
+                    <option disabled selected value="">Select Batch</option>
+                    @for(option of batches; track $index)
+                    {
+                    <option value="{{option}}">{{option}}</option>
+                    }
+                </select>
+            </clr-select-container>
+        </div>
+    </div>
+</div>
+
+<div class="text-lg font-medium mt-6">To Class:</div>
+<div class="clr-row">
+    <div class="clr-col-2">
+        <div class="flex">
+            <div>
+                <clr-select-container>
+                    <label>Year</label>
+                    <select clrSelect name="year" #toYearRef (input)="setClass(toYearRef,'to','year')">
+                        <option disabled selected value="">Select Year</option>
+                        @for(option of years; track $index)
+                        {
+                        <option value="{{option}}">{{option}}</option>
+                        }
+                    </select>
+                </clr-select-container>
+            </div>
+        </div>
+    </div>
+    <div class="clr-col-2">
+        <div>
+            <clr-select-container>
+                <label>Division</label>
+                <select clrSelect name="division" #toDivisionRef (input)="setClass(toDivisionRef,'to','class')">
+                    <option disabled selected value="">Select Division</option>
+                    @for(option of classes; track $index)
+                    {
+                    <option value="{{option}}">{{option}}</option>
+                    }
+                </select>
+            </clr-select-container>
+        </div>
+    </div>
+    <div class="clr-col-2">
+        <div>
+            <clr-select-container>
+                <label>Batch</label>
+                <select clrSelect name="batch" #toBatchRef (input)="setClass(toBatchRef,'to','batch')">
+                    <option disabled selected value="">Select Batch</option>
+                    @for(option of batches; track $index)
+                    {
+                    <option value="{{option}}">{{option}}</option>
+                    }
+                </select>
+            </clr-select-container>
+        </div>
+    </div>
+</div>
+
+<div class="clr-row mt-6">
+    <div class="clr-col border-t border-gray-400">
+        <button class="btn mt-4" (click)="changeClass()">Change Class</button>
+    </div>
+</div>

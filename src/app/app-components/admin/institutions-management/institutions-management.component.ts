@@ -27,8 +27,8 @@ export class InstitutionsManagementComponent {
   }
 
   connectInstitution(institution: any) {
-    this.activeInstitution.setInstitutionName(institution.name);
     this.activeInstitution.setInstitutionIid(institution.iid);
+    this.activeInstitution.setInstitutionName(institution.name);
   }
 
 }

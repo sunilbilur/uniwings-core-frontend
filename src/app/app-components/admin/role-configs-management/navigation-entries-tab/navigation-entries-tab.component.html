@@ -10,7 +10,7 @@
                         Entry</button>
                 </div>
             </div>
-            <div class="card-block" dndDropzone (dndDrop)="onDrop($event, roleConfig.pri_nav)"
+            <div class="card-block" dndDropzone (dndDrop)="onDrop($event, roleConfig.pri_nav, 'pri_entries_holder')"
                 dndEffectAllowed="copyMove">
 
                 <!-- Placeholder Ref -->
@@ -46,7 +46,7 @@
         </div>
         <div class="horizontal-line"></div>
         <div class="card-block">
-            <button class="btn btn-info" style="width: 100%">Save Changes</button>
+            <button class="btn btn-info" style="width: 100%" (click)="saveChanges()">Save Changes</button>
         </div>
     </div>
 
@@ -60,27 +60,19 @@
                 <h1 cds-text="section" style="color: gray">Please select a primary entry</h1>
                 }@else {
                 <div class="flex justify-between items-center">
-                    @if(currentPriEntry.name===''){
                     <clr-input-container>
-                        <label>Route of: (null) </label>
-                        <input clrInput placeholder="add entry name" value="{{currentPriEntry.route}}" disabled />
-                    </clr-input-container>
-                    }@else {
-                    <clr-input-container>
-                        <label>Route of: {{currentPriEntry.name}} </label>
+                        <label>Route of: {{currentPriEntry.name===''?'(null)':currentPriEntry.name}} </label>
                         <input clrInput placeholder="add entry name" value="{{currentPriEntry.route}}" />
                     </clr-input-container>
-                    }
                 </div>
                 <div class="border-b border-gray my-3"></div>
 
 
                 <div class="flex px-2">
-
                     <!-- Entry and menu card -->
                     <div style="width:30%">
-                        <div class="card" style="margin-top: 0">
-                            <div class="card-block">
+                        <div class="card">
+                            <div class="card-block my-2">
                                 <div class="card card-list-entries" dndDraggable="entry">
                                     <div class="card-block">
                                         <p cds-text="section" class="text-center my-2 font-bold">Entry</p>
@@ -102,16 +94,26 @@
                         <div class="mt-8">
                             @if(currentSecEntry !== null)
                             {
-                            <clr-input-container class="form-control-entry">
-                                <label>Route of: {{currentSecEntry.name}} </label>
-                                <input clrInput placeholder="add entry name"
-                                    (input)="setSecEntryRouteName(secEntryRouteRef.value)" #secEntryRouteRef
-                                    value="{{currentSecEntry.route}}" />
-                            </clr-input-container>
+                            <p class="text-[12px] text-gray-600">Selcted Entry</p>
+                            <p class="text-sm">{{currentSecEntry.name}}</p>
+
+                            <div class="mt-2">
+                                <clr-input-container class="form-control-entry">
+                                    <label>Route</label>
+                                    <input clrInput placeholder="route name ..." (input)="setSecEntryRouteName($event)"
+                                        value="{{currentSecEntry.route}}" />
+                                </clr-input-container>
+                            </div>
+
+                            <div class="mt-4">
+                                <clr-input-container class="form-control-entry">
+                                    <label>Icon</label>
+                                    <input clrInput placeholder="icon name ..." (input)="setSecEntryIconName($event)"
+                                        value="{{currentSecEntry.icon}}" />
+                                </clr-input-container>
+                            </div>
                             } @else {
-                            <clr-input-container class="form-control-entry">
-                                <label>Route of: (Select an entry)</label>
-                            </clr-input-container>
+                            <p>(Select an entry to edit it's properties)</p>
                             }
 
                         </div>
@@ -119,7 +121,7 @@
 
                     <!-- Entries drag and drop area -->
                     <div class="bg-gray-200 rounded p-4 w-[70%] ml-4" dndDropzone
-                        (dndDrop)="onDrop($event, roleConfig.sec_nav[currentPriEntry.route])">
+                        (dndDrop)="onDrop($event, roleConfig.sec_nav[currentPriEntry.route], 'sec_entries-holder')">
                         @if(roleConfig.sec_nav[currentPriEntry.route].length == 0)
                         {
                         <div class="bg-gray-200 rounded w-[70%]">
@@ -134,23 +136,20 @@
                             *ngFor="let item of roleConfig.sec_nav[currentPriEntry.route]; let i=index"
                             [dndDraggable]="item" dndEffectAllowed="move"
                             (dndMoved)="onDragged(item,'start',roleConfig.sec_nav[currentPriEntry.route])">
-                            <div class="card-block" (click)="selectSecEntry(item)">
 
+                            <div class="card-block" (click)="selectSecEntry(item)">
                                 <!-- Top level entry or menu -->
                                 <div class="flex">
                                     <cds-icon shape="drag-handle" size="md"></cds-icon>
                                     <form clrForm clrLayout="horizontal" style="padding: 0">
                                         <clr-input-container class="form-control-entry">
                                             <label>Name</label>
-                                            <input clrInput value="{{item.name}}"
-                                                (input)="setSecEntryName(secEntryRef.value)" #secEntryRef name="name" />
+                                            <input clrInput value="{{item.name}}" (input)="setSecEntryName($event)" />
                                         </clr-input-container>
                                     </form>
-                                    @if(item.type === 'entry') {
-                                    <span class="label label-info" style="margin-left: 8px;">{{item.type}}</span>
-                                    }@else {
-                                    <span class="label label-warning" style="margin-left: 8px;">{{item.type}}</span>
-                                    }
+
+                                    <span class="label {{item.type=='entry'?'label-info':'label-warning'}}"
+                                        style="margin-left: 8px;">{{item.type}}</span>
                                     <button class="btn btn-sm btn-icon" (click)="deleteSecEntry(i)">
                                         <cds-icon shape="eraser"></cds-icon>
                                     </button>
@@ -159,15 +158,17 @@
                                 <!-- If menu, render sub entries -->
                                 @if(item.type === 'menu') {
                                 <div class="card entries-card">
-                                    <div class="card-block" dndDropzone (dndDrop)="onDrop($event, item.entries)">
+                                    <div class="card-block" dndDropzone
+                                        (dndDrop)="onDrop($event, item.entries, 'menu')">
                                         @if(item.entries.length == 0) {
                                         <p cds-text="body">No entries in this menu</p>
                                         }
                                         <div class="card" dndPlaceholderRef></div>
-                                        @for(entry of item.entries; track $index) {
+
                                         <div class="card card-list-entries" (click)="selectSecEntry(entry)"
-                                            [dndDraggable]="entry" dndEffectAllowed="move"
-                                            (dndMoved)="onDragged(entry,'start',item.entries)">
+                                            *ngFor="let entry of item.entries; let i=index" [dndDraggable]="entry"
+                                            dndEffectAllowed="move" (dndMoved)="onDragged(entry,'menu',item.entries)">
+
                                             <div class="card-block">
                                                 <div class="flex justify-between">
                                                     <cds-icon shape="drag-handle" size="md"></cds-icon>
@@ -175,18 +176,18 @@
                                                         <clr-input-container class="form-control-entry">
                                                             <label>Name</label>
                                                             <input clrInput value="{{entry.name}}"
-                                                                (input)="setSecEntryName(secEntryRef.value)"
-                                                                #secEntryRef name="name" />
+                                                                (input)="setSecEntryName($event)" />
                                                         </clr-input-container>
                                                     </form>
                                                     <button class="btn btn-sm btn-icon"
-                                                        (click)="deleteSecMenuEntry(item.entries,$index)">
+                                                        (click)="deleteSecMenuEntry(item.entries, i)">
                                                         <cds-icon shape="eraser"></cds-icon>
                                                     </button>
                                                 </div>
                                             </div>
+
                                         </div>
-                                        }
+
                                     </div>
                                 </div>
                                 }
@@ -194,7 +195,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 }
             </div>

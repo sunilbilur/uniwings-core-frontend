@@ -30,6 +30,8 @@ export class StudentInfoControlBarComponent {
   };
 
 
+  options: any = {};
+
 
   constructor(private studentManagementService: StudentManagementService, private admissionService: AdmissionService) {
   }
@@ -38,6 +40,14 @@ export class StudentInfoControlBarComponent {
     this.students = await firstValueFrom(this.studentManagementService.getAllStudents());
     this.admissionForm = await firstValueFrom(this.admissionService.getAdmissionFormFields());
     console.log(this.students);
+
+    for (let field of this.admissionForm.fields) {
+      for (let o of field.slice(1)) {
+        if (o.external !== undefined) {
+          this.options[o.external] = await firstValueFrom(this.admissionService.getOptions(o.external));
+        }
+      }
+    }
   }
 
   setSearchQuery(query: any) {
@@ -50,12 +60,23 @@ export class StudentInfoControlBarComponent {
     console.log("searchIn: ", this.searchIn);
   }
 
+  fieldLengthTwo(field: any) {
+    if (field.length === 2) {
+      return "full";
+    }else {
+      return "1/4";
+    }
+  }
 
-  getFieldValue(fieldName: string) {
+  getFieldValue(fieldName: string, type: string) {
     let newFieldName = fieldName.split(" ").map((word: string) => word.toLowerCase()).join("_");
     if (this.selectedStudent.fields == undefined) {
       return "Not Found";
     } else {
+      if(type === "date") {
+        let d =new Date(this.selectedStudent.fields[newFieldName]);
+        return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+      }
       return this.selectedStudent.fields[newFieldName];
     }
   }
@@ -63,31 +84,31 @@ export class StudentInfoControlBarComponent {
   setInputValue(item: any, ref: any) {
     console.log("fired: setInputValue");
     if (item.name == "First Name") {
-      this.formData.firstName = ref.value;
+      this.selectedStudent.first_name = ref.value;
     } else if (item.name == "Middle Name") {
-      this.formData.middleName = ref.value;
+      this.selectedStudent.middle_name = ref.value;
     } else if (item.name == "Last Name") {
-      this.formData.lastName = ref.value;
+      this.selectedStudent.last_name = ref.value;
     } else {
       //suppose if item.name is like "Hello World" convert it to hello_world
       let fieldName = item.name.split(" ").map((word: string) => word.toLowerCase()).join("_");
-      this.formData.fields[fieldName] = ref.value;
+      this.selectedStudent.fields[fieldName] = ref.value;
     }
   }
 
   setRadioValue(item: any, value: any) {
     let fieldName = item.name.split(" ").map((word: string) => word.toLowerCase()).join("_");
-    this.formData.fields[fieldName] = value;
+    this.selectedStudent.fields[fieldName] = value;
   }
 
   setDateValue(item: any, ref: any) {
     let fieldName = item.name.split(" ").map((word: string) => word.toLowerCase()).join("_");
-    this.formData.fields[fieldName] = ref.value;
+    this.selectedStudent.fields[fieldName] = ref.value;
   }
 
   setTextareaValue(item: any, ref: any) {
     let fieldName = item.name.split(" ").map((word: string) => word.toLowerCase()).join("_");
-    this.formData.fields[fieldName] = ref.value;
+    this.selectedStudent.fields[fieldName] = ref.value;
   }
 
   viewStudent(index: number) {
@@ -102,17 +123,23 @@ export class StudentInfoControlBarComponent {
 
   setSelectValue(item: any, ref: any) {
     let fieldName = item.name.split(" ").map((word: string) => word.toLowerCase()).join("_");
-    this.formData.fields[fieldName] = ref.value;
+    this.selectedStudent.fields[fieldName] = ref.value;
   }
 
   deleteStudent(index: number) {
-
+    this.admissionService.deleteStudent(this.students[index]._id).subscribe();
+    this.students.splice(index, 1);
   }
 
   submitSearchQuery() {
     this.studentManagementService.searchStudents(this.searchQuery, this.searchIn).subscribe((response) => {
       this.students = response;
     });
+  } 
+  submitEditForm() {
+    this.editPanelOpened = false;
+    this.admissionService.updateAdmissionForm(this.selectedStudent._id, this.selectedStudent).subscribe();
+    console.log(this.selectedStudent);
   }
 
 }

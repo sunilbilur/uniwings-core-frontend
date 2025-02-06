@@ -1,0 +1,226 @@
+<app-page-title title="Forms Schemas" subtitle="add, remove and manage forms schemas"></app-page-title>
+
+<nz-modal [(nzVisible)]="addFormModal" nzTitle="New Form Schema">
+    <div *nzModalContent>
+        <nz-form-item>
+            <nz-form-label nzFor="email">Form Schema Name</nz-form-label>
+            <nz-form-control>
+                <input nz-input (change)="setNewFormSchemaName($event)" />
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="addFormModal = false">Cancel</button>
+        <button nz-button nzType="primary" (click)="handleAddFormModalAdd()">Add</button>
+    </div>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="editFormNameModal" nzTitle="New Form Schema">
+    <div *nzModalContent>
+        <nz-form-item>
+            <nz-form-label nzFor="email">Edit Form Schema Name</nz-form-label>
+            <nz-form-control>
+                <input nz-input (change)="setEditFormName($event)" value="{{editedFormSchemaName}}" />
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="editFormNameModal = false">Cancel</button>
+        <button nz-button nzType="primary" (click)="handleEditFormNameModalSave()">Save</button>
+    </div>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="deleteConfirmationModal" nzTitle="New Form Schema">
+    <div *nzModalContent>
+        <p class="text-lg ">Are you sure you want to take this action?</p>
+    </div>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="deleteConfirmationModal = false">Cancel</button>
+        <button nz-button nzType="primary" (click)="handleDeleteConfirmationModalConfirm()">Confirm</button>
+    </div>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="addFieldModal" nzTitle="New Form Schema">
+    <div *nzModalContent>
+        <form clrForm clrLayourt="horizontal">
+            <clr-input-container class="mt-0">
+                <label>Field Name</label>
+                <input clrInput #fieldNameRef (change)="setNewFieldName(fieldNameRef.value)" />
+            </clr-input-container>
+            <clr-select-container>
+                <label>Field Type</label>
+                <select clrSelect name="options" (change)="setNewFieldSelectedType($event)">
+                    <option value="null" selected disabled>Disabled</option>
+                    <option value="title">Title</option>
+                    <option value="input">Input</option>
+                    <option value="select">Select</option>
+                    <option value="textarea">Textarea</option>
+                </select>
+            </clr-select-container>
+            @if(newFieldData.type === "input") {
+            <clr-select-container>
+                <label>Input Type</label>
+                <select clrSelect (change)="setNewFieldSelectedInputType($event)">
+                    <option value="null" selected disabled>Disabled</option>
+                    <option value="text">Text</option>
+                    <option value="radio">Radio</option>
+                    <option value="date">date</option>
+                </select>
+            </clr-select-container>
+            }
+            @if(newFieldData.type === "select") {
+            <clr-radio-container>
+                <label>external</label>
+                <clr-radio-wrapper>
+                    <input type="radio" clrRadio name="options" value="true" (change)="setNewFieldExternal($event)" />
+                    <label>Yes</label>
+                </clr-radio-wrapper>
+                <clr-radio-wrapper>
+                    <input type="radio" clrRadio name="options" value="false" (change)="setNewFieldExternal($event)" />
+                    <label>No</label>
+                </clr-radio-wrapper>
+            </clr-radio-container>
+            }
+        </form>
+    </div>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="addFieldModal = false">Cancel</button>
+        <button nz-button nzType="primary" (click)="handleAddFieldModalAdd()">Add</button>
+    </div>
+</nz-modal>
+
+@if(activeInstitutionId === "null") {
+<div class="clr-row">
+    <div class="clr-col">
+        <p cds-text="section" class="text-gray-600">Please connect to an institution from institutions tab on left, in
+            order to edit programs and classes</p>
+    </div>
+</div>
+} @else {
+<div class="flex">
+    <div class="w-[25%] px-2">
+        <div class="flex justify-between">
+            <p class="text-xl mb-2">Forms & Schemas</p>
+            <button nz-button (click)="addFormModal = true">Add</button>
+        </div>
+        @for( formOrSchema of formsAndSchemas; track $index) {
+        <div class="card">
+            <div class="card-content">
+                <p class="font-medium text-gray-800">{{formOrSchema.name}} </p>
+            </div>
+            <div class="card-footer">
+                <button nz-button nzSize="small" (click)="selectFormOrSchema(formOrSchema)">Select</button>
+                <button nz-button nzSize="small" (click)="openEditFormNameModal(formOrSchema)"
+                    class="ml-2">Edit</button>
+                <button nz-button nzSize="small" class="ml-2"
+                    (click)="openDeleteConfirmationModal(formOrSchema)">Delete</button>
+            </div>
+        </div>
+        }
+    </div>
+    <div class="w-[75%] px-4">
+        <div class="flex justify-between">
+            <p class="text-xl mb-2">Edit Selcted Form</p>
+            <button nz-button (click)="submitForm()">Save Changes</button>
+        </div>
+        <div class="divider"></div>
+        @if(selectedFormOrSchema){
+        <div>
+            <button nz-button nzType="dashed" nzSize="small" class="ml-2"
+                (click)="addNewRow(selectedFormOrSchema.fields, -1)">Add Row Here</button>
+        </div>
+        @for(field of selectedFormOrSchema.fields; track $index) {
+        @if( field[0] === "row")
+        {
+        <div class="flex flex-col my-2 bg-slate-100 border p-2 rounded border-gray-400">
+            <div>
+                <nz-tag class="w-[100px] bg-zinc-500 text-white justify-center items-center">{{field[0]}}</nz-tag>
+                <button nz-button nzType="dashed" nzSize="small"
+                    (click)="deleteField(selectedFormOrSchema.fields, $index)">Delete Row</button>
+            </div>
+            <div>
+                <button nz-button nzType="dashed" nzSize="small" class="mt-2" (click)="openAddFieldModal(field, 0)">Add
+                    Field Here</button>
+            </div>
+            @for(item of field.slice(1); track $index)
+            {
+            <div class="flex flex-col justify-center bg-zinc-200 my-2 border p-2 rounded border-gray-400 ">
+                <div class="flex items-center">
+                    <div class="w-6 flex justify-center border border-gray-400 rounded">
+                        <p>{{$index}}</p>
+                    </div>
+                    <div class="flex ml-2">
+                        <nz-tag
+                            class="w-[100px] flex justify-center border-blue-400 items-center rounded">{{item.type}}</nz-tag>
+                        <input nz-input nzsize="small" (input)="setFieldName(item,$event)" class="ml-2"
+                            value="{{item.name}}" />
+                        <div class="ml-2">
+                            <button nz-button nzsize="small" (click)="deleteField(field, $index+1)">delete</button>
+                        </div>
+                    </div>
+                </div>
+                @if(field.type ==="title"){
+                <div class="flex my-2 border p-2 bg-slate-100 rounded border-gray-400">
+                    <nz-tag
+                        class="w-[100px] flex justify-center border-blue-400 items-center rounded">{{field.type}}</nz-tag>
+                    <input nz-input nzsize="small" class="ml-2" (input)="setFieldName(field, $event)"
+                        value="{{field.name}}" />
+                    <div class="ml-2">
+                        <button nz-button nzsize="small"
+                            (click)="deleteField(selectedFormOrSchema.fields, $index)">delete</button>
+                    </div>
+                </div>
+                } @else if(item.type === "select" || item.type === "radio")
+                {
+                <div class="mt-2">
+                    @if(checkExistence(item.external)) {
+                    <div class="flex flex-col ml-2">
+                        <p class="font-medium">External Source:</p>
+                        <div class="flex">
+                            <input nz-input nzSize="small" (input)="setFieldExternal(item,$event)" class="w-[350px]"
+                                value="{{item.name}}" />
+                        </div>
+                    </div>
+                    }@else {
+                    <nz-tag class="w-[100px] flex justify-center items-center">Options</nz-tag>
+                    <div class="flex flex-col">
+                        @for(option of item.options; track $index){
+                        <div class="flex items-center mt-1">
+                            <div class="flex">
+                                <input nz-input nzSize="small" value="{{option}}"
+                                    (input)="setFieldOption(item, $index, $event)" />
+                                <div class="ml-2">
+                                    <button nz-button nzsize="small"
+                                        (click)="deleteField(item.options, $index)">delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        <div class="mt-2">
+                            <button nz-button nzSize="small" nzType="dashed" (click)="addField(item)">Add
+                                Option</button>
+                        </div>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+
+            <div>
+                <button nz-button nzType="dashed" nzSize="small" (click)="openAddFieldModal(field, $index+1)">Add Field
+                    Here</button>
+            </div>
+            }
+        </div>
+        }
+        <div>
+            <button nz-button nzType="dashed" nzSize="small" class="ml-2"
+                (click)="addNewRow(selectedFormOrSchema.fields, $index)">Add Row Here</button>
+        </div>
+        }
+        }@else {
+        <p class="text-gray-500 text-lg">No Form Selected</p>
+        }
+    </div>
+</div>
+}

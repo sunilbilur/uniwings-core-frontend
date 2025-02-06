@@ -8,9 +8,7 @@ import { ClarityModule } from '@clr/angular';
 import {
   ClarityIcons, cogIcon, vmBugIcon, userIcon, angleIcon, formIcon,
   dashboardIcon, assignUserIcon, bankIcon, employeeGroupIcon, libraryIcon,
-  bookIcon,
-  alarmOffIcon,
-  successStandardIcon
+  bookIcon, alarmOffIcon, successStandardIcon, organizationIcon
 } from '@cds/core/icon'
 import { ActiveInstitutionService } from '../_services/active-institution.service';
 
@@ -27,15 +25,15 @@ ClarityIcons.addIcons(libraryIcon);
 ClarityIcons.addIcons(bookIcon);
 ClarityIcons.addIcons(alarmOffIcon);
 ClarityIcons.addIcons(successStandardIcon);
+ClarityIcons.addIcons(organizationIcon);
 
 @Component({
   selector: 'app-app-builder',
   standalone: true,
-  imports: [RouterModule, ClarityModule, ContentContainerComponent],
+  imports: [RouterModule, ClarityModule],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  encapsulation: ViewEncapsulation.None
 })
 export class AppLayoutComponent implements OnInit, OnDestroy {
   iid: any;
@@ -58,9 +56,6 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
     this.activeInstitution.institutionName.subscribe(data => {
       this.activeInstitutionName = data;
     });
-
-    this.activeInstitution.setInstitutionIid("abcdef");
-    this.activeInstitution.setInstitutionName("KITCoEK");
   }
 
   disconnectInstitution() {

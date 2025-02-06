@@ -4,6 +4,7 @@ import { AppLayoutComponent } from './app-layout/app-layout.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CompLoaderComponent } from './app-layout/comp-loader/comp-loader.component';
 import { ContentContainerComponent } from './app-layout/content-container/content-container.component';
+import { AboutComponent } from './about/about.component';
 
 console.log("[log] app.routes.ts || start of routes code");
 
@@ -50,7 +51,12 @@ if (priNav) {
             priNav: priNav,
             name: name
         },
-        children: []
+        children: [
+            {
+                path: 'about',
+                component: AboutComponent
+            }
+        ]
     };
 
     // wildcard route configuration

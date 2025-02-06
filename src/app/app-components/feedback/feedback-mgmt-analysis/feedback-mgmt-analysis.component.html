@@ -1,3 +1,53 @@
+<!-- modal to manage tags -->
+<clr-modal [(clrModalOpen)]="responseModalOpened" clrModalSize="full-screen">
+    <h3 class="modal-title">All Reponses</h3>
+    <div class="modal-body">
+        <div class="flex">
+            <div class="flex flex-col border p-2 w-[30%] border-gray-300 h-[560px] rounded">
+                @for(student of allResponses; track $index){
+                <div class="flex flex-col w-full border first:mt-0 mt-2 p-2 rounded cursor-pointer hover:bg-slate-100 overflow-scroll"
+                    (click)="selectedStudent = student">
+                    <p>
+                        Name: <span class="text-gray-600 font-semibold">
+                            {{student.first_name}} {{student.middle_name}} {{student.last_name}}
+                        </span>
+                    </p>
+                    <p>
+                        Year: <span class="text-gray-600 font-semibold">{{student.class.year}} </span>
+                        Class: <span class="text-gray-600 font-semibold">{{student.class.class}} </span>
+                        Batch: <span class="text-gray-600 font-semibold">{{student.class.batch}} </span>
+                    </p>
+                    <p>
+                        prn: <span class="text-gray-600 font-semibold">{{student.prn}} </span>
+                    </p>
+                </div>
+                }
+            </div>
+            <div class="flex flex-col border p-2 w-[70%] ml-4 overflow-scroll">
+                @if(selectedStudent === null) {
+                <p class="text-xl text-gray-600">Please select a student</p>
+                }@else {
+                @for(question of selectedStudent.responses; track $index) {
+                <div class="p-2 border-b border-gray-400">
+                    <div class="font-medium">
+                        {{ question.question }}
+                        <span class="border border-b mr-2 px-2 rounded bg-slate-200">{{ question.type }}</span>
+                    </div>
+                    <div class="flex mt-1">
+                        <p>Answer: <span class="font-semibold">{{ question.answer }}</span></p>
+                    </div>
+                </div>
+                }
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="responseModalOpened = false">OK</button>
+    </div>
+</clr-modal>
+
 <clr-tabs>
     <clr-tab>
         <button clrTabLink>Details</button>
@@ -14,11 +64,11 @@
                 <div class="flex mt-4 pb-2 border-b border-gray-400">
                     <div>
                         <p class="leading-none text-sm text-gray-600">Start Date</p>
-                        <p class="text-lg font-bold leading-none">{{selectedFeedback.start_date.split('T')[0]}}</p>
+                        <p class="text-lg font-bold leading-none">{{selectedFeedback.start_date.split('00:')[0]}}</p>
                     </div>
                     <div class="ml-8">
                         <p class="leading-none text-sm text-gray-600">End Date</p>
-                        <p class="text-lg font-bold leading-none">{{selectedFeedback.end_date.split('T')[0]}}</p>
+                        <p class="text-lg font-bold leading-none">{{selectedFeedback.end_date.split('00:')[0]}}</p>
                     </div>
                 </div>
                 <div class="mt-4 pb-2 border-b border-gray-400">
@@ -28,6 +78,19 @@
                         <p class="label text-gray-600">{{tag}}</p>
                         }
                     </div>
+                </div>
+                <div class="flex flex-col mt-4 pb-2 border-b border-gray-400">
+                    <p class="leading-none text-sm text-gray-600">Classes</p>
+                    @for(class of selectedFeedback.class; track $index){
+                    <div class="flex flex-col w-full border mt-2 p-2 rounded ">
+                        <p>Program: <span class="text-gray-600 font-semibold">{{class.program}}</span></p>
+                        <p>
+                            Year: <span class="text-gray-600 font-semibold">{{class.year}} </span>
+                            Class: <span class="text-gray-600 font-semibold">{{class.class}}</span>
+                            Batch: <span class="text-gray-600 font-semibold">{{class.batch}} </span>
+                        </p>
+                    </div>
+                    }
                 </div>
                 <div class="mt-4 pb-2 border-gray-400">
                     <p class="text-sm text-gray-600">Courses</p>
@@ -48,7 +111,27 @@
     <clr-tab>
         <button clrTabLink>Results</button>
         <clr-tab-content *clrIfActive>
-            <p cds-text="body" cds-layout="m-t:md">Content for Management tab.</p>
+            @if(selectedFeedback=== null)
+            {
+            <p class="text-gray-500 text-lg mt-2">No feedback selected</p>
+            } @else {
+                @if(feedbackAnalysis) {
+                    <button (click)="openResponseModal()" class="btn btn-primary mt-4">See Individual Responses</button>
+                    @for(question of feedbackAnalysis.questions; track $index){
+                    <div class="p-2 border-b border-gray-400">
+                        <div class="font-medium">
+                            {{ question.question }}
+                            <span class="border border-b mr-2 px-2 rounded bg-slate-200">{{ question.type }}</span>
+                        </div>
+                        <div class="flex mt-1">
+                            <p>Average: <span class="font-semibold">{{ question.answer }}</span></p>
+                        </div>
+                    </div>
+                    }
+                    } @else {
+                    <p class="text-gray-500 text-lg mt-2">No Results yet!</p>
+                    }
+            }
         </clr-tab-content>
     </clr-tab>
 </clr-tabs>

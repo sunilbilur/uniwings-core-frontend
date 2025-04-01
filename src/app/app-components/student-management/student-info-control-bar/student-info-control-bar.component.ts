@@ -4,6 +4,7 @@ import { ClarityModule } from '@clr/angular';
 import { StudentManagementService } from '../../../_services/student-management.service';
 import { firstValueFrom } from 'rxjs';
 import { AdmissionService } from '../../../_services/admission.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-student-info-control-bar',
@@ -33,7 +34,9 @@ export class StudentInfoControlBarComponent {
   options: any = {};
 
 
-  constructor(private studentManagementService: StudentManagementService, private admissionService: AdmissionService) {
+  constructor(private studentManagementService: StudentManagementService,
+    private toastr: ToastrService,
+     private admissionService: AdmissionService) {
   }
 
   async ngOnInit() {
@@ -73,6 +76,10 @@ export class StudentInfoControlBarComponent {
     if (this.selectedStudent.fields == undefined) {
       return "Not Found";
     } else {
+      if (this.selectedStudent.fields[newFieldName] == undefined) {
+        return "(No Data Entry)";
+      }
+
       if(type === "date") {
         let d =new Date(this.selectedStudent.fields[newFieldName]);
         return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
@@ -138,7 +145,15 @@ export class StudentInfoControlBarComponent {
   } 
   submitEditForm() {
     this.editPanelOpened = false;
-    this.admissionService.updateAdmissionForm(this.selectedStudent._id, this.selectedStudent).subscribe();
+    this.admissionService.updateAdmissionForm(this.selectedStudent._id, this.selectedStudent).subscribe(
+      data => {
+        console.log("HELLO THERE");
+        this.toastr.success('Student Updated Successfully');
+      },
+      error => {
+        this.toastr.error('Something went wrong');
+      }
+    );
     console.log(this.selectedStudent);
   }
 

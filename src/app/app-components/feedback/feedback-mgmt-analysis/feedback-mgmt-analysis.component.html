@@ -6,7 +6,7 @@
             <div class="flex flex-col border p-2 w-[30%] border-gray-300 h-[560px] rounded">
                 @for(student of allResponses; track $index){
                 <div class="flex flex-col w-full border first:mt-0 mt-2 p-2 rounded cursor-pointer hover:bg-slate-100 overflow-scroll"
-                    (click)="selectedStudent = student">
+                    (click)="selectedStudent = student; selectedStudentCourse = null">
                     <p>
                         Name: <span class="text-gray-600 font-semibold">
                             {{student.first_name}} {{student.middle_name}} {{student.last_name}}
@@ -27,7 +27,27 @@
                 @if(selectedStudent === null) {
                 <p class="text-xl text-gray-600">Please select a student</p>
                 }@else {
-                @for(question of selectedStudent.responses; track $index) {
+
+                <div class="flex gap-2 mt-2">
+                    @for(course of selectedStudent.responses; track $index){
+                    <div (click)="selectedStudentCourse = course"
+                        class="p-2 cursor-pointer rounded border border-gray-400">
+                        <span>{{course.course.name}}</span>
+                    </div>
+                    }
+                </div>
+
+                <p class="mt-2">
+                    <span class="font-semibold">Selected Course:</span>
+                    @if(selectedStudentCourse) {
+                    {{selectedStudentCourse.course.name}}
+                    }@else {
+                    (Please Select a course)
+                    }
+                </p>
+
+                @if(selectedStudentCourse){
+                @for(question of selectedStudentCourse.questions; track $index) {
                 <div class="p-2 border-b border-gray-400">
                     <div class="font-medium">
                         {{ question.question }}
@@ -37,6 +57,7 @@
                         <p>Answer: <span class="font-semibold">{{ question.answer }}</span></p>
                     </div>
                 </div>
+                }
                 }
                 }
 
@@ -115,22 +136,44 @@
             {
             <p class="text-gray-500 text-lg mt-2">No feedback selected</p>
             } @else {
-                @if(feedbackAnalysis) {
-                    <button (click)="openResponseModal()" class="btn btn-primary mt-4">See Individual Responses</button>
-                    @for(question of feedbackAnalysis.questions; track $index){
-                    <div class="p-2 border-b border-gray-400">
-                        <div class="font-medium">
-                            {{ question.question }}
-                            <span class="border border-b mr-2 px-2 rounded bg-slate-200">{{ question.type }}</span>
-                        </div>
-                        <div class="flex mt-1">
-                            <p>Average: <span class="font-semibold">{{ question.answer }}</span></p>
-                        </div>
-                    </div>
+            @if(feedbackAnalysis) {
+            <button (click)="openResponseModal()" class="btn btn-primary mt-4">See Individual Responses</button>
+            <div class="flex gap-2 mt-2">
+                @for(course of feedbackAnalysis.analysis; track $index){
+                <div (click)="selectCourse(course)" class="p-2 cursor-pointer rounded border border-gray-400">
+                    <span>{{course.course.name}}</span>
+                </div>
+                }
+            </div>
+
+            <p class="mt-2">
+                <span class="font-semibold">Selected Course:</span>
+                @if(selectedCourse) {
+                {{selectedCourse.course.name}}
+                }@else {
+                (Please Select a course)
+                }
+            </p>
+            @if(selectedCourse) {
+            @for(question of selectedCourse.questions; track $index){
+            <div class="p-2 border-b border-gray-400">
+                <div class="font-medium">
+                    {{ question.question }}
+                    <span class="border border-b mr-2 px-2 rounded bg-slate-200">{{ question.type }}</span>
+                </div>
+                <div class="flex mt-1">
+                    @if(question.type === "descriptive") {
+                    <p>Average: <span class="font-semibold">{{ (question.answer -2).toFixed(2) }}</span></p>
+                    }@else {
+                    <p>Average: <span class="font-semibold">{{ (question.answer).toFixed(2)}}</span></p>
                     }
-                    } @else {
-                    <p class="text-gray-500 text-lg mt-2">No Results yet!</p>
-                    }
+                </div>
+            </div>
+            }
+            }
+            } @else {
+            <p class="text-gray-500 text-lg mt-2">No Results yet!</p>
+            }
             }
         </clr-tab-content>
     </clr-tab>

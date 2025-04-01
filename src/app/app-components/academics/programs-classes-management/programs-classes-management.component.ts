@@ -40,6 +40,7 @@ export class ProgramsClassesManagementComponent {
   async ngOnInit() {
       this.programs = await firstValueFrom(this.adminService.getPrograms());
       this.classes = await firstValueFrom(this.adminService.getClasses());
+      this.programFormFields = await firstValueFrom(this.formService.getFormsAndSchemas("add_program"));
       this.classes = this.classes[0]
   }
 

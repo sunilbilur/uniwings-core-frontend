@@ -4,6 +4,7 @@ import { FeedbackService } from '../../../_services/feedback.service';
 import { AcademicsService } from '../../../_services/academics.service';
 import { first, firstValueFrom } from 'rxjs';
 import { AdmissionService } from '../../../_services/admission.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-feedback-mgmt-schedule',
@@ -42,6 +43,7 @@ export class FeedbackMgmtScheduleComponent {
 
   constructor(private feedbackService: FeedbackService,
     private academicsService: AcademicsService,
+    private toastr: ToastrService,
     private admissionService: AdmissionService) {
     console.log("[log] feedback-mgmt-schedule.component.ts || inside constructor");
   }
@@ -75,6 +77,14 @@ export class FeedbackMgmtScheduleComponent {
   addToSelectedClasses() {
     console.log("SELECTED CLASS: ", this.selectedClass);
 
+    if (this.selectedClass.class === undefined ||
+      this.selectedClass.batch === undefined ||
+      this.selectedClass.year === undefined ||
+      this.selectedClass.program === undefined) {
+        this.toastr.info("Please select all fields");
+      return;
+    }
+
     for (let classItem of this.selectedFeedbackClasses) {
       if (this.selectedClass.program === classItem.program &&
         this.selectedClass.year === classItem.year &&
@@ -82,10 +92,10 @@ export class FeedbackMgmtScheduleComponent {
         this.selectedClass.batch === classItem.batch) {
         console.log("skipped: ", this.selectedClass, classItem);
         return;
-      }     
+      }
     }
 
-    this.selectedFeedbackClasses.push({...this.selectedClass});
+    this.selectedFeedbackClasses.push({ ...this.selectedClass });
   }
 
   removeFromSelectedClasses(classRef: any) {
@@ -143,6 +153,27 @@ export class FeedbackMgmtScheduleComponent {
   }
 
   scheduleFeedback() {
+    this.scheduleFeedbackWizardOpened = true;
+
+    if (this.feedbackForm.name == null || this.feedbackForm.name == "") {
+      this.toastr.error("Please enter a name for the feedback");
+      return;
+    } else if (this.feedbackCourses.length == 0) {
+      this.toastr.error("Please select at least one course");
+      return;
+    } else if (this.selectedFeedbackClasses.length == 0) {
+      this.toastr.error("Please select at least one class");
+      return;
+    } else if (this.feedbackStartDate == null || this.feedbackEndDate == null) {
+      this.toastr.error("Please select a start and end date");
+      return;
+    } else if (this.selectedTags.length == 0) {
+      this.toastr.error("Please select at least one tag");
+      return;
+    }
+
+    console.log("Checks passed");
+
     this.feedbackForm.tags = this.selectedTags;
     this.feedbackForm.courses = this.feedbackCourses;
     this.feedbackForm.start_date = this.feedbackStartDate;

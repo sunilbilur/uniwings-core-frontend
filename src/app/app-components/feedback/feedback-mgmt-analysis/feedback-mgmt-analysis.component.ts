@@ -17,6 +17,8 @@ export class FeedbackMgmtAnalysisComponent {
   feedbackAnalysis: any = null;
   allResponses: any = null;
   selectedStudent: any = null;
+  selectedCourse: any = null;
+  selectedStudentCourse: any = null;
 
   responseModalOpened: boolean = false;
 
@@ -41,6 +43,9 @@ export class FeedbackMgmtAnalysisComponent {
     this.feedbackService.getAllResponses(this.selectedFeedback._id);
   }
 
+  selectCourse(course: any) {
+    this.selectedCourse = course;
+  }
 
 
 }

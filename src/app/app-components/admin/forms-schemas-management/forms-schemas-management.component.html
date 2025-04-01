@@ -150,8 +150,11 @@
                         <p>{{$index}}</p>
                     </div>
                     <div class="flex ml-2">
-                        <nz-tag
-                            class="w-[100px] flex justify-center border-blue-400 items-center rounded">{{item.type}}</nz-tag>
+                        <nz-tag class="w-[100px] flex justify-center border-blue-400 items-center rounded">{{item.type}}
+                            @if(item.input_type) {
+                            ({{item.input_type}})
+                            }
+                        </nz-tag>
                         <input nz-input nzsize="small" (input)="setFieldName(item,$event)" class="ml-2"
                             value="{{item.name}}" />
                         <div class="ml-2">
@@ -170,7 +173,7 @@
                             (click)="deleteField(selectedFormOrSchema.fields, $index)">delete</button>
                     </div>
                 </div>
-                } @else if(item.type === "select" || item.type === "radio")
+                } @else if(item.type === "select" || item.input_type === "radio")
                 {
                 <div class="mt-2">
                     @if(checkExistence(item.external)) {

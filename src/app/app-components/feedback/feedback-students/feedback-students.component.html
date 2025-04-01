@@ -1,6 +1,6 @@
 <app-page-title title="Feedback" subtitle="See pending feedbacks and give feedback"></app-page-title>
 
-@if(selectedFeedback === null) {
+@if(selectedFeedback === null && selectedCourse == null) {
 @if(feedbackList.length ===0){
 <p class="text-xl text-gray-600 font-medium">No Feedbacks Scheduled For You</p>
 }
@@ -8,8 +8,8 @@
 <div class="card mt-4">
     <div class="card-block">
         <p><span class="text-gray-600">Feedback Name:</span> {{feedback.name}} </p>
-        <p><span class="text-gray-600">Start Date:</span> {{feedback.start_date.split('T')[0]}} </p>
-        <p><span class="text-gray-600">End Date:</span> {{feedback.end_date.split('T')[0]}} </p>
+        <p><span class="text-gray-600">Start Date:</span> {{feedback.start_date.split('00:')[0]}} </p>
+        <p><span class="text-gray-600">End Date:</span> {{feedback.end_date.split('00:')[0]}} </p>
     </div>
     <div class="card-footer">
         @if(feedback.alreadyAttempted === true)
@@ -28,7 +28,29 @@
     </div>
 </div>
 }
-} @else {
+} @else if(selectedFeedback !==null && selectedCourse === null) {
+
+@for(course of selectedFeedback.courses; track $index) {
+<div class="card mt-4">
+    <div class="card-block">
+        <p class="text-gray-600">{{course.shortcode}} - {{course.name}}</p>
+    </div>
+    <div class="card-footer">
+        @if(course.alreadyAttempted === true)
+        {
+        <p class="p-2 border border-gray border-gray-400 bg-slate-100 rounded" disabled>Feedback Submitted</p>
+        }@else {
+        <button class="btn" (click)="selectCourse(course)">Give Feedback</button>
+        }
+    </div>
+</div>
+}
+
+<div class="mt-4">
+    <button class="btn" (click)="goToFeedbacks()">Go to Feedbacks</button>
+</div>
+} @else if(selectedFeedback && selectedCourse) {
+
 @for(que of questionsList; track $index) {
 <div class="card mt-4">
     <div class="card-block">
@@ -64,5 +86,4 @@
 <div class="mt-4">
     <button class="btn" (click)="submitFeedback()">Submit Feedback</button>
 </div>
-
 }

@@ -13,6 +13,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 import { ClarityModule } from '@clr/angular';
 import { active } from '@cds/core/internal';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-forms-schemas-management',
@@ -28,7 +29,7 @@ export class FormsSchemasManagementComponent {
   newFormSchemaName: any;
   editedFormSchemaName: any;
   oldFormSchemaName: any;
-  
+
   formsAndSchemas: any[] = [];
   selectedFormOrSchema: any = null;
   activeInstitutionId: string = "";
@@ -45,7 +46,8 @@ export class FormsSchemasManagementComponent {
   };
   editFormNameModal: boolean = false;
 
-  constructor(private adminService: AdminService, private activeInstitution: ActiveInstitutionService) {
+  constructor(private adminService: AdminService, private toastr: ToastrService,
+    private activeInstitution: ActiveInstitutionService) {
     activeInstitution.institutionIid.subscribe(data => {
       this.activeInstitutionId = data
     })
@@ -84,7 +86,7 @@ export class FormsSchemasManagementComponent {
     this.selectedFormOrSchema.name = this.editedFormSchemaName;
 
     console.log("THIS IS SELCTE: ", this.selectedFormOrSchema);
-    this.adminService.updateFormSchema(this.oldFormSchemaName,this.selectedFormOrSchema).subscribe();
+    this.adminService.updateFormSchema(this.oldFormSchemaName, this.selectedFormOrSchema).subscribe();
   }
 
   openDeleteConfirmationModal(formOrSchema: any) {
@@ -126,9 +128,9 @@ export class FormsSchemasManagementComponent {
   }
 
   setNewFieldExternal(e: any) {
-    if(e.target.value === "true") {
+    if (e.target.value === "true") {
       this.newFieldData.external = "";
-    }else {
+    } else {
       delete this.newFieldData.external;
     }
   }
@@ -140,7 +142,7 @@ export class FormsSchemasManagementComponent {
   setFieldName(field: any, e: any) {
     field.name = e.target.value;
   }
-  
+
   setFieldOption(field: any, index: any, e: any) {
     field.options[index] = e.target.value;
   }
@@ -162,15 +164,24 @@ export class FormsSchemasManagementComponent {
   }
 
   addField(item: any) {
-    if(item.options === undefined) {
+    if (item.options === undefined) {
       item.options = [];
-    } 
+    }
     item.options.push("null");
   }
 
   submitForm() {
     console.log("form data: ", this.selectedFormOrSchema);
-    this.adminService.updateFormSchema(this.selectedFormOrSchema.name, this.selectedFormOrSchema).subscribe();
+    this.adminService.updateFormSchema(this.selectedFormOrSchema.name, this.selectedFormOrSchema).subscribe(
+      data => {
+        if(data.status === "success") {
+          this.toastr.success("Form updated successfullly");
+        }
+      },
+      error => {
+        this.toastr.error("Something went wrong");
+      }
+    );
   }
 
 }

@@ -15,6 +15,7 @@ export class FeedbackStudentsComponent {
   @Input() compConfig: any = null;
   feedbackList: any = [];
   selectedFeedback: any = null;
+  selectedCourse: any = null;
   questionsList: any = [];
   feedbackFormData: any = { questions: [] };
 
@@ -23,9 +24,9 @@ export class FeedbackStudentsComponent {
 
   async ngOnInit() {
     this.feedbackList = await firstValueFrom(this.feedbackService.getScheduledFeedbacks());
+    console.log("FEEDBACK LIST: ", this.feedbackList);
     console.log("feedback list: ", this.feedbackList);
   }
-
 
   async selectFeedback(feedback: any) {
     this.selectedFeedback = feedback;
@@ -33,6 +34,11 @@ export class FeedbackStudentsComponent {
 
     console.log("feedabck: ", this.selectedFeedback);
     console.log("questions list: ", this.questionsList);
+  }
+
+  selectCourse(course: any) {
+    this.selectedCourse = course;
+    console.log("COURSE: ",course);
   }
 
   getArrayOfTen() {
@@ -82,6 +88,7 @@ export class FeedbackStudentsComponent {
         {
           feedback_id: question._id,
           question: question.question,
+          question_id: question._id,
           type: question.type,
           answer: answer
         }
@@ -89,13 +96,19 @@ export class FeedbackStudentsComponent {
     }
   }
 
+  goToFeedbacks() {
+    this.selectedCourse = null;
+    this.selectedFeedback = null;
+  }
+
   submitFeedback() {
     this.feedbackFormData.feedback_id = this.selectedFeedback._id;
+    this.feedbackFormData.course = this.selectedCourse;
     this.feedbackService.submitStudentFeedback(this.feedbackFormData).subscribe();
+    this.selectedCourse.alreadyAttempted = true;
     console.log(this.feedbackFormData);
-    this.selectedFeedback.alreadyAttempted = true;
 
-    this.selectedFeedback = null;
+    this.selectedCourse = null;
   }
 
 }

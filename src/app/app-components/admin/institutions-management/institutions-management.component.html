@@ -1,5 +1,27 @@
 <app-page-title title="Institutions" subtitle="See and manage all Institutions" />
 
+<clr-modal [(clrModalOpen)]="addInstituionModal">
+  <h3 class="modal-title">Add Institution</h3>
+  <div class="modal-body">
+    <clr-input-container>
+        <label>Institution Name</label>
+        <input clrInput placeholder="College Name ..." name="name" [(ngModel)]="institutionName" />
+      </clr-input-container>
+    <clr-input-container>
+        <label>ID</label>
+        <input clrInput placeholder="ID ..." name="name" [(ngModel)]="institutionID" />
+      </clr-input-container>
+    <clr-input-container>
+        <label>Shortname</label>
+        <input clrInput placeholder="Shortname for institution  ..." name="name" [(ngModel)]="institutionShortname" />
+      </clr-input-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="addInstituionModal = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="addInstitution()">Ok</button>
+  </div>
+</clr-modal>
+
 <div class="clr-row clr-justify-content-center">
     <div class="clr-col-10">
         <form clrForm clrLayout="horizontal" clrLabelSize="1">
@@ -56,7 +78,7 @@
         <div class="institution-table-title">
             <h1 cds-text="title">All Institutions</h1>
             <div class="vertical-line"></div>
-            <button class="btn btn-primary">Add Institution</button>
+            <button class="btn btn-primary" (click)="addInstituionModal = true">Add Institution</button>
         </div>
 
         @for(item of institutions; track $index)

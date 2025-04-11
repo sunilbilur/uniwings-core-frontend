@@ -105,6 +105,7 @@ export class LoginComponent {
         localStorage.setItem('iid', this.iid);
         localStorage.setItem('pri_nav', JSON.stringify(data.pri_nav));
         localStorage.setItem('sec_nav', JSON.stringify(data.sec_nav));
+        localStorage.setItem('shortname', data.shortname);
 
         // appRoutes configuration
         let appRoute: any = {

@@ -25,7 +25,7 @@ export class ProgramsClassesManagementComponent {
 
   addProgramModal: boolean = false;
   addClassesModal: boolean = false;
-  
+
   activeClassesOption: string = "Program";
   activeClassesName: string = "";
   activeClassesArray: any = [];
@@ -38,16 +38,31 @@ export class ProgramsClassesManagementComponent {
   }
 
   async ngOnInit() {
-      this.programs = await firstValueFrom(this.adminService.getPrograms());
-      this.classes = await firstValueFrom(this.adminService.getClasses());
-      this.programFormFields = await firstValueFrom(this.formService.getFormsAndSchemas("add_program"));
-      this.classes = this.classes[0]
+    this.programs = await firstValueFrom(this.adminService.getPrograms());
+    this.classes = await firstValueFrom(this.adminService.getClasses());
+    console.log("CLASSES: ", this.classes);
+    console.log("PROGRAMS: ", this.programs);
+    this.programFormFields = await firstValueFrom(this.formService.getFormsAndSchemas("add_program"));
+
+    if (this.classes.length == 0) {
+      console.log("ESLJFDLKSD EXECUTED");
+      this.classes = {
+        years: [],
+        batches: [],
+        classes: []
+      };
+    } else {
+      this.classes = this.classes[0];
+      console.log("SWITCH MADE");
+      console.log(this.classes);
+    }
+
   }
 
   openAddClassesModal(option: any, arr: any) {
     this.activeClassesOption = option;
     this.activeClassesArray = arr;
-    
+
     this.addClassesModal = true;
   }
 
@@ -58,6 +73,8 @@ export class ProgramsClassesManagementComponent {
   handleAddClassesAdd() {
     this.activeClassesArray.push(this.activeClassesName);
     this.addClassesModal = false;
+    console.log(this.activeClassesArray);
+    console.log(this.activeClassesName)
     this.adminService.addClass(this.activeClassesOption.toLowerCase(), this.activeClassesName).subscribe();
   }
 
@@ -80,8 +97,7 @@ export class ProgramsClassesManagementComponent {
     this.adminService.deleteProgram(program._id).subscribe();
   }
 
-  deleteClass(option: any, arr: any, cl: any) 
-  {
+  deleteClass(option: any, arr: any, cl: any) {
     arr.splice(arr.indexOf(cl), 1);
     this.adminService.deleteClass(option.toLowerCase(), cl).subscribe();
   }

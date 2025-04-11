@@ -7,6 +7,7 @@ import { ClarityModule } from '@clr/angular';
 import { ClarityIcons, dragHandleIcon } from '@cds/core/icon';
 import { AdminService } from '../../../../_services/admin.service';
 import { firstValueFrom } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 ClarityIcons.addIcons(dragHandleIcon);
 
@@ -35,13 +36,20 @@ export class ComponentsTabComponent {
 
   skipDeletion: boolean = false;
 
-  constructor(private adminService: AdminService) {
+  constructor(private adminService: AdminService, private toastr: ToastrService) {
   }
 
   async ngOnInit() {
     this.components = await firstValueFrom(this.adminService.getComponentsList());
   }
 
+  setColumnWidth(colElem: any, event: any) {
+    //convert target.value to number and assign to colElem
+    colElem[1] = parseInt(event.target.value);
+    console.log("setColumnWidth: ", colElem);
+    console.log("setColumnWidth: ", event.target.value);
+    console.log("ROLECONFIG: ", this.roleConfig);
+  }
 
   openCompEditModal(entry: any) {
     this.compEditModal = true;
@@ -168,7 +176,13 @@ export class ComponentsTabComponent {
   }  
 
   saveChanges() {
-    this.adminService.updateRoleConfig(this.roleConfig.role, this.roleConfig).subscribe();
+    this.adminService.updateRoleConfig(this.roleConfig.role, this.roleConfig).subscribe(() => {
+      this.toastr.success("Changes saved successfully");
+    },
+    () => {
+      this.toastr.error("Something went wrong");
+    }
+  );
     console.log("role config: ", this.roleConfig);
     this.compEditModal = false;
   }

@@ -7,6 +7,7 @@ import { AdminService } from '../../../../_services/admin.service';
 
 import { ClarityIcons, dragHandleIcon, eraserIcon, pencilIcon, plusIcon } from '@cds/core/icon';
 import { ClarityModule } from '@clr/angular';
+import { ToastrService } from 'ngx-toastr';
 
 ClarityIcons.addIcons(plusIcon);
 ClarityIcons.addIcons(pencilIcon);
@@ -28,7 +29,7 @@ export class NavigationEntriesTabComponent {
 
   skipDeletion: boolean = false;
 
-  constructor(private adminService: AdminService) {
+  constructor(private adminService: AdminService, private toastr: ToastrService) {
 
   }
 
@@ -111,7 +112,14 @@ export class NavigationEntriesTabComponent {
   }
 
   saveChanges() {
-    this.adminService.updateRoleConfig(this.roleConfig.role, this.roleConfig).subscribe();
+    this.adminService.updateRoleConfig(this.roleConfig.role, this.roleConfig).subscribe(
+      () => {
+        this.toastr.success("Changes saved successfully");
+      },
+      () => {
+        this.toastr.error("Something went wrong");
+      }
+    );
     console.log("role config: ", this.roleConfig);
   }
 

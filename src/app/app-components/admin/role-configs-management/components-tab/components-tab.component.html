@@ -72,7 +72,8 @@
                 </div>
                 <div class="ml-8">
                     <p class="text-gray-600">Selected Component</p>
-                    <p class="text-lg font-medium">{{selectedComponentName == null? 'Please Select a Component' : selectedComponentName}}</p>
+                    <p class="text-lg font-medium">{{selectedComponentName == null? 'Please Select a Component' :
+                        selectedComponentName}}</p>
                 </div>
             </div>
             <div class="flex flex-wrap mx-4">
@@ -182,7 +183,27 @@
 
                                         <cds-icon shape="drag-handle" size="md"></cds-icon>
                                         <span class="label">column</span>
-                                        <span class="badge bg-stone-500">{{colElement1[1]}}</span>
+                                        <span>
+                                            <clr-select-container class="mt-0">
+                                            <select clrSelect name="options"
+                                                [selectedIndex]="colElement1[1] - 1"
+                                                (change)="setColumnWidth(colElement1, $event)">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+                                        </clr-select-container>
+                                        </span>
+
 
                                         <div class="border border-gray-600 mt-2 rounded pb-2 px-2 " dndDropzone
                                             (dndDrop)="onDrop($event, colElement1, 'col')">
@@ -258,9 +279,10 @@
                                                                         <label>
                                                                             <cds-icon shape="drag-handle"
                                                                                 size="md"></cds-icon>
-                                                                            <span class="label">(select-component)</span>
-                                                                            <button
-                                                                                class="btn btn-sm min-w-0" (click)="openSelectComponentDrawer(lastCompElement)">edit</button>
+                                                                            <span
+                                                                                class="label">(select-component)</span>
+                                                                            <button class="btn btn-sm min-w-0"
+                                                                                (click)="openSelectComponentDrawer(lastCompElement)">edit</button>
                                                                         </label>
                                                                         <p class="ml-1"><span class="font-medium">comp:
                                                                             </span>{{lastCompElement[0]}}</p>

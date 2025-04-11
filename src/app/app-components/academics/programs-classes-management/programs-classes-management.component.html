@@ -18,7 +18,8 @@
     <div class="modal-body">
         <clr-input-container>
             <label>{{activeClassesOption}} Name</label>
-            <input clrInput placeholder="give name to the {{activeClassesOption}}" (change)="setActiveClassesName($event)" />
+            <input clrInput placeholder="give name to the {{activeClassesOption}}"
+                (change)="setActiveClassesName($event)" />
         </clr-input-container>
     </div>
     <div class="modal-footer">
@@ -54,31 +55,47 @@
             <p class="text-xl font-regular">Classes Pattern</p>
         </div>
 
+        @if(classes) {
         <div class="flex flex-col p-4 border border-gray-300 rounded mt-2">
             <div class="flex items-center">
                 <p class="text-lg leading-none">Years</p>
-                <button nz-button class="ml-2" (click)="openAddClassesModal('Year', classes.years)">Add Year</button>
+                <button nz-button class="ml-2" (click)="openAddClassesModal('Years', classes.years)">Add Year</button>
             </div>
             <div class="flex mt-2 flex-wrap">
+                @if(classes.years.length != 0) {
                 @for(year of classes.years; track $index){
                 <div class="border border-gray-300 rounded w-[21%] m-2 px-2 py-1">
                     <p class="text-sm">{{year}}</p>
-                    <button class="btn btn-sm" (click)="deleteClass('year', classes.years, year)">Delete</button>
+                    <button class="btn btn-sm" (click)="deleteClass('years', classes.years, year)">Delete</button>
+                </div>
+
+                }
+                }@else{
+                <div class="border border-gray-300 rounded w-[21%] m-2 px-2 py-1">
+                    <p class="text-sm">No Years</p>
                 </div>
                 }
+
             </div>
         </div>
 
         <div class="flex flex-col p-4 border border-gray-300 rounded mt-4">
             <div class="flex items-center">
                 <p class="text-lg leading-none">Classes</p>
-                <button nz-button class="ml-2" (click)="openAddClassesModal('Class', classes.classes)">Add Class</button>
+                <button nz-button class="ml-2" (click)="openAddClassesModal('Classes', classes.classes)">Add
+                    Class</button>
             </div>
             <div class="flex mt-2 flex-wrap">
+                @if(classes.classes.length != 0) {
                 @for(class of classes.classes; track $index){
                 <div class="border border-gray-300 rounded w-[21%] m-2 px-2 py-1">
                     <p class="text-sm">{{class}}</p>
-                    <button class="btn btn-sm" (click)='deleteClass("class", classes.classes, class)'>Delete</button>
+                    <button class="btn btn-sm" (click)='deleteClass("classes", classes.classes, class)'>Delete</button>
+                </div>
+                }
+                }@else {
+                <div class="border border-gray-300 rounded w-[21%] m-2 px-2 py-1">
+                    <p class="text-sm">No Classes</p>
                 </div>
                 }
             </div>
@@ -87,17 +104,26 @@
         <div class="flex flex-col p-4 border border-gray-300 rounded mt-4">
             <div class="flex items-center">
                 <p class="text-lg leading-none">Batches</p>
-                <button nz-button class="ml-2" (click)="openAddClassesModal('Batch', classes.batches)">Add Batch</button>
+                <button nz-button class="ml-2" (click)="openAddClassesModal('Batches', classes.batches)">Add
+                    Batch</button>
             </div>
             <div class="flex mt-2 flex-wrap">
+                @if(classes.batches.length != 0) {
+
                 @for(batch of classes.batches; track $index){
                 <div class="border border-gray-300 rounded w-[21%] m-2 px-2 py-1">
                     <p class="text-sm">{{batch}}</p>
-                    <button class="btn btn-sm" (click)='deleteClass("batch", classes.batches, batch)'>Delete</button>
+                    <button class="btn btn-sm" (click)='deleteClass("batches", classes.batches, batch)'>Delete</button>
+                </div>
+                }
+                }@else {
+                <div class="border border-gray-300 rounded w-[21%] m-2 px-2 py-1">
+                    <p class="text-sm">No Batches</p>
                 </div>
                 }
             </div>
         </div>
 
+        }
     </div>
 </div>

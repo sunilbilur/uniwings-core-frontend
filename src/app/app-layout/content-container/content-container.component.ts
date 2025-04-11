@@ -26,9 +26,11 @@ ClarityIcons.addIcons(assignUserIcon)
 export class ContentContainerComponent {
   secNav: any = null;
   iid: any = null;
+  shortname: any = null;
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.iid = localStorage.getItem('iid');
+    this.shortname = localStorage.getItem('shortname');
   }
 
   ngOnInit(): void {

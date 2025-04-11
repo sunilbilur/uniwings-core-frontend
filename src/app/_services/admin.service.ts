@@ -9,6 +9,10 @@ export class AdminService {
   constructor(private http: HttpClient) {
   }
 
+  addInstitution(data: any): Observable<any> {
+    return this.http.post('http://localhost:8000/admin/add-institution', { institution: data });
+  }
+
   refreshComponents(): Observable<any> {
     return this.http.get("http://localhost:8000/admin/comp-sync-file");
   }

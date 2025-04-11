@@ -30,6 +30,7 @@ export class CompLoaderComponent implements OnInit {
 
     //fetch all the components and store them in the map
     for (let key of compsList) {
+      console.log("Fetching: ", key);
       this.compsMap.set(key, (await this.compFetcher.fetch(key)));
     }
 

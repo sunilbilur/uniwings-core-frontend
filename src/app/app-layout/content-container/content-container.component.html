@@ -2,13 +2,13 @@
     <clr-vertical-nav [clr-nav-level]="1">
         <div class="flex justify-center items-center">
             <img src="assets/login/{{iid}}/logo.png" width="60" height="60">
-            <div class="">
+            <div class="ml-2">
                 @if(iid==="admin") {
                 <p cds-text="headline medium">Uniwings</p>
                 <hr style="margin: 8px 0;">
                 <p cds-text="secondary regular">Management Portal</p>
                 }@else {
-                <p cds-text="headline medium">KITCoEK</p>
+                <p cds-text="headline medium">{{shortname}}</p>
                 <hr style="margin: 8px 0;">
                 <p cds-text="secondary regular">Internal ERP System</p>
                 }
